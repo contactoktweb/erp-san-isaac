@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Heart } from 'lucide-react'
 import { Logo } from '@/components/brand/logo'
 import { siteConfig } from '@/lib/site-config'
 import { LoginBrandPanel } from '@/modules/auth/components/login-brand-panel'
@@ -31,6 +32,18 @@ export default function LoginPage() {
           <p className="text-sm text-muted-foreground">
             ¿Olvidaste tu contraseña? Solicita el restablecimiento al administrador del sistema.
           </p>
+
+          <footer className="pt-2 text-center lg:hidden">
+            <a
+              href="https://www.kytcode.lat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <span>Desarrollado por K&T</span>
+              <Heart className="size-3 fill-black text-black" aria-hidden="true" />
+            </a>
+          </footer>
         </div>
       </main>
     </div>

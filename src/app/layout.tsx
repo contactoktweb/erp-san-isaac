@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import type { ReactNode } from 'react'
+import { AuthProvider } from '@/components/providers/auth-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { siteConfig } from '@/lib/site-config'
@@ -34,7 +35,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es-CO" className={inter.variable}>
       <body>
-        <TooltipProvider delayDuration={300}>{children}</TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider delayDuration={300}>{children}</TooltipProvider>
+        </AuthProvider>
         <Toaster position="top-right" />
       </body>
     </html>

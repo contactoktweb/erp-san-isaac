@@ -1,4 +1,9 @@
-// TODO: conectar con la autenticación real (p. ej. signOut de NextAuth) para invalidar la sesión.
+import { signOut } from 'next-auth/react'
+
+/**
+ * Cierra la sesión activa del usuario a través de NextAuth e invalida la cookie de sesión,
+ * redirigiendo al usuario a la página de login.
+ */
 export async function signOutUser(): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await signOut({ callbackUrl: '/login' })
 }

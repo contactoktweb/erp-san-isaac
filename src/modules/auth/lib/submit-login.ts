@@ -1,3 +1,4 @@
+import { signIn } from 'next-auth/react'
 import type { LoginValues } from '../schemas/login-schema'
 
 export type SubmitLoginResult = { ok: true } | { ok: false; error: string }
@@ -5,18 +6,26 @@ export type SubmitLoginResult = { ok: true } | { ok: false; error: string }
 export const INVALID_CREDENTIALS_MESSAGE = 'Correo o contraseña incorrectos'
 
 /**
- * TODO: conectar con la autenticación real (NextAuth + base de datos).
- * Reemplazar todo el cuerpo por la llamada real, por ejemplo:
- *   const res = await signIn('credentials', { ...values, redirect: false })
- *   return res?.ok ? { ok: true } : { ok: false, error: INVALID_CREDENTIALS_MESSAGE }
- * Mientras tanto, simula la latencia y acepta solo la credencial de demostración
- * para poder probar tanto el acceso como el mensaje de error.
+ * Autentica al usuario contra el backend mediante NextAuth (Credentials).
+ * Normaliza el email a minúsculas y sin espacios antes de enviar.
+ * Devuelve un mensaje genérico ante cualquier error o rechazo para no filtrar
+ * si el correo existe o no en el sistema.
  */
 export async function submitLogin(values: LoginValues): Promise<SubmitLoginResult> {
-  await new Promise((resolve) => setTimeout(resolve, 900))
+  try {
+    const res = await signIn('credentials', {
+      email: values.email.trim().toLowerCase(),
+      password: values.password,
+      redirect: false,
+    })
 
-  const isDemoUser =
-    values.email.toLowerCase() === 'admin@velassanisaac.com' && values.password === 'SanIsaac2026'
+    if (!res || !res.ok || res.error) {
+      return { ok: false, error: INVALID_CREDENTIALS_MESSAGE }
+    }
 
-  return isDemoUser ? { ok: true } : { ok: false, error: INVALID_CREDENTIALS_MESSAGE }
+    return { ok: true }
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error)
+    return { ok: false, error: INVALID_CREDENTIALS_MESSAGE }
+  }
 }

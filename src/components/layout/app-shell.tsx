@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type ReactNode } from 'react'
+import { AppFooter } from './app-footer'
 import { AppHeader } from './app-header'
 import { AppSidebar } from './app-sidebar'
 
@@ -21,6 +22,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main id="contenido" tabIndex={-1} className="flex-1 px-4 py-8 outline-none sm:px-6 lg:px-10 lg:py-10">
           <div className="mx-auto w-full max-w-6xl">{children}</div>
         </main>
+        <AppFooter />
       </div>
     </div>
   )
