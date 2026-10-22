@@ -1,0 +1,207 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Paleta extraída del logo de San Isaac.
+ * Colores marcados "solo relleno" no alcanzan contraste AA (4.5:1) como texto
+ * sobre fondo claro: se usan en superficies, bordes o indicadores, y su
+ * variante "-strong" es la que se usa para texto.
+ */
+:root {
+  --brand-navy: #1b3a6b;        /* Anillo exterior. Texto AA (10.9:1) */
+  --brand-blue: #2e75aa;        /* Banda "SAN ISAAC". Texto AA (4.9:1) */
+  --brand-gold: #e3a92b;        /* Resplandor. Solo relleno (2.2:1) */
+  --brand-gold-strong: #8a5a0b; /* Variante oscura para texto (5.9:1) */
+  --brand-sand: #d4b47a;        /* Letras "SAN ISAAC". Solo relleno */
+  --brand-brown: #7a4a1e;       /* "La luz del Patriarca". Texto AA (7.4:1) */
+  --brand-crimson: #9b1b24;     /* Franja de la túnica. Texto AA (8.0:1) */
+  --brand-cream: #f4ebd9;       /* Turbante y cera. Solo fondo */
+
+  --background: #faf8f4;
+  --foreground: #18212f;
+  --card: #ffffff;
+  --card-foreground: #18212f;
+  --popover: #ffffff;
+  --popover-foreground: #18212f;
+  --primary: var(--brand-navy);
+  --primary-foreground: #ffffff;
+  --secondary: #f1ece2;
+  --secondary-foreground: var(--brand-navy);
+  --muted: #f1eee8;
+  --muted-foreground: #5a6270;
+  --accent: var(--brand-cream);
+  --accent-foreground: var(--brand-navy);
+  --destructive: var(--brand-crimson);
+  --border: #e5dfd3;
+  --input: #d4ccbd;
+  --ring: var(--brand-blue);
+  --radius: 0.5rem;
+
+  --success: #2f6b3a;
+  --success-foreground: #ffffff;
+  --success-soft: #e6f0e5;
+  --warning: var(--brand-gold);
+  --warning-foreground: #3d2a05;
+  --warning-strong: var(--brand-gold-strong);
+  --warning-soft: #fbf0d6;
+  --danger: var(--brand-crimson);
+  --danger-foreground: #ffffff;
+  --danger-soft: #f8e4e4;
+  --info: #235e8c;
+  --info-foreground: #ffffff;
+  --info-soft: #e3edf6;
+
+  --chart-1: var(--brand-navy);
+  --chart-2: var(--brand-blue);
+  --chart-3: var(--brand-gold);
+  --chart-4: var(--brand-crimson);
+  --chart-5: var(--brand-brown);
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #18212f;
+  --sidebar-primary: var(--brand-navy);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--brand-cream);
+  --sidebar-accent-foreground: var(--brand-navy);
+  --sidebar-border: #e5dfd3;
+  --sidebar-ring: var(--brand-blue);
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-strong: var(--warning-strong);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-soft: var(--info-soft);
+
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-strong: var(--brand-gold-strong);
+  --color-brand-sand: var(--brand-sand);
+  --color-brand-brown: var(--brand-brown);
+  --color-brand-crimson: var(--brand-crimson);
+  --color-brand-cream: var(--brand-cream);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply text-balance tracking-tight;
+    line-height: 1.25;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  table {
+    @apply w-full border-collapse text-left text-base;
+  }
+
+  thead th {
+    @apply border-b border-border bg-muted px-4 py-3 text-sm font-semibold text-muted-foreground;
+  }
+
+  tbody td {
+    @apply border-b border-border px-4 py-3 align-middle tabular-nums;
+  }
+
+  tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  tbody tr:hover td {
+    @apply bg-muted/60;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility eyebrow {
+  @apply text-xs font-semibold uppercase text-muted-foreground;
+  letter-spacing: 0.14em;
+}
