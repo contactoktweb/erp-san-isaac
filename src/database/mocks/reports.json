@@ -1,0 +1,90 @@
+[
+  {
+    "id": "rep-001",
+    "reportCode": "REP-VNT-01",
+    "title": "Informe Consolidado de Ventas por Cliente y Línea",
+    "category": "Ventas y Cartera",
+    "description": "Discriminación de ventas en pesos y unidades para velones, cirios y velas tradicionales.",
+    "frequency": "Mensual",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Gerencia / Comercial",
+    "estimatedExecutionTime": "< 3 segundos"
+  },
+  {
+    "id": "rep-002",
+    "reportCode": "REP-INV-02",
+    "title": "Kardex Valorizado y Saldos de Materias Primas",
+    "category": "Inventarios y Lotes",
+    "description": "Existencias en bodega de parafinas, ceras y pabilos valorizados bajo método promedio ponderado.",
+    "frequency": "Semanal",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Almacén / Contabilidad",
+    "estimatedExecutionTime": "< 4 segundos"
+  },
+  {
+    "id": "rep-003",
+    "reportCode": "REP-PRD-03",
+    "title": "Rendimiento y Mermas por Lote de Producción",
+    "category": "Producción y Costos",
+    "description": "Comparativa entre kilogramos programados vs unidades producidas y porcentaje de desperdicio térmico.",
+    "frequency": "Semanal",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Jefe de Planta",
+    "estimatedExecutionTime": "< 5 segundos"
+  },
+  {
+    "id": "rep-004",
+    "reportCode": "REP-CRT-04",
+    "title": "Antigüedad de Cartera y Edades de Vencimiento",
+    "category": "Ventas y Cartera",
+    "description": "Estado de cuentas por cobrar clasificadas por franjas: corriente, 1 a 30, 31 a 60 y más de 90 días.",
+    "frequency": "Semanal",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Cartera / Tesorería",
+    "estimatedExecutionTime": "< 2 segundos"
+  },
+  {
+    "id": "rep-005",
+    "reportCode": "REP-CXP-05",
+    "title": "Proyección de Pagos a Proveedores de Insumos",
+    "category": "Compras",
+    "description": "Cronograma de vencimientos de compras a crédito de parafina y material de empaque.",
+    "frequency": "Semanal",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Compras / Tesorería",
+    "estimatedExecutionTime": "< 3 segundos"
+  },
+  {
+    "id": "rep-006",
+    "reportCode": "REP-CNT-06",
+    "title": "Balance de Comprobación y Sumas Iguales",
+    "category": "Contable y Fiscal",
+    "description": "Resumen oficial a 6 dígitos con discriminación de saldos anteriores, movimientos y nuevo saldo.",
+    "frequency": "Mensual",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Contador / Revisor Fiscal",
+    "estimatedExecutionTime": "< 6 segundos"
+  },
+  {
+    "id": "rep-007",
+    "reportCode": "REP-NOM-07",
+    "title": "Consolidado de Costos Laborales y Seguridad Social",
+    "category": "Contable y Fiscal",
+    "description": "Resumen por centro de costos de salarios, horas extras de planta y aportes patronales PILA.",
+    "frequency": "Mensual",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Nómina / Gerencia",
+    "estimatedExecutionTime": "< 4 segundos"
+  },
+  {
+    "id": "rep-008",
+    "reportCode": "REP-DIAN-08",
+    "title": "Auditoría de Transmisión de Documentos Electrónicos DIAN",
+    "category": "Contable y Fiscal",
+    "description": "Relación de facturas electrónicas, notas y documentos soporte con estado de validación previa.",
+    "frequency": "Bajo demanda",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Facturación / Contabilidad",
+    "estimatedExecutionTime": "< 2 segundos"
+  }
+]

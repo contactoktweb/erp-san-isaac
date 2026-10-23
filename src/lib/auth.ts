@@ -24,37 +24,42 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Contraseña', type: 'password' },
       },
       async authorize(rawCredentials) {
-        const parsed = credentialsSchema.safeParse(rawCredentials)
-        if (!parsed.success) {
+        try {
+          const parsed = credentialsSchema.safeParse(rawCredentials)
+          if (!parsed.success) {
+            return null
+          }
+
+          const normalizedEmail = parsed.data.email.trim().toLowerCase()
+
+          const user = await prisma.user.findUnique({
+            where: { email: normalizedEmail },
+            include: { role: true },
+          })
+
+          // Rechazar credenciales si el usuario no existe o está inactivo
+          if (!user || !user.isActive) {
+            return null
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            parsed.data.password,
+            user.passwordHash
+          )
+
+          if (!isPasswordValid) {
+            return null
+          }
+
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role.name,
+          }
+        } catch (error) {
+          console.error('[NextAuth] Error durante la autenticación:', error)
           return null
-        }
-
-        const normalizedEmail = parsed.data.email.trim().toLowerCase()
-
-        const user = await prisma.user.findUnique({
-          where: { email: normalizedEmail },
-          include: { role: true },
-        })
-
-        // Rechazar credenciales si el usuario no existe o está inactivo
-        if (!user || !user.isActive) {
-          return null
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          parsed.data.password,
-          user.passwordHash
-        )
-
-        if (!isPasswordValid) {
-          return null
-        }
-
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          role: user.role.name,
         }
       },
     }),

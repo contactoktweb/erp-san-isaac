@@ -1,0 +1,112 @@
+[
+  {
+    "id": "acc-001",
+    "code": "110505",
+    "name": "Caja General Planta Funza",
+    "accountType": "Activo",
+    "debitCOP": 18500000,
+    "creditCOP": 15200000,
+    "currentBalanceCOP": 3300000,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-002",
+    "code": "111005",
+    "name": "Bancos Nacionales - Bancolombia Cta Cte",
+    "accountType": "Activo",
+    "debitCOP": 184500000,
+    "creditCOP": 122400000,
+    "currentBalanceCOP": 62100000,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-003",
+    "code": "130505",
+    "name": "Clientes Nacionales - Cartera Comercial",
+    "accountType": "Activo",
+    "debitCOP": 114450000,
+    "creditCOP": 42950000,
+    "currentBalanceCOP": 71500000,
+    "costCenter": "CC-400 Ventas",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-004",
+    "code": "140501",
+    "name": "Inventario de Materias Primas - Parafinas y Ceras",
+    "accountType": "Activo",
+    "debitCOP": 98000000,
+    "creditCOP": 29800000,
+    "currentBalanceCOP": 68200000,
+    "costCenter": "CC-100 Producción",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-005",
+    "code": "143001",
+    "name": "Inventario de Producto Terminado - Velas y Cirios",
+    "accountType": "Activo",
+    "debitCOP": 54200000,
+    "creditCOP": 21800000,
+    "currentBalanceCOP": 32400000,
+    "costCenter": "CC-300 Logística",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-006",
+    "code": "220501",
+    "name": "Proveedores Nacionales - Cuentas por Pagar",
+    "accountType": "Pasivo",
+    "debitCOP": 104600000,
+    "creditCOP": 139100000,
+    "currentBalanceCOP": -34500000,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-007",
+    "code": "240801",
+    "name": "Impuesto a las Ventas (IVA) Generado 19%",
+    "accountType": "Pasivo",
+    "debitCOP": 0,
+    "creditCOP": 21745500,
+    "currentBalanceCOP": -21745500,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-008",
+    "code": "310505",
+    "name": "Capital Suscrito y Pagado - SAS",
+    "accountType": "Patrimonio",
+    "debitCOP": 0,
+    "creditCOP": 150000000,
+    "currentBalanceCOP": -150000000,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "acc-009",
+    "code": "412035",
+    "name": "Ingresos Operacionales - Venta Fabricación Velas",
+    "accountType": "Ingresos",
+    "debitCOP": 0,
+    "creditCOP": 114450000,
+    "currentBalanceCOP": -114450000,
+    "costCenter": "CC-400 Ventas",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-010",
+    "code": "710501",
+    "name": "Costos de Producción - Materia Prima Directa",
+    "accountType": "Costos de producción",
+    "debitCOP": 29800000,
+    "creditCOP": 0,
+    "currentBalanceCOP": 29800000,
+    "costCenter": "CC-100 Producción",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  }
+]

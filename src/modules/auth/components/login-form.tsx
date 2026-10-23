@@ -35,6 +35,7 @@ export function LoginForm() {
     const result = await submitLogin(values)
     if (result.ok) {
       router.replace('/dashboard')
+      router.refresh()
       return
     }
     setAuthError(result.error)

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "usr-001",
+    "name": "Carlos Alberto Méndez",
+    "email": "carlos.mendez@ejemplo-sanisaac.com",
+    "role": "Jefe de Planta y Producción",
+    "assignedBranch": "Planta Principal Funza",
+    "costCenter": "CC-100 Producción",
+    "isActive": true,
+    "createdAt": "2026-01-10T08:00:00.000Z"
+  },
+  {
+    "id": "usr-002",
+    "name": "Marta Lucía Rincón",
+    "email": "marta.rincon@ejemplo-sanisaac.com",
+    "role": "Auxiliar Contable y Tributaria",
+    "assignedBranch": "Sede Administrativa Bogotá",
+    "costCenter": "CC-200 Administración",
+    "isActive": true,
+    "createdAt": "2026-01-12T09:30:00.000Z"
+  },
+  {
+    "id": "usr-003",
+    "name": "Jorge Eliécer Duarte",
+    "email": "jorge.duarte@ejemplo-sanisaac.com",
+    "role": "Coordinador de Almacén y Despachos",
+    "assignedBranch": "Bodega Central Funza",
+    "costCenter": "CC-300 Logística",
+    "isActive": true,
+    "createdAt": "2026-01-15T07:45:00.000Z"
+  },
+  {
+    "id": "usr-004",
+    "name": "Sonia Esperanza Pardo",
+    "email": "sonia.pardo@ejemplo-sanisaac.com",
+    "role": "Ejecutiva Comercial Mayorista",
+    "assignedBranch": "Sede Administrativa Bogotá",
+    "costCenter": "CC-400 Ventas",
+    "isActive": true,
+    "createdAt": "2026-01-20T10:15:00.000Z"
+  },
+  {
+    "id": "usr-005",
+    "name": "Héctor Fabio Benítez",
+    "email": "hector.benitez@ejemplo-sanisaac.com",
+    "role": "Supervisor de Pailas y Fundición",
+    "assignedBranch": "Planta Principal Funza",
+    "costCenter": "CC-100 Producción",
+    "isActive": true,
+    "createdAt": "2026-02-01T06:00:00.000Z"
+  },
+  {
+    "id": "usr-006",
+    "name": "Diana Carolina Vargas",
+    "email": "diana.vargas@ejemplo-sanisaac.com",
+    "role": "Analista de Compras e Insumos",
+    "assignedBranch": "Sede Administrativa Bogotá",
+    "costCenter": "CC-200 Administración",
+    "isActive": true,
+    "createdAt": "2026-02-05T08:30:00.000Z"
+  },
+  {
+    "id": "usr-007",
+    "name": "Andrés Mauricio Cárdenas",
+    "email": "andres.cardenas@ejemplo-sanisaac.com",
+    "role": "Operador de Moldeo y Troquelado",
+    "assignedBranch": "Planta Principal Funza",
+    "costCenter": "CC-100 Producción",
+    "isActive": false,
+    "createdAt": "2026-02-15T11:00:00.000Z"
+  },
+  {
+    "id": "usr-008",
+    "name": "Claudia Marcela Osorio",
+    "email": "claudia.osorio@ejemplo-sanisaac.com",
+    "role": "Coordinadora de Seguridad y Salud en el Trabajo",
+    "assignedBranch": "Planta Principal Funza",
+    "costCenter": "CC-200 Administración",
+    "isActive": true,
+    "createdAt": "2026-03-01T09:00:00.000Z"
+  }
+]

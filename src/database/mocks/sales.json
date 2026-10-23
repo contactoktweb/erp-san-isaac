@@ -1,0 +1,93 @@
+[
+  {
+    "id": "so-001",
+    "orderNumber": "PED-2026-101",
+    "clientName": "Distribuidora Religiosa El Carmelo SAS",
+    "clientDocument": "900.887.412-5",
+    "itemsSummary": "120 Cajas Velón 3 Días + 50 Paquetes Vela Tradicional",
+    "totalAmountCOP": 14200000,
+    "pendingBalanceCOP": 0,
+    "orderDate": "2026-02-15T09:00:00.000Z",
+    "paymentTerms": "Contado",
+    "paymentStatus": "Al día",
+    "deliveryStatus": "Entregado"
+  },
+  {
+    "id": "so-002",
+    "orderNumber": "PED-2026-102",
+    "clientName": "Diócesis de Facatativá - Parroquias Centrales",
+    "clientDocument": "860.104.550-1",
+    "itemsSummary": "35 Cirios Pascuales Consagrados 12x60 + 200 Velas de Vigilia",
+    "totalAmountCOP": 6850000,
+    "pendingBalanceCOP": 0,
+    "orderDate": "2026-02-20T11:30:00.000Z",
+    "paymentTerms": "Crédito 30 días",
+    "paymentStatus": "Al día",
+    "deliveryStatus": "Entregado"
+  },
+  {
+    "id": "so-003",
+    "orderNumber": "PED-2026-103",
+    "clientName": "Cadena de Supermercados Populares del Llano",
+    "clientDocument": "800.231.994-8",
+    "itemsSummary": "300 Cajas Velón Votivo Blanco + 150 Cajas Velón 7 Potencias",
+    "totalAmountCOP": 42500000,
+    "pendingBalanceCOP": 18500000,
+    "orderDate": "2026-02-25T14:15:00.000Z",
+    "paymentTerms": "Crédito 30 días",
+    "paymentStatus": "Al día",
+    "deliveryStatus": "Despachado"
+  },
+  {
+    "id": "so-004",
+    "orderNumber": "PED-2026-104",
+    "clientName": "Inversiones y Funerarias San Gabriel SAS",
+    "clientDocument": "901.042.311-9",
+    "itemsSummary": "80 Cajas Velón 3 Días Blanco en vaso",
+    "totalAmountCOP": 9600000,
+    "pendingBalanceCOP": 9600000,
+    "orderDate": "2026-03-01T10:00:00.000Z",
+    "paymentTerms": "Crédito 15 días",
+    "paymentStatus": "Pendiente",
+    "deliveryStatus": "Despachado"
+  },
+  {
+    "id": "so-005",
+    "orderNumber": "PED-2026-105",
+    "clientName": "Comercializadora de Velas La Esperanza",
+    "clientDocument": "52.341.890",
+    "itemsSummary": "50 Cajas Velón 7 Potencias + 40 Paquetes Velas Tradicionales",
+    "totalAmountCOP": 6100000,
+    "pendingBalanceCOP": 6100000,
+    "orderDate": "2026-03-03T15:45:00.000Z",
+    "paymentTerms": "Crédito 15 días",
+    "paymentStatus": "Pendiente",
+    "deliveryStatus": "En preparación"
+  },
+  {
+    "id": "so-006",
+    "orderNumber": "PED-2026-106",
+    "clientName": "Santuario de Monserrate - Almacén Litúrgico",
+    "clientDocument": "860.012.774-3",
+    "itemsSummary": "40 Cirios Pascuales Especiales + 150 Velones Aromáticos",
+    "totalAmountCOP": 8900000,
+    "pendingBalanceCOP": 8900000,
+    "orderDate": "2026-03-05T08:30:00.000Z",
+    "paymentTerms": "Crédito 45 días",
+    "paymentStatus": "Pendiente",
+    "deliveryStatus": "En preparación"
+  },
+  {
+    "id": "so-007",
+    "orderNumber": "PED-2026-107",
+    "clientName": "Distribuidora Mayorista El Nazareno de Cúcuta",
+    "clientDocument": "900.412.009-2",
+    "itemsSummary": "200 Cajas Velón 3 Días + 100 Cajas Velas Tradicionales",
+    "totalAmountCOP": 28400000,
+    "pendingBalanceCOP": 28400000,
+    "orderDate": "2026-01-20T16:00:00.000Z",
+    "paymentTerms": "Crédito 30 días",
+    "paymentStatus": "Mora 15 días",
+    "deliveryStatus": "Entregado"
+  }
+]

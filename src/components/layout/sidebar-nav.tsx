@@ -55,7 +55,7 @@ type SidebarNavItemProps = {
 function SidebarNavItem({ item, active, collapsed, onNavigate }: SidebarNavItemProps) {
   const Icon = item.icon
   const baseClass = cn(
-    'relative flex min-h-10 items-center gap-3 rounded-md px-3 py-2 text-[0.9375rem] leading-snug',
+    'relative flex min-h-10 items-center gap-3 rounded-md px-3 py-2 text-[0.9375rem] leading-snug transition-colors',
     collapsed && 'justify-center px-0',
   )
 
@@ -67,23 +67,32 @@ function SidebarNavItem({ item, active, collapsed, onNavigate }: SidebarNavItemP
           className="absolute inset-y-2 left-0 w-[3px] rounded-full bg-brand-gold"
         />
       ) : null}
-      <Icon className="size-[18px] shrink-0" aria-hidden="true" />
+      <Icon className="size-[18px] shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" aria-hidden="true" />
       <span className={cn('flex-1 truncate', collapsed && 'sr-only')}>{item.title}</span>
-      {!item.enabled ? (
-        <span className={cn('text-xs text-muted-foreground', collapsed && 'sr-only')}>
-          {collapsed ? '(próximamente)' : 'Pronto'}
+      {item.status ? (
+        <span
+          className={cn(
+            'rounded px-1.5 py-0.5 text-[0.6875rem] font-medium leading-none tracking-tight',
+            item.status === 'En desarrollo'
+              ? 'border border-amber-300 bg-amber-50 text-amber-900'
+              : 'border border-border/60 bg-muted/70 text-muted-foreground',
+            collapsed && 'sr-only',
+          )}
+        >
+          {item.status}
         </span>
       ) : null}
     </>
   )
 
-  const element = item.enabled ? (
+  const element = (
     <Link
       href={item.href}
       aria-current={active ? 'page' : undefined}
       onClick={onNavigate}
       className={cn(
         baseClass,
+        'group',
         active
           ? 'bg-sidebar-accent font-semibold text-sidebar-accent-foreground'
           : 'text-sidebar-foreground hover:bg-muted',
@@ -91,13 +100,6 @@ function SidebarNavItem({ item, active, collapsed, onNavigate }: SidebarNavItemP
     >
       {content}
     </Link>
-  ) : (
-    <span
-      aria-disabled="true"
-      className={cn(baseClass, 'cursor-not-allowed text-muted-foreground')}
-    >
-      {content}
-    </span>
   )
 
   if (!collapsed) return element
@@ -107,7 +109,7 @@ function SidebarNavItem({ item, active, collapsed, onNavigate }: SidebarNavItemP
       <TooltipTrigger asChild>{element}</TooltipTrigger>
       <TooltipContent side="right">
         {item.title}
-        {!item.enabled ? ' · Próximamente' : ''}
+        {item.status ? ` · ${item.status}` : ''}
       </TooltipContent>
     </Tooltip>
   )

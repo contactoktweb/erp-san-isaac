@@ -1,0 +1,80 @@
+[
+  {
+    "id": "sh-001",
+    "shareholderName": "Inversiones San Isaac Gómez & Cía SAS",
+    "documentNumberMasked": "NIT 901.442.***-1",
+    "shareCount": 7500,
+    "sharePercentage": 50.0,
+    "nominalValuePerShareCOP": 10000,
+    "totalCapitalCOP": 75000000,
+    "shareType": "Ordinarias de capital",
+    "entryDate": "2022-01-15T00:00:00.000Z",
+    "lastMinuteRecord": "Acta No. 01 Constitución SAS",
+    "status": "Activo"
+  },
+  {
+    "id": "sh-002",
+    "shareholderName": "Gabriel Isaac Benavides",
+    "documentNumberMasked": "CC 19.340.*** (Bogotá)",
+    "shareCount": 3750,
+    "sharePercentage": 25.0,
+    "nominalValuePerShareCOP": 10000,
+    "totalCapitalCOP": 37500000,
+    "shareType": "Ordinarias de capital",
+    "entryDate": "2022-01-15T00:00:00.000Z",
+    "lastMinuteRecord": "Acta No. 04 Asamblea General 2024",
+    "status": "Activo"
+  },
+  {
+    "id": "sh-003",
+    "shareholderName": "María Mercedes Gómez de Isaac",
+    "documentNumberMasked": "CC 41.652.*** (Bogotá)",
+    "shareCount": 2250,
+    "sharePercentage": 15.0,
+    "nominalValuePerShareCOP": 10000,
+    "totalCapitalCOP": 22500000,
+    "shareType": "Ordinarias de capital",
+    "entryDate": "2022-01-15T00:00:00.000Z",
+    "lastMinuteRecord": "Acta No. 07 Asamblea Ordinaria 2025",
+    "status": "Activo"
+  },
+  {
+    "id": "sh-004",
+    "shareholderName": "Esteban Isaac Gómez",
+    "documentNumberMasked": "CC 80.210.*** (Bogotá)",
+    "shareCount": 750,
+    "sharePercentage": 5.0,
+    "nominalValuePerShareCOP": 10000,
+    "totalCapitalCOP": 7500000,
+    "shareType": "Ordinarias de capital",
+    "entryDate": "2023-06-20T00:00:00.000Z",
+    "lastMinuteRecord": "Acta No. 05 Cesión de Acciones",
+    "status": "Activo"
+  },
+  {
+    "id": "sh-005",
+    "shareholderName": "Valentina Isaac Gómez",
+    "documentNumberMasked": "CC 1.020.789.*** (Bogotá)",
+    "shareCount": 750,
+    "sharePercentage": 5.0,
+    "nominalValuePerShareCOP": 10000,
+    "totalCapitalCOP": 7500000,
+    "shareType": "Ordinarias de capital",
+    "entryDate": "2023-06-20T00:00:00.000Z",
+    "lastMinuteRecord": "Acta No. 05 Cesión de Acciones",
+    "status": "Activo"
+  },
+  {
+    "id": "sh-006",
+    "shareholderName": "Fiduciaria Central - Encargo Fiduciario Reservado",
+    "documentNumberMasked": "NIT 860.007.***-4",
+    "shareCount": 0,
+    "sharePercentage": 0.0,
+    "nominalValuePerShareCOP": 10000,
+    "totalCapitalCOP": 0,
+    "shareType": "Preferencia sin voto (Trámite)",
+    "entryDate": "2025-11-01T00:00:00.000Z",
+    "lastMinuteRecord": "Acta No. 09 Sesión Extraordinaria",
+    "status": "Cesión en trámite"
+  }
+]
