@@ -8,17 +8,34 @@ export function LoginBrandPanel() {
 
   return (
     <aside className="hidden flex-col justify-between border-r bg-secondary px-12 py-12 lg:flex xl:px-16">
-      <p className="eyebrow">Sistema de gestión interna</p>
+      <header className="flex items-center gap-3.5">
+        <div className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-border/80 bg-card p-1 shadow-xs">
+          <Logo size={40} priority decorative />
+        </div>
+        <div className="flex flex-col">
+          <div className="flex items-center gap-1.5">
+            <span className="size-2 rounded-full bg-brand-gold" aria-hidden="true" />
+            <span className="text-[11px] font-bold uppercase tracking-widest text-brand-gold-strong">
+              ERP Corporativo
+            </span>
+          </div>
+          <p className="text-lg font-bold tracking-tight text-primary xl:text-xl">
+            Sistema de Gestión Interna
+          </p>
+        </div>
+      </header>
 
-      <div className="flex flex-col gap-8">
-        <Logo size={168} priority />
-        <div className="flex flex-col gap-4">
-          <CandleRule />
-          <h2 className="max-w-sm text-3xl font-semibold text-primary xl:text-4xl">
+      <div className="flex max-w-sm flex-col gap-6 -translate-y-10">
+        <CandleRule />
+        <div className="flex flex-col gap-3">
+          <h2 className="text-3xl font-semibold tracking-tight text-primary xl:text-4xl">
             {siteConfig.companyName}
           </h2>
           <p className="text-lg italic text-brand-brown">{siteConfig.tagline}</p>
         </div>
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          Control integral de producción, inventario, ventas y logística para la operación de Velas San Isaac.
+        </p>
       </div>
 
       <div className="flex flex-col gap-2">

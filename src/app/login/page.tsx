@@ -17,10 +17,25 @@ export default function LoginPage() {
       <main className="flex items-center justify-center px-5 py-12 sm:px-8">
         <div className="flex w-full max-w-sm flex-col gap-8">
           <header className="flex flex-col gap-5">
-            <Logo size={88} priority className="lg:hidden" />
+            <div className="flex items-center gap-3 lg:hidden">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-border/80 bg-card p-1 shadow-xs">
+                <Logo size={36} priority decorative />
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1.5">
+                  <span className="size-1.5 rounded-full bg-brand-gold" aria-hidden="true" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-brand-gold-strong">
+                    ERP San Isaac
+                  </span>
+                </div>
+                <span className="text-sm font-bold tracking-tight text-primary">
+                  Sistema de Gestión Interna
+                </span>
+              </div>
+            </div>
+
             <div className="flex flex-col gap-2">
-              <p className="eyebrow lg:hidden">{siteConfig.shortName} · Gestión interna</p>
-              <h1 className="text-3xl font-semibold">Iniciar sesión</h1>
+              <h1 className="text-3xl font-semibold tracking-tight">Iniciar sesión</h1>
               <p className="text-muted-foreground">
                 Ingresa con tu correo corporativo para continuar.
               </p>
