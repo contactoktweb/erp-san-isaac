@@ -7,13 +7,15 @@ __v0_jsx-dev-runtime.ts
 .v0-trash/
 .vercel/
 
-# Environment variables
-.env*.local
+# env files
+.env*
 .env
 .env.local
+.env*.local
 .env.development.local
 .env.test.local
 .env.production.local
+
 
 # Common ignores
 node_modules
