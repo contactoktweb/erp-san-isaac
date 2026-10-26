@@ -73,20 +73,94 @@ export const purchaseOrderSchema = z.object({
 export type PurchaseOrder = z.infer<typeof purchaseOrderSchema>
 
 // -----------------------------------------------------------------------------
-// 5. VENTAS: Pedidos comerciales y cuentas por cobrar
+// 5. VENTAS: Gestor de Pedidos Complejo V2 (Empaque progresivo y cajas mixtas)
 // -----------------------------------------------------------------------------
+export const orderStatusSchema = z.enum([
+  'Registrado',
+  'En alistamiento',
+  'Empacado parcialmente',
+  'Empacado completo',
+  'Despachado/Entregado',
+  'Cancelado',
+])
+export type OrderStatus = z.infer<typeof orderStatusSchema>
+
+export const trafficLightStatusSchema = z.enum([
+  'En plazo normal',
+  'Entrega próxima',
+  'Entrega hoy / Pedido vencido',
+  'Empaque 100% completado',
+])
+export type TrafficLightStatus = z.infer<typeof trafficLightStatusSchema>
+
+export const orderOriginSchema = z.enum(['ERP', 'TIENDA_WEB'])
+export type OrderOrigin = z.infer<typeof orderOriginSchema>
+
+export const orderItemSchema = z.object({
+  id: z.string(),
+  productId: z.string(),
+  productSku: z.string(),
+  productName: z.string(),
+  commercialPresentation: z.string(), // "Unidades", "Docenas (12 uds)", "Caja x 24 un", etc.
+  unitsPerPresentation: z.number().positive(),
+  orderedQuantityCommercial: z.number().positive(),
+  orderedQuantityBase: z.number().positive(),
+  packedQuantityBase: z.number().nonnegative(),
+  pendingQuantityBase: z.number().nonnegative(),
+  progressPercentage: z.number().min(0).max(100),
+  customizationNote: z.string().optional(), // Detalle / Personalización (Color, Aroma, Diseño o Dedicatoria)
+})
+export type OrderItem = z.infer<typeof orderItemSchema>
+
+export const packingBoxItemSchema = z.object({
+  productId: z.string(),
+  productName: z.string(),
+  quantityBase: z.number().positive(),
+  batchNumber: z.string(),
+})
+export type PackingBoxItem = z.infer<typeof packingBoxItemSchema>
+
+export const packingBoxSchema = z.object({
+  id: z.string(),
+  boxNumber: z.number().int().positive(),
+  boxLabel: z.string(), // "Caja 1 de 3", "Caja #1"
+  packingDate: z.string(),
+  packerUser: z.string(),
+  items: z.array(packingBoxItemSchema),
+  weightKg: z.number().nonnegative().optional(),
+  notes: z.string().optional(),
+  isLocked: z.boolean().default(false),
+})
+export type PackingBox = z.infer<typeof packingBoxSchema>
+
 export const salesOrderSchema = z.object({
   id: z.string(),
-  orderNumber: z.string(),
+  orderNumber: z.string(), // "PED-2026-0001"
+  origin: orderOriginSchema.default('ERP'),
+  webOrderNumber: z.string().optional(), // "WEB-1045"
   clientName: z.string(),
   clientDocument: z.string(),
+  destinationCity: z.string().default('Bogotá D.C.'),
+  receptionDate: z.string(), // ISO date
+  estimatedDeliveryDate: z.string(), // ISO date
+  actualCompletionDate: z.string().optional(),
+  totalAgreedDays: z.number().int().nonnegative(),
+  elapsedDays: z.number().int().nonnegative(),
+  remainingDays: z.number().int(), // Negativo si está retrasado
+  trafficLightStatus: trafficLightStatusSchema,
+  orderStatus: orderStatusSchema,
+  overallProgressPercentage: z.number().min(0).max(100),
+  totalBoxesCount: z.number().int().nonnegative(),
   itemsSummary: z.string(),
   totalAmountCOP: z.number().int().positive(),
   pendingBalanceCOP: z.number().int().nonnegative(),
-  orderDate: z.string(),
   paymentTerms: z.enum(['Contado', 'Crédito 15 días', 'Crédito 30 días', 'Crédito 45 días']),
   paymentStatus: z.enum(['Al día', 'Pendiente', 'Mora 15 días']),
-  deliveryStatus: z.enum(['Despachado', 'En preparación', 'Entregado']),
+  items: z.array(orderItemSchema).default([]),
+  boxes: z.array(packingBoxSchema).default([]),
+  rescheduleReason: z.string().optional(),
+  shippingCarrier: z.string().optional(),
+  trackingNumber: z.string().optional(),
 })
 export type SalesOrder = z.infer<typeof salesOrderSchema>
 

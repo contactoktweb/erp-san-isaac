@@ -14,6 +14,7 @@ import {
 } from '@/database'
 import { formatCurrency, formatDate, formatNumber } from '@/lib/config'
 import { DemoDataNotice } from './demo-data-notice'
+import { SalesOrdersComplexTable } from './sales-orders-complex-table'
 
 export async function ModuleDataTable({ slug, entityName }: { slug: string; entityName: string }) {
   return (
@@ -223,68 +224,7 @@ async function EntityTableDispatcher({ slug }: { slug: string }) {
 
     case 'ventas': {
       const orders = await getSalesOrders()
-      return (
-        <table className="w-full text-left text-sm">
-          <thead className="border-b bg-muted/50 text-xs uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th scope="col" className="px-4 py-3">No. Pedido</th>
-              <th scope="col" className="px-4 py-3">Cliente mayorista</th>
-              <th scope="col" className="px-4 py-3">Detalle productos</th>
-              <th scope="col" className="px-4 py-3">F. Pedido</th>
-              <th scope="col" className="px-4 py-3">Condiciones</th>
-              <th scope="col" className="px-4 py-3 text-right">Total</th>
-              <th scope="col" className="px-4 py-3 text-right">Saldo pendiente</th>
-              <th scope="col" className="px-4 py-3">Pago</th>
-              <th scope="col" className="px-4 py-3">Despacho</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border/60">
-            {orders.map((so) => (
-              <tr key={so.id} className="hover:bg-muted/30">
-                <td className="px-4 py-3 font-mono font-semibold text-foreground">{so.orderNumber}</td>
-                <td className="px-4 py-3">
-                  <div className="font-medium text-foreground">{so.clientName}</div>
-                  <div className="font-mono text-xs text-muted-foreground">{so.clientDocument}</div>
-                </td>
-                <td className="px-4 py-3 text-xs text-muted-foreground max-w-xs truncate">{so.itemsSummary}</td>
-                <td className="px-4 py-3 font-mono text-xs tabular-nums text-muted-foreground">
-                  {formatDate(so.orderDate)}
-                </td>
-                <td className="px-4 py-3 text-xs text-muted-foreground">{so.paymentTerms}</td>
-                <td className="px-4 py-3 text-right font-mono font-semibold tabular-nums text-foreground">
-                  {formatCurrency(so.totalAmountCOP)}
-                </td>
-                <td className="px-4 py-3 text-right font-mono text-xs tabular-nums text-muted-foreground">
-                  {so.pendingBalanceCOP > 0 ? (
-                    <span className="text-amber-800 font-semibold">{formatCurrency(so.pendingBalanceCOP)}</span>
-                  ) : (
-                    <span>$ 0</span>
-                  )}
-                </td>
-                <td className="px-4 py-3">
-                  <Badge
-                    variant={
-                      so.paymentStatus === 'Al día'
-                        ? 'success'
-                        : so.paymentStatus === 'Mora 15 días'
-                        ? 'danger'
-                        : 'outline'
-                    }
-                    className="text-[0.6875rem]"
-                  >
-                    {so.paymentStatus}
-                  </Badge>
-                </td>
-                <td className="px-4 py-3">
-                  <Badge variant={so.deliveryStatus === 'Entregado' ? 'success' : 'info'} className="text-[0.6875rem]">
-                    {so.deliveryStatus}
-                  </Badge>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )
+      return <SalesOrdersComplexTable orders={orders} />
     }
 
     case 'contabilidad': {
