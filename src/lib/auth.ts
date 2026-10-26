@@ -13,9 +13,6 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
-  pages: {
-    signIn: '/login',
-  },
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -80,5 +77,12 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: '/login',
+    error: '/login',
+  },
+  secret:
+    process.env.NEXTAUTH_SECRET ||
+    process.env.AUTH_SECRET ||
+    'c2FuLWlzYWFjLWVycC1zZWNyZXQta2V5LTIwMjYtc3VwZXItc2VjdXJl',
 }
