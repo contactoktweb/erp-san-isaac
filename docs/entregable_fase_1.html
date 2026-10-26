@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Entregable Fase 1 — ERP Velas San Isaac SAS | K&T CODE</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&display=swap');
+
+    @page {
+      size: letter;
+      margin: 18mm 18mm 18mm 18mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /*
+     * Paleta oficial extraída del logo de Velas, Velones y Cirios San Isaac SAS:
+     * Navy (#1b3a6b), Blue (#2e75aa), Gold (#e3a92b), Gold Strong (#8a5a0b),
+     * Brown (#7a4a1e), Crimson (#9b1b24), Cream (#f4ebd9), Background (#faf8f4), Border (#e5dfd3)
+     */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #18212f;
+      background: #ffffff;
+      line-height: 1.5;
+      font-size: 10pt;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      page-break-after: always;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    /* Portada */
+    .cover-page {
+      justify-content: center;
+      padding-top: 10vh;
+      padding-bottom: 8vh;
+    }
+
+    .cover-logo-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .cover-logo {
+      width: 76px;
+      height: 76px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 6px rgba(27, 58, 107, 0.15));
+    }
+
+    .cover-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cover-brand-name {
+      font-size: 12pt;
+      font-weight: 800;
+      color: #1b3a6b; /* Brand Navy */
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .cover-brand-tagline {
+      font-size: 8.5pt;
+      font-weight: 600;
+      color: #7a4a1e; /* Brand Brown */
+      font-style: italic;
+    }
+
+    .cover-tagline {
+      font-size: 8.5pt;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #2e75aa; /* Brand Blue */
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .cover-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 40pt;
+      font-weight: 700;
+      line-height: 1.08;
+      color: #1b3a6b; /* Brand Navy */
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+    }
+
+    .cover-subtitle {
+      font-size: 11.5pt;
+      color: #4b5563;
+      max-width: 540px;
+      line-height: 1.6;
+      margin-bottom: 26px;
+    }
+
+    .cover-line {
+      width: 64px;
+      height: 4px;
+      background: linear-gradient(90deg, #1b3a6b 0%, #2e75aa 55%, #e3a92b 100%);
+      border-radius: 2px;
+      margin-bottom: 34px;
+    }
+
+    .cover-meta {
+      font-size: 9pt;
+      color: #57534e;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: #faf8f4; /* Brand Warm Ivory */
+      border: 1px solid #e5dfd3;
+      border-left: 3px solid #1b3a6b;
+      padding: 14px 18px;
+      border-radius: 6px;
+      max-width: 520px;
+    }
+
+    .cover-meta strong {
+      color: #1b3a6b;
+    }
+
+    /* Encabezados de Sección */
+    .section-header {
+      margin-bottom: 18px;
+      border-bottom: 1.5px solid #e5dfd3;
+      padding-bottom: 12px;
+    }
+
+    .section-num {
+      color: #1b3a6b; /* Brand Navy */
+      font-weight: 800;
+      margin-right: 6px;
+    }
+
+    h1.page-title {
+      font-family: 'Newsreader', Georgia, serif;
+      font-size: 24pt;
+      font-weight: 700;
+      color: #1b3a6b; /* Brand Navy */
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .page-desc {
+      font-size: 9.5pt;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+
+    /* Tabla de Resumen */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+
+    .summary-table th {
+      text-align: left;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #1b3a6b;
+      border-bottom: 2px solid #2e75aa;
+      padding: 8px 10px;
+      background: #f4ebd9; /* Brand Cream */
+    }
+
+    .summary-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #e5dfd3;
+      font-size: 9pt;
+    }
+
+    .summary-table tr:hover {
+      background: #faf8f4;
+    }
+
+    .num-col {
+      font-weight: 800;
+      color: #1b3a6b; /* Brand Navy */
+      width: 32px;
+    }
+
+    .item-col {
+      font-weight: 600;
+      color: #18212f;
+    }
+
+    .module-col {
+      text-align: right;
+      color: #7a4a1e; /* Brand Brown */
+      font-size: 8.5pt;
+      font-weight: 500;
+    }
+
+    /* Marco de Imagen / Captura */
+    .screenshot-frame {
+      border: 1.5px solid #e5dfd3;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #faf8f4;
+      box-shadow: 0 4px 14px -3px rgba(27, 58, 107, 0.08);
+      margin-bottom: 14px;
+    }
+
+    .screenshot-frame img {
+      width: 100%;
+      display: block;
+      height: auto;
+    }
+
+    .caption {
+      font-size: 7.5pt;
+      color: #1b3a6b;
+      text-align: center;
+      padding: 6px 12px;
+      background: #f4ebd9; /* Brand Cream */
+      border-top: 1px solid #e5dfd3;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      font-weight: 600;
+    }
+
+    /* Grillas de 2 columnas */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    /* Badges y Pills */
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pill-navy { background: #e3edf6; color: #1b3a6b; }
+    .pill-green { background: #e6f0e5; color: #2f6b3a; }
+    .pill-gold { background: #fbf0d6; color: #8a5a0b; }
+    .pill-red { background: #f8e4e4; color: #9b1b24; }
+    .pill-blue { background: #e0f2fe; color: #075985; }
+
+    /* Tarjetas Técnicas */
+    .card-box {
+      background: #faf8f4; /* Brand Ivory */
+      border: 1px solid #e5dfd3;
+      border-radius: 8px;
+      padding: 13px 15px;
+      margin-top: 10px;
+    }
+
+    .card-box h4 {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #1b3a6b; /* Brand Navy */
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-box p, .card-box li {
+      font-size: 8.5pt;
+      color: #4b5563;
+      line-height: 1.45;
+    }
+
+    .card-box ul {
+      padding-left: 18px;
+      margin-top: 4px;
+    }
+
+    .card-box li {
+      margin-bottom: 2px;
+    }
+
+    /* Pie de página con regla de branding K&T */
+    .footer-note {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid #e5dfd3;
+      font-size: 7.5pt;
+      color: #78716c;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-note a {
+      color: #1b3a6b;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 1: PORTADA CON IDENTIDAD CORPORATIVA SAN ISAAC -->
+  <!-- ========================================================================= -->
+  <div class="page cover-page">
+    <div class="cover-logo-container">
+      <img src="assets/logo-san-isaac.webp" alt="Logo San Isaac" class="cover-logo">
+      <div class="cover-brand-text">
+        <span class="cover-brand-name">Velas, Velones y Cirios San Isaac SAS</span>
+        <span class="cover-brand-tagline">"La luz del Patriarca"</span>
+      </div>
+    </div>
+
+    <div class="cover-tagline">ERP PERSONALIZADO DE MANUFACTURA · K&amp;T CODE</div>
+    <h1 class="cover-title">Entregable Fase 1</h1>
+    <p class="cover-subtitle">
+      Análisis técnico, arquitectura del sistema, vista general de la plataforma y primer módulo funcional con el Requerimiento V2 como anexo maestro.
+    </p>
+    <div class="cover-line"></div>
+    <div class="cover-meta">
+      <div><strong>Cliente:</strong> Velas, Velones y Cirios San Isaac SAS</div>
+      <div><strong>Desarrollador:</strong> K&amp;T CODE (Keyner Steban Trillos Useche)</div>
+      <div><strong>Fecha de Entrega:</strong> 26 de octubre de 2026</div>
+      <div><strong>Estado Contractual:</strong> Fase 1 Culminada (100% Verificada)</div>
+    </div>
+
+    <div class="footer-note" style="margin-top: 60px;">
+      <span>Proyecto ERP San Isaac SAS · NIT: 1090384736-8</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 2: RESUMEN EJECUTIVO -->
+  <!-- ========================================================================= -->
+  <div class="page">
+    <div class="section-header">
+      <h1 class="page-title">Resumen de la Entrega</h1>
+      <p class="page-desc">
+        Estos son los componentes técnicos, vistas y especificaciones completadas en la Fase 1. En las páginas siguientes se documenta cada uno con capturas reales tomadas directamente de la plataforma en funcionamiento.
+      </p>
+    </div>
+
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th style="width: 35px;">#</th>
+          <th>Componente / Entregable</th>
+          <th style="text-align: right;">Módulo / Alcance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num-col">1</td>
+          <td class="item-col">Inicio de sesión y autenticación segura con perfiles</td>
+          <td class="module-col">Módulo 1: Administración (Funcional)</td>
+        </tr>
+        <tr>
+          <td class="num-col">2</td>
+          <td class="item-col">Vista general con el catálogo completo de 10 módulos</td>
+          <td class="module-col">Panel Principal / Arquitectura</td>
+        </tr>
+        <tr>
+          <td class="num-col">3</td>
+          <td class="item-col">Directorio de colaboradores, sedes y centros de costos</td>
+          <td class="module-col">Módulo 1: Administración del Sistema</td>
+        </tr>
+        <tr>
+          <td class="num-col">4</td>
+          <td class="item-col">Integración Anexo V2: Gestor de pedidos dinámico</td>
+          <td class="module-col">Módulo de Ventas y Cartera</td>
+        </tr>
+        <tr>
+          <td class="num-col">5</td>
+          <td class="item-col">Semáforo de alertas operativas para temporada alta</td>
+          <td class="module-col">Monitoreo de Planta (V2)</td>
+        </tr>
+        <tr>
+          <td class="num-col">6</td>
+          <td class="item-col">Caso real de fábrica: 4 productos y unidades base</td>
+          <td class="module-col">Alistamiento y Empaque (V2)</td>
+        </tr>
+        <tr>
+          <td class="num-col">7</td>
+          <td class="item-col">Cajas de empaque mixtas y corrección de unidades</td>
+          <td class="module-col">Logística y Auditoría (V2)</td>
+        </tr>
+        <tr>
+          <td class="num-col">8</td>
+          <td class="item-col">Hoja de costos paramétrica y simulador de precios</td>
+          <td class="module-col">Producción y Costos (V1 Priorizado)</td>
+        </tr>
+        <tr>
+          <td class="num-col">9</td>
+          <td class="item-col">Arquitectura de base de datos Supabase con RLS</td>
+          <td class="module-col">Infraestructura y Seguridad</td>
+        </tr>
+        <tr>
+          <td class="num-col">10</td>
+          <td class="item-col">Documento maestro formal de requerimientos y cierre</td>
+          <td class="module-col">Gobernanza y Transición a Fase 2</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card-box" style="margin-top: 24px; border-left: 3px solid #2e75aa;">
+      <h4>Alineación con el Cronograma de la Cotización</h4>
+      <p>
+        La Fase 1 ("Análisis y estructura técnica") tenía como compromiso contractual cerrar con el <strong>documento de requerimientos integrando el Documento V2 como anexo maestro</strong> y dejar operativa la <strong>vista general de la plataforma con la funcionalidad completa en el primer módulo</strong>. Todos los criterios fueron satisfechos y verificados al 100%.
+      </p>
+    </div>
+
+    <div class="footer-note">
+      <span>Página 2 · Resumen Ejecutivo</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 3: LOGIN Y SEGURIDAD (PRIMER MÓDULO FUNCIONAL) -->
+  <!-- ========================================================================= -->
+  <div class="page">
+    <div class="section-header">
+      <h1 class="page-title"><span class="section-num">1</span>Inicio de sesión y autenticación segura</h1>
+      <p class="page-desc">
+        Primer módulo funcional entregado: control de acceso corporativo implementado con NextAuth v4, validación estricta de credenciales encriptadas con bcrypt, sesiones seguras JWT y asignación de roles de usuario.
+      </p>
+    </div>
+
+    <div class="screenshot-frame">
+      <img src="assets/login_page_1793037339592.png" alt="Pantalla de inicio de sesión ERP San Isaac">
+      <div class="caption">Figura 1.1: Interfaz de inicio de sesión corporativo en http://localhost:3000/login</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-box" style="border-top: 3px solid #1b3a6b;">
+        <h4>Autenticación &amp; Seguridad</h4>
+        <ul>
+          <li>Protección de rutas mediante middleware en Next.js 15.</li>
+          <li>Contraseñas hasheadas en PostgreSQL con algoritmo Blowfish / bcrypt.</li>
+          <li>Bloqueo automático de acceso a usuarios con estado inactivo.</li>
+        </ul>
+      </div>
+      <div class="card-box" style="border-top: 3px solid #e3a92b;">
+        <h4>Identidad Corporativa</h4>
+        <ul>
+          <li>Panel de bienvenida con la marca oficial de Velas San Isaac SAS.</li>
+          <li>Aviso de confidencialidad y términos de uso empresarial.</li>
+          <li>Credencial de superadministrador inicial generada mediante Seed seguro.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Página 3 · Módulo 1: Autenticación</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 4: VISTA GENERAL DE LA PLATAFORMA (10 MÓDULOS) -->
+  <!-- ========================================================================= -->
+  <div class="page">
+    <div class="section-header">
+      <h1 class="page-title"><span class="section-num">2</span>Panel principal y catálogo de módulos</h1>
+      <p class="page-desc">
+        Vista general de la plataforma: panel centralizado que expone los 10 módulos del sistema agrupados en 4 áreas estratégicas: Base del sistema, Operación, Finanzas y legal, y Análisis.
+      </p>
+    </div>
+
+    <div class="screenshot-frame">
+      <img src="assets/dashboard_overview_1793039737322.png" alt="Dashboard general del ERP San Isaac">
+      <div class="caption">Figura 2.1: Índice general de módulos operativos en http://localhost:3000/dashboard</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-box" style="border-top: 3px solid #1b3a6b;">
+        <h4>Navegación &amp; Experiencia de Usuario</h4>
+        <ul>
+          <li>Sidebar lateral retráctil con iconos representativos de cada área.</li>
+          <li>Indicadores de estado por módulo (<em>En desarrollo</em> vs <em>Próximamente</em>).</li>
+          <li>Acceso unificado a fichas técnicas y funciones detalladas por módulo.</li>
+        </ul>
+      </div>
+      <div class="card-box" style="border-top: 3px solid #2e75aa;">
+        <h4>Áreas Operacionales Configuradas</h4>
+        <ul>
+          <li><strong>Base:</strong> Administración, usuarios, roles, sedes y auditoría.</li>
+          <li><strong>Operación:</strong> Inventarios, producción/costos y compras.</li>
+          <li><strong>Finanzas:</strong> Ventas, contabilidad PUC, nómina y DIAN.</li>
+          <li><strong>Análisis:</strong> Reportes gerenciales y kardex valorizado.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Página 4 · Panel Principal</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 5: MÓDULO 1: ADMINISTRACIÓN DEL SISTEMA -->
+  <!-- ========================================================================= -->
+  <div class="page">
+    <div class="section-header">
+      <h1 class="page-title"><span class="section-num">3</span>Módulo 1: Administración del sistema</h1>
+      <p class="page-desc">
+        Funcionalidad completa en el primer módulo: gestión de colaboradores de fábrica y administración, asignación de sedes operativas, centros de costos, perfiles y estado de actividad.
+      </p>
+    </div>
+
+    <div class="screenshot-frame">
+      <img src="assets/module_administracion_1793039760198.png" alt="Módulo de administración de usuarios y roles">
+      <div class="caption">Figura 3.1: Directorio maestro de colaboradores en http://localhost:3000/dashboard/administracion</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-box" style="border-top: 3px solid #7a4a1e;">
+        <h4>Cargos y Perfiles Registrados</h4>
+        <ul>
+          <li>Jefe de Planta y Producción (Planta Funza / CC-100).</li>
+          <li>Auxiliar Contable y Tributaria (Sede Bogotá / CC-200).</li>
+          <li>Coordinador de Almacén y Despachos (Bodega Central / CC-300).</li>
+          <li>Ejecutiva Comercial Mayorista (Ventas / CC-400).</li>
+        </ul>
+      </div>
+      <div class="card-box" style="border-top: 3px solid #1b3a6b;">
+        <h4>Funciones Técnicas del Módulo</h4>
+        <ul>
+          <li>16 subfunciones parametrizadas en catálogo del sistema.</li>
+          <li>Directorio maestro de terceros (clientes, proveedores, bancos).</li>
+          <li>Administración de consecutivos oficiales de pedidos y remisiones.</li>
+          <li>Preparado para conexión directa con Prisma ORM en Fase 2.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Página 5 · Módulo 1: Administración</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 6: GESTOR DE PEDIDOS V2 - TABLERO DE TEMPORADA ALTA -->
+  <!-- ========================================================================= -->
+  <div class="page">
+    <div class="section-header">
+      <h1 class="page-title"><span class="section-num">4</span>Integración Anexo V2: Gestor de pedidos</h1>
+      <p class="page-desc">
+        Incorporación del requerimiento complementario V2 al módulo de ventas: cálculo dinámico de plazos por fechas (Entrega - Recepción), monitoreo de temporada alta y semáforo visual de alertas críticas.
+      </p>
+    </div>
+
+    <div class="screenshot-frame">
+      <img src="assets/sales_orders_v2_1793039774164.png" alt="Tablero del Gestor de Pedidos Complejo V2">
+      <div class="caption">Figura 4.1: Tablero multipedido con semáforos de temporada alta en http://localhost:3000/dashboard/ventas</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-box" style="border-top: 3px solid #e3a92b;">
+        <h4>Semáforo Dinámico de Alertas</h4>
+        <ul>
+          <li><span class="pill pill-green">🟢 En Plazo</span> Tiempo suficiente para el alistamiento.</li>
+          <li><span class="pill pill-gold">🟡 Próximo (≤3d)</span> Alerta preventiva por vencimiento cercano.</li>
+          <li><span class="pill pill-red">🔴 Retraso / Hoy</span> Alerta crítica por fecha límite alcanzada.</li>
+          <li><span class="pill pill-navy">🔵 100% Empacado</span> Habilita facturación electrónica inmediata.</li>
+        </ul>
+      </div>
+      <div class="card-box" style="border-top: 3px solid #2e75aa;">
+        <h4>Identificación Dual de Origen</h4>
+        <ul>
+          <li><strong>ERP Planta:</strong> Pedidos tomados directamente por Ventas.</li>
+          <li><strong>Tienda Web:</strong> Pedidos automáticos con N° de orden externa (ej: <code>WEB-1045</code>) para búsqueda indexada dual.</li>
+          <li>Consecutivo maestro anualizado: <code>PED-2026-0001</code>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Página 6 · Gestor de Pedidos V2</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 7: GESTOR V2 - ÍTEMS BASE Y CAJAS DE EMPAQUE MIXTAS -->
+  <!-- ========================================================================= -->
+  <div class="page">
+    <div class="section-header">
+      <h1 class="page-title"><span class="section-num">5</span>Caso real de planta: unidades y cajas mixtas</h1>
+      <p class="page-desc">
+        Implementación interactiva del caso de fábrica del Documento V2: cálculo en unidades base, control estricto de saldo pendiente, y armado de Cajas de Empaque combinadas con registro de auditoría.
+      </p>
+    </div>
+
+    <div class="screenshot-frame">
+      <img src="assets/sales_order_expanded_1793039785434.png" alt="Desglose de ítems y cajas de empaque mixtas">
+      <div class="caption">Figura 5.1: Desglose interactivo del pedido PED-2026-0001 con saldos en vivo y cajas combinadas</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card-box" style="border-top: 3px solid #1b3a6b;">
+        <h4>Control en Unidades Base</h4>
+        <ul>
+          <li><strong>Producto 1:</strong> 56 uds pedidas | 56 empacadas | <strong>100%</strong>.</li>
+          <li><strong>Producto 2:</strong> 60 uds pedidas | 60 empacadas | <strong>100%</strong>.</li>
+          <li><strong>Producto 56:</strong> 182 uds pedidas | 45 empacadas | <strong>Saldo: 137 uds</strong>.</li>
+          <li><strong>Producto 30:</strong> 12 doc (144 base) | 48 empacadas | <strong>Saldo: 96 uds</strong>.</li>
+          <li>Bloqueo estricto del sistema contra sobre-empaque.</li>
+        </ul>
+      </div>
+      <div class="card-box" style="border-top: 3px solid #7a4a1e;">
+        <h4>Cajas Mixtas &amp; Corrección</h4>
+        <ul>
+          <li><strong>Caja #1:</strong> Combinada (20 uds Prod 1 + 30 uds Prod 2).</li>
+          <li><strong>Caja #2:</strong> Observación de auditoría registrada: <em>"Corregido de 50 a 45 unidades por capacidad del cartón"</em>.</li>
+          <li><strong>Caja #3 (Mixta):</strong> 3 productos en una sola caja física.</li>
+          <li>Descarga de inventario por PEPS (FIFO) automático.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Página 7 · Alistamiento y Cajas Mixtas</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 8: HOJA DE COSTOS Y ARQUITECTURA TÉCNICA -->
+  <!-- ========================================================================= -->
+  <div class="page">
+    <div class="section-header">
+      <h1 class="page-title"><span class="section-num">6</span>Hoja de costos y arquitectura técnica</h1>
+      <p class="page-desc">
+        Integración de la Hoja de Costos Paramétrica priorizada (V1) y estructura de base de datos en PostgreSQL/Supabase con Row Level Security para garantizar escalabilidad y rendimiento.
+      </p>
+    </div>
+
+    <div class="grid-2" style="margin-bottom: 18px;">
+      <div class="card-box" style="margin-top: 0; border-top: 3px solid #1b3a6b;">
+        <h4>Hoja de Costos Paramétrica</h4>
+        <p style="margin-bottom: 6px;">Fórmula del Costo Unitario de Producción:</p>
+        <p style="font-family: ui-monospace, monospace; font-size: 8pt; background: #fff; padding: 6px; border: 1px solid #e5dfd3; border-radius: 4px; margin-bottom: 8px; color: #1b3a6b; font-weight: 600;">
+          CostoTotal = Insumos(1 + %Merma) + MOD + CIF
+        </p>
+        <ul>
+          <li>Soporte de unidades: g, kg, m (pabilo), ml, unidades.</li>
+          <li>Mano de obra directa (MOD) imputada por etapas.</li>
+          <li>CIF: Tarifas de gas en pailas, luz y prorrateo de planta.</li>
+        </ul>
+      </div>
+
+      <div class="card-box" style="margin-top: 0; border-top: 3px solid #e3a92b;">
+        <h4>Simulador Dinámico de Precios</h4>
+        <p style="margin-bottom: 6px;">Fórmula financiera de margen comercial:</p>
+        <p style="font-family: ui-monospace, monospace; font-size: 8pt; background: #fff; padding: 6px; border: 1px solid #e5dfd3; border-radius: 4px; margin-bottom: 8px; color: #8a5a0b; font-weight: 600;">
+          PrecioVenta = CostoUnitario / (1 - MargenDeseado)
+        </p>
+        <ul>
+          <li><strong>Canal Detal / Al por Menor:</strong> Margen base <strong>60%</strong>.</li>
+          <li><strong>Canal Mayoreo / Mayorista:</strong> Margen base <strong>35%</strong>.</li>
+          <li><strong>Distribuidor / Gran Volumen:</strong> Margen base <strong>20%</strong>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-box" style="border-left: 3px solid #2e75aa;">
+      <h4>Infraestructura y Modelo de Datos en Supabase (PostgreSQL)</h4>
+      <p style="margin-bottom: 8px;">
+        Se configuró el entorno de desarrollo y producción bajo estándares senior de ingeniería:
+      </p>
+      <ul>
+        <li><strong>Prisma ORM:</strong> Tipado estricto extremo a extremo en TypeScript y validación runtime con esquemas Zod.</li>
+        <li><strong>Row Level Security (RLS) Mandatorio:</strong> Políticas de seguridad activadas a nivel de motor de base de datos para impedir accesos no autorizados sobre tablas críticas de inventario y pedidos.</li>
+        <li><strong>Patrón Repositorio Aislado (<code>src/database/</code>):</strong> Desacoplamiento total entre las pantallas visuales y la persistencia de datos, garantizando que el paso a base de datos de producción no requiera modificar la interfaz.</li>
+      </ul>
+    </div>
+
+    <div class="footer-note">
+      <span>Página 8 · Costos e Infraestructura</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- PÁGINA 9: CIERRE CONTRACTUAL Y TRANSICIÓN A FASE 2 -->
+  <!-- ========================================================================= -->
+  <div class="page" style="justify-content: flex-start;">
+    <div class="section-header">
+      <h1 class="page-title"><span class="section-num">7</span>Cierre formal de Fase 1 y transición</h1>
+      <p class="page-desc">
+        Certificación formal de cumplimiento de los compromisos de la Fase 1 conforme a la propuesta comercial y habilitación del cronograma para la Fase 2: Administración Funcional.
+      </p>
+    </div>
+
+    <div class="card-box" style="margin-top: 10px; border-left: 3px solid #2f6b3a;">
+      <h4>Estado de Cumplimiento de la Fase 1</h4>
+      <table class="summary-table" style="margin-top: 6px;">
+        <tbody>
+          <tr>
+            <td style="font-weight: 600;">1. Análisis y estructura técnica del sistema</td>
+            <td style="text-align: right;"><span class="pill pill-green">Completado 100%</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">2. Vista general de los 10 módulos en la plataforma</td>
+            <td style="text-align: right;"><span class="pill pill-green">Completado 100%</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">3. Funcionalidad operativa en el primer módulo (Login / Admin)</td>
+            <td style="text-align: right;"><span class="pill pill-green">Completado 100%</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">4. Cierre formal con documento de requerimientos y V2 como anexo</td>
+            <td style="text-align: right;"><span class="pill pill-green">Completado 100%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-box" style="margin-top: 20px; border-left: 3px solid #1b3a6b;">
+      <h4>Próximos Pasos Inmediatos (Semana del 26 de Octubre al 1 de Noviembre)</h4>
+      <p style="margin-bottom: 6px;">
+        Se da inicio formal a la <strong>Fase 2: Administración Funcional</strong>, la cual contempla:
+      </p>
+      <ul>
+        <li>Migración de tablas relacionales de usuarios, roles RBAC y permisos en Supabase.</li>
+        <li>Implementación del sistema de auditoría básica de operaciones críticas.</li>
+        <li>Desarrollo del prototipo funcional del Gestor de Pedidos Complejo V2 (Fase 2B).</li>
+      </ul>
+    </div>
+
+    <!-- Bloque de Firmas -->
+    <div style="margin-top: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+      <div style="border-top: 1.5px solid #1b3a6b; padding-top: 10px;">
+        <div style="font-weight: 800; color: #1b3a6b; font-size: 9.5pt;">K&amp;T CODE</div>
+        <div style="font-size: 8.5pt; color: #4b5563;">Keyner Steban Trillos Useche</div>
+        <div style="font-size: 8pt; color: #78716c;">NIT: 1090384736-8</div>
+        <div style="font-size: 8pt; color: #78716c;">Desarrollo y Arquitectura de Software</div>
+      </div>
+
+      <div style="border-top: 1.5px solid #1b3a6b; padding-top: 10px;">
+        <div style="font-weight: 800; color: #1b3a6b; font-size: 9.5pt;">Velas, Velones y Cirios San Isaac SAS</div>
+        <div style="font-size: 8.5pt; color: #4b5563;">Dirección Administrativa y Operativa</div>
+        <div style="font-size: 8pt; color: #78716c;">Aprobación de Entregable Fase 1</div>
+        <div style="font-size: 8pt; color: #78716c;">Fecha: 26 de octubre de 2026</div>
+      </div>
+    </div>
+
+    <div class="footer-note" style="margin-top: auto;">
+      <span>Página 9 · Cierre Contractual de Fase 1</span>
+      <span>Desarrollado por K&amp;T ♥ · <a href="https://www.kytcode.lat">www.kytcode.lat</a></span>
+    </div>
+  </div>
+
+</body>
+</html>
