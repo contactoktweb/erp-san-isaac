@@ -130,6 +130,16 @@ export const MODULES: ModuleItem[] = [
         description: 'Almacenamiento de RUT, cédulas, certificaciones bancarias y contratos asociados.',
         status: 'Pendiente',
       },
+      {
+        name: 'Registro de puntos de venta (POS)',
+        description: 'Parametrización de mostradores, cajas físicas y tiendas vinculadas a sedes y bodegas.',
+        status: 'Pendiente',
+      },
+      {
+        name: 'Copias de seguridad y Google Drive',
+        description: 'Copia diaria nocturna automatizada de Supabase hacia Google Drive con trazabilidad y alertas.',
+        status: 'Disponible',
+      },
     ],
   },
   {
@@ -178,9 +188,19 @@ export const MODULES: ModuleItem[] = [
         status: 'Pendiente',
       },
       {
-        name: 'Kardex valorizado',
-        description: 'Historial cronológico detallado de entradas, salidas y saldos continuos por artículo y lote.',
-        status: 'Pendiente',
+        name: 'Kardex valorizado (PEPS o Promedio Ponderado)',
+        description: 'Historial cronológico detallado de entradas, salidas y saldos continuos con selector de método de valoración activo.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Control contable y tributario de inventarios',
+        description: 'Imputación automática a cuentas PUC según concepto: Ajustes, Devoluciones, Pérdidas, Desperdicios, Bajas, Traslados y Costo de ventas.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Productos en proceso (Cuenta 1410)',
+        description: 'Administración de mezclas, pailas en fundición y lotes en proceso antes de su traspaso a producto terminado (1430).',
+        status: 'Disponible',
       },
     ],
   },

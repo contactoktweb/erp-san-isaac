@@ -13,7 +13,9 @@ import {
   getShareholderRecords,
 } from '@/database'
 import { formatCurrency, formatDate, formatNumber } from '@/lib/config'
+import { AdministrationComplexView } from './administration-complex-view'
 import { DemoDataNotice } from './demo-data-notice'
+import { InventoryComplexView } from './inventory-complex-view'
 import { SalesOrdersComplexTable } from './sales-orders-complex-table'
 
 export async function ModuleDataTable({ slug, entityName }: { slug: string; entityName: string }) {
@@ -43,87 +45,12 @@ async function EntityTableDispatcher({ slug }: { slug: string }) {
   switch (slug) {
     case 'administracion': {
       const users = await getAdministrationUsers()
-      return (
-        <table className="w-full text-left text-sm">
-          <thead className="border-b bg-muted/50 text-xs uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th scope="col" className="px-4 py-3">Colaborador</th>
-              <th scope="col" className="px-4 py-3">Cargo</th>
-              <th scope="col" className="px-4 py-3">Correo corporativo</th>
-              <th scope="col" className="px-4 py-3">Sede</th>
-              <th scope="col" className="px-4 py-3">Centro de costos</th>
-              <th scope="col" className="px-4 py-3">Estado</th>
-              <th scope="col" className="px-4 py-3">F. Creación</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border/60">
-            {users.map((u) => (
-              <tr key={u.id} className="hover:bg-muted/30">
-                <td className="px-4 py-3 font-semibold text-foreground">{u.name}</td>
-                <td className="px-4 py-3 text-muted-foreground">{u.role}</td>
-                <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{u.email}</td>
-                <td className="px-4 py-3 text-muted-foreground">{u.assignedBranch}</td>
-                <td className="px-4 py-3 text-xs font-mono text-muted-foreground">{u.costCenter}</td>
-                <td className="px-4 py-3">
-                  <Badge variant={u.isActive ? 'success' : 'muted'} className="text-[0.6875rem]">
-                    {u.isActive ? 'Activo' : 'Inactivo'}
-                  </Badge>
-                </td>
-                <td className="px-4 py-3 font-mono text-xs tabular-nums text-muted-foreground">
-                  {formatDate(u.createdAt)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )
+      return <AdministrationComplexView users={users} />
     }
 
     case 'inventarios': {
       const items = await getInventoryItems()
-      return (
-        <table className="w-full text-left text-sm">
-          <thead className="border-b bg-muted/50 text-xs uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th scope="col" className="px-4 py-3">SKU / Artículo</th>
-              <th scope="col" className="px-4 py-3">Categoría</th>
-              <th scope="col" className="px-4 py-3">Presentación</th>
-              <th scope="col" className="px-4 py-3 text-right">Stock actual</th>
-              <th scope="col" className="px-4 py-3">Lote</th>
-              <th scope="col" className="px-4 py-3">F. Producción</th>
-              <th scope="col" className="px-4 py-3">Bodega</th>
-              <th scope="col" className="px-4 py-3 text-right">Costo unitario</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border/60">
-            {items.map((it) => (
-              <tr key={it.id} className="hover:bg-muted/30">
-                <td className="px-4 py-3">
-                  <div className="font-semibold text-foreground">{it.name}</div>
-                  <div className="font-mono text-xs text-muted-foreground">{it.sku}</div>
-                </td>
-                <td className="px-4 py-3">
-                  <Badge variant="outline" className="text-[0.6875rem]">
-                    {it.category}
-                  </Badge>
-                </td>
-                <td className="px-4 py-3 text-xs text-muted-foreground">{it.commercialPresentation}</td>
-                <td className="px-4 py-3 text-right font-mono font-semibold tabular-nums text-foreground">
-                  {formatNumber(it.currentStock)} {it.baseUnit}
-                </td>
-                <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{it.batchNumber}</td>
-                <td className="px-4 py-3 font-mono text-xs tabular-nums text-muted-foreground">
-                  {formatDate(it.productionDate)}
-                </td>
-                <td className="px-4 py-3 text-xs text-muted-foreground">{it.warehouseLocation}</td>
-                <td className="px-4 py-3 text-right font-mono text-xs tabular-nums text-foreground">
-                  {formatCurrency(it.unitCostCOP)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )
+      return <InventoryComplexView items={items} />
     }
 
     case 'produccion': {

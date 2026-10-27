@@ -22,7 +22,7 @@ export const inventoryItemSchema = z.object({
   id: z.string(),
   sku: z.string(),
   name: z.string(),
-  category: z.enum(['Producto terminado', 'Materia prima', 'Insumo']),
+  category: z.enum(['Producto terminado', 'Materia prima', 'Insumo', 'Producto en proceso']),
   baseUnit: z.string(), // "kg", "unidad", "metro"
   commercialPresentation: z.string(), // "Caja x 24 un", "Bulto x 25 kg", "Carrete 500 m"
   baseUnitEquivalent: z.number().positive(),
@@ -32,8 +32,63 @@ export const inventoryItemSchema = z.object({
   minimumStock: z.number().nonnegative(),
   warehouseLocation: z.string(),
   unitCostCOP: z.number().int().nonnegative(),
+  pucAccount: z.string().optional(), // ej. "1410 - Productos en proceso"
 })
 export type InventoryItem = z.infer<typeof inventoryItemSchema>
+
+// -----------------------------------------------------------------------------
+// 1B. ADMINISTRACIÓN EXTENDIDA: Terceros, Impuestos y Consecutivos
+// -----------------------------------------------------------------------------
+export const thirdPartySchema = z.object({
+  id: z.string(),
+  personType: z.enum(['Jurídica (NIT)', 'Natural (CC)']),
+  documentNumber: z.string(),
+  verificationDigit: z.string().optional(),
+  nameOrBusinessName: z.string(),
+  tradeName: z.string().optional(),
+  municipality: z.string(),
+  department: z.string().default('Cundinamarca'),
+  address: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().email().optional(),
+  taxClassification: z.enum(['Ordinario (05)', 'Simple RST (47)', 'Gran Contribuyente (13)']),
+  isIvaResponsible: z.boolean().default(true), // Responsable de IVA (48)
+  isWithholdingAgent: z.boolean().default(false), // Agente Retenedor (07)
+  isSelfWithholding: z.boolean().default(false), // Autorretenedor
+  isInvoiceObligated: z.boolean().default(true), // Obligado a facturar (52)
+  creditDays: z.number().int().nonnegative().default(0), // 0, 15, 30, 45, 60
+  creditLimitCOP: z.number().int().nonnegative().default(0),
+  isExogenaComplete: z.boolean().default(true),
+})
+export type ThirdParty = z.infer<typeof thirdPartySchema>
+
+export const taxParamSchema = z.object({
+  id: z.string(),
+  code: z.string(),
+  concept: z.string(),
+  taxType: z.enum(['IVA', 'Retefuente', 'ReteIVA', 'ReteICA', 'Autorretención Renta']),
+  municipality: z.string().default('Nacional'),
+  baseMinCOP: z.number().int().nonnegative(),
+  ratePercent: z.number().nonnegative(),
+  debitPucAccount: z.string(),
+  creditPucAccount: z.string(),
+})
+export type TaxParam = z.infer<typeof taxParamSchema>
+
+export const consecutiveParamSchema = z.object({
+  id: z.string(),
+  documentType: z.string(),
+  prefix: z.string(),
+  rangeFrom: z.number().int().positive(),
+  rangeTo: z.number().int().positive(),
+  currentNumber: z.number().int().positive(),
+  dianResolution: z.string(),
+  expirationDate: z.string(), // ISO date
+  remainingDays: z.number().int(),
+  usedPercentage: z.number().min(0).max(100),
+})
+export type ConsecutiveParam = z.infer<typeof consecutiveParamSchema>
+
 
 // -----------------------------------------------------------------------------
 // 3. PRODUCCIÓN: Órdenes de fabricación y formulaciones

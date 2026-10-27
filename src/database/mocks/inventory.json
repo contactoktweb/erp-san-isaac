@@ -148,5 +148,52 @@
     "minimumStock": 300,
     "warehouseLocation": "Bodega 3 - Despachos",
     "unitCostCOP": 5200
+  },
+  {
+    "id": "inv-011",
+    "sku": "PP-PAI-001",
+    "name": "Mezcla Fundida Parafina + Estearina en Paila 02",
+    "category": "Producto en proceso",
+    "baseUnit": "kg",
+    "commercialPresentation": "Paila industrial térmica 500 kg",
+    "baseUnitEquivalent": 500,
+    "batchNumber": "LOT-PP-2026-004",
+    "productionDate": "2026-03-08T06:00:00.000Z",
+    "currentStock": 480,
+    "minimumStock": 100,
+    "warehouseLocation": "Área de Pailas y Fundición (Planta)",
+    "unitCostCOP": 10500,
+    "pucAccount": "141001 - Productos en proceso"
+  },
+  {
+    "id": "inv-012",
+    "sku": "PP-CIR-002",
+    "name": "Cirio Pascual 80 cm en Enfriamiento y Reposo",
+    "category": "Producto en proceso",
+    "baseUnit": "unidad",
+    "commercialPresentation": "Bastidor x 24 unidades en molde",
+    "baseUnitEquivalent": 24,
+    "batchNumber": "LOT-PP-2026-005",
+    "productionDate": "2026-03-08T08:30:00.000Z",
+    "currentStock": 48,
+    "minimumStock": 50,
+    "warehouseLocation": "Área de Moldeo y Troquelado",
+    "unitCostCOP": 48000,
+    "pucAccount": "141001 - Productos en proceso"
+  },
+  {
+    "id": "inv-013",
+    "sku": "MP-PAB-001",
+    "name": "Pabilo de Algodón Trenzado Calibre 24",
+    "category": "Materia prima",
+    "baseUnit": "metro",
+    "commercialPresentation": "Carrete x 500 metros",
+    "baseUnitEquivalent": 500,
+    "batchNumber": "LOT-MP-2026-008",
+    "productionDate": "2026-01-15T00:00:00.000Z",
+    "currentStock": 220,
+    "minimumStock": 200,
+    "warehouseLocation": "Bodega 1 - Materias Primas",
+    "unitCostCOP": 180
   }
 ]
