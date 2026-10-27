@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { siteConfig } from '@/lib/site-config'
 import './globals.css'
-//
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
