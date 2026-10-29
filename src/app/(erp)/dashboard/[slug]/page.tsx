@@ -42,8 +42,8 @@ export default async function ModulePage({ params }: PageProps) {
   return (
     <div className="flex flex-col gap-10">
       <ModuleHeader module={currentModule} />
-      <ModuleFunctions functions={currentModule.functions} />
       <ModuleDataTable slug={currentModule.slug} entityName={currentModule.entityName} />
+      <ModuleFunctions functions={currentModule.functions} />
     </div>
   )
 }

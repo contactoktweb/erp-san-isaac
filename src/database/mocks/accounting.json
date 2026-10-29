@@ -2,7 +2,7 @@
   {
     "id": "acc-001",
     "code": "110505",
-    "name": "Caja General Planta Funza",
+    "name": "Caja General Planta Guaduas",
     "accountType": "Activo",
     "debitCOP": 18500000,
     "creditCOP": 15200000,
@@ -79,11 +79,11 @@
   {
     "id": "acc-008",
     "code": "310505",
-    "name": "Capital Suscrito y Pagado - SAS",
+    "name": "Capital Suscrito y Pagado - SAS (50 Acciones @ $300.000 c/u)",
     "accountType": "Patrimonio",
     "debitCOP": 0,
-    "creditCOP": 150000000,
-    "currentBalanceCOP": -150000000,
+    "creditCOP": 15000000,
+    "currentBalanceCOP": -15000000,
     "costCenter": "CC-200 Administración",
     "lastUpdated": "2026-01-01T00:00:00.000Z"
   },
@@ -106,6 +106,116 @@
     "debitCOP": 29800000,
     "creditCOP": 0,
     "currentBalanceCOP": 29800000,
+    "costCenter": "CC-100 Producción",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-011",
+    "code": "135515",
+    "name": "Anticipo de Impuestos - Retención en la Fuente",
+    "accountType": "Activo",
+    "debitCOP": 2861250,
+    "creditCOP": 0,
+    "currentBalanceCOP": 2861250,
+    "costCenter": "CC-400 Ventas",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-012",
+    "code": "135595",
+    "name": "Anticipo de Impuestos - Autorretención Especial Renta",
+    "accountType": "Activo",
+    "debitCOP": 915600,
+    "creditCOP": 0,
+    "currentBalanceCOP": 915600,
+    "costCenter": "CC-400 Ventas",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-013",
+    "code": "141001",
+    "name": "Inventario de Productos en Proceso - Pailas y Moldeo",
+    "accountType": "Activo",
+    "debitCOP": 14500000,
+    "creditCOP": 8900000,
+    "currentBalanceCOP": 5600000,
+    "costCenter": "CC-100 Producción",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-014",
+    "code": "236540",
+    "name": "Retención en la Fuente por Pagar - Compras (2.5%)",
+    "accountType": "Pasivo",
+    "debitCOP": 2125000,
+    "creditCOP": 4250000,
+    "currentBalanceCOP": -2125000,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-015",
+    "code": "236801",
+    "name": "Impuesto de Industria y Comercio Retenido (ReteICA)",
+    "accountType": "Pasivo",
+    "debitCOP": 595000,
+    "creditCOP": 1190000,
+    "currentBalanceCOP": -595000,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-016",
+    "code": "236575",
+    "name": "Autorretención Especial de Renta por Pagar (Dec. 1625)",
+    "accountType": "Pasivo",
+    "debitCOP": 0,
+    "creditCOP": 915600,
+    "currentBalanceCOP": -915600,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-017",
+    "code": "240802",
+    "name": "Impuesto a las Ventas (IVA) Descontable en Compras",
+    "accountType": "Activo",
+    "debitCOP": 19482000,
+    "creditCOP": 0,
+    "currentBalanceCOP": 19482000,
+    "costCenter": "CC-200 Administración",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-018",
+    "code": "612035",
+    "name": "Costo de Ventas - Fabricación y Venta de Velas",
+    "accountType": "Costos de producción",
+    "debitCOP": 56800000,
+    "creditCOP": 0,
+    "currentBalanceCOP": 56800000,
+    "costCenter": "CC-100 Producción",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-019",
+    "code": "720501",
+    "name": "Costos de Mano de Obra Directa (MOD) - Pailas y Moldeo",
+    "accountType": "Costos de producción",
+    "debitCOP": 14200000,
+    "creditCOP": 0,
+    "currentBalanceCOP": 14200000,
+    "costCenter": "CC-100 Producción",
+    "lastUpdated": "2026-03-05T18:00:00.000Z"
+  },
+  {
+    "id": "acc-020",
+    "code": "730501",
+    "name": "Costos Indirectos de Fabricación (CIF) - Gas y Energía",
+    "accountType": "Costos de producción",
+    "debitCOP": 8600000,
+    "creditCOP": 0,
+    "currentBalanceCOP": 8600000,
     "costCenter": "CC-100 Producción",
     "lastUpdated": "2026-03-05T18:00:00.000Z"
   }

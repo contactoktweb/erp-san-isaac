@@ -7,6 +7,7 @@ import {
   Scale,
   Settings,
   ShoppingCart,
+  Store,
   Truck,
   Users,
   type LucideIcon,
@@ -306,6 +307,16 @@ export const MODULES: ModuleItem[] = [
         description: 'Trazabilidad de compras anteriores, evolución de precios unitarios y tiempos de entrega.',
         status: 'Pendiente',
       },
+      {
+        name: 'Impuestos y retenciones en compras',
+        description: 'Liquidación automática de IVA descontable, Retefuente, ReteIVA y ReteICA según RUT y bases mínimas.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Documentos soporte y archivos adjuntos',
+        description: 'Emisión de Documento Soporte a no obligados ante la DIAN y resguardo digital de facturas/remisiones.',
+        status: 'Disponible',
+      },
     ],
   },
   {
@@ -361,7 +372,44 @@ export const MODULES: ModuleItem[] = [
       {
         name: 'Cotizaciones y cartera de clientes',
         description: 'Propuestas comerciales, ventas de contado y crédito (15, 30 y 45 días) y control de antigüedad de saldos.',
-        status: 'Pendiente',
+        status: 'Disponible',
+      },
+    ],
+  },
+  {
+    slug: 'pos',
+    name: 'Punto de Venta - POS',
+    shortDescription:
+      'Control de mostradores físicos, apertura y cierre de caja, arqueos con semáforo, medios de pago mixtos y Documento Equivalente POS.',
+    area: 'Finanzas y legal',
+    icon: Store,
+    status: 'Próximamente',
+    entityName: 'Turnos de caja, ventas de mostrador y POS',
+    functions: [
+      {
+        name: 'Apertura y cierre de caja',
+        description: 'Registro de base inicial en efectivo, asignación de cajero/turno y control de tiempo de mostrador.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Arqueo de caja y semáforo de cuadre',
+        description: 'Comparativo automático: Dinero esperado vs Dinero contado con semáforo (🟢 Caja Cuadrada vs 🔴 Descuadre).',
+        status: 'Disponible',
+      },
+      {
+        name: 'Venta rápida de mostrador y lector de barras',
+        description: 'Búsqueda ágil por código/nombre, selección de presentación comercial y descargue inmediato de inventario físico.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Medios de pago mixtos',
+        description: 'Registro de efectivo (con cálculo automático de cambio/vueltas), transferencias (Nequi/Daviplata/Bancolombia) y tarjetas.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Documento equivalente electrónico POS',
+        description: 'Generación con resolución autorizada, XML, firma digital, código QR y opción de FEV si el cliente lo solicita.',
+        status: 'Disponible',
       },
     ],
   },
@@ -435,6 +483,26 @@ export const MODULES: ModuleItem[] = [
         description: 'Descarga en hojas de cálculo y archivos planos estructurados para revisión contable externa.',
         status: 'Pendiente',
       },
+      {
+        name: 'Estados financieros NIIF y revelaciones',
+        description: 'Estado de Flujos de Efectivo, Cambios en el Patrimonio, comparativos de periodos y notas explicativas.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Estado de costos de producción y ventas integrado',
+        description: 'Integración contable de inventario inicial/final de MP, compras, MOD (7205), CIF (7305), producto en proceso (1410) y producto terminado (1430).',
+        status: 'Disponible',
+      },
+      {
+        name: 'Conciliación bancaria por extractos',
+        description: 'Cruce de extractos bancarios con libros auxiliares y semáforo condicional (🟢 Conciliada, 🟡 Pendiente causar, 🔴 Diferencia).',
+        status: 'Disponible',
+      },
+      {
+        name: 'Asistente de información exógena DIAN',
+        description: 'Configuración de formatos y conceptos, cruce de cuentas PUC con terceros, validación de cuantías y exportación.',
+        status: 'Disponible',
+      },
     ],
   },
   {
@@ -461,6 +529,16 @@ export const MODULES: ModuleItem[] = [
         name: 'Documento soporte para adquisiciones a no obligados a facturar',
         description: 'Formalización fiscal de pagos a proveedores informales de insumos y servicios de transporte.',
         status: 'Pendiente',
+      },
+      {
+        name: 'Notas crédito, débito y notas de ajuste',
+        description: 'Anulación o corrección de facturas, nómina electrónica y documentos soporte referenciando CUFE/CUNE/CUDS.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Documento equivalente electrónico POS',
+        description: 'Transmisión y control de ventas de mostrador con código QR y consulta de respuestas electrónicas.',
+        status: 'Disponible',
       },
     ],
   },
@@ -535,14 +613,19 @@ export const MODULES: ModuleItem[] = [
         status: 'Pendiente',
       },
       {
-        name: 'Aportes',
-        description: 'Generación de resumen de PILA para aportes patronales a salud, pensión, ARL y parafiscales.',
-        status: 'Pendiente',
+        name: 'Aportes y parafiscales (Art. 114-1 E.T.)',
+        description: 'Planilla PILA con exoneración automática de salud patronal, SENA e ICBF para devengos menores a 10 SMMLV.',
+        status: 'Disponible',
       },
       {
         name: 'Nómina electrónica',
         description: 'Preparación de registros individuales para transmisión mensual certificada ante la DIAN.',
         status: 'Pendiente',
+      },
+      {
+        name: 'Integración contable y de costos de nómina',
+        description: 'Direccionamiento automático de personal de planta (CC-100) a 7205 MOD / 7305 CIF / 1410 y personal administrativo a 5105/5205.',
+        status: 'Disponible',
       },
     ],
   },
@@ -562,7 +645,7 @@ export const MODULES: ModuleItem[] = [
         status: 'Pendiente',
       },
       {
-        name: 'Participaciones',
+        name: 'Participaciones y capital',
         description: 'Número de acciones ordinarias suscritas, pagadas y valor nominal unitario en COP.',
         status: 'Pendiente',
       },
@@ -595,6 +678,16 @@ export const MODULES: ModuleItem[] = [
         name: 'Certificaciones',
         description: 'Emisión de certificados de composición accionaria para entidades bancarias y notariales.',
         status: 'Pendiente',
+      },
+      {
+        name: 'Títulos de acciones numerados (PDF)',
+        description: 'Generación y descarga en formato PDF de títulos individuales con constancia de derechos al dorso.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Archivos adjuntos y descarga de documentos',
+        description: 'Repositorio seguro de estatutos sociales, actas firmadas y certificados de Cámara de Comercio.',
+        status: 'Disponible',
       },
     ],
   },
@@ -682,6 +775,26 @@ export const MODULES: ModuleItem[] = [
         name: 'Exportación a PDF o Excel',
         description: 'Formatos estandarizados descargables listos para auditorías contables y gerencia.',
         status: 'Pendiente',
+      },
+      {
+        name: 'Reprocesos y rendimientos',
+        description: 'Análisis cuantitativo de recuperación de ceras en pailas y rendimiento fabril.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Información exógena / Medios magnéticos',
+        description: 'Informe maestro de cruces fiscales y formatos 1001, 1007 y 1003 para la DIAN.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Ventas y arqueos de Punto de Venta (POS)',
+        description: 'Consolidado de tirillas POS, cuadres de caja por turno y reporte de faltantes/sobrantes.',
+        status: 'Disponible',
+      },
+      {
+        name: 'Tesorería, flujo operativo y conciliación bancaria',
+        description: 'Proyección de cobros y pagos con conciliación de saldos en cuentas corrientes.',
+        status: 'Disponible',
       },
     ],
   },

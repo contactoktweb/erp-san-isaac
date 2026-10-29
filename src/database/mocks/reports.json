@@ -15,7 +15,7 @@
     "reportCode": "REP-INV-02",
     "title": "Kardex Valorizado y Saldos de Materias Primas",
     "category": "Inventarios y Lotes",
-    "description": "Existencias en bodega de parafinas, ceras y pabilos valorizados bajo método promedio ponderado.",
+    "description": "Existencias en bodega de parafinas, ceras y pabilos valorizados bajo método PEPS (Primeras Entradas, Primeras Salidas — Decreto 2650 PUC 6 dígitos).",
     "frequency": "Semanal",
     "exportFormats": ["PDF", "Excel"],
     "authorizedRole": "Almacén / Contabilidad",
@@ -86,5 +86,38 @@
     "exportFormats": ["PDF", "Excel"],
     "authorizedRole": "Facturación / Contabilidad",
     "estimatedExecutionTime": "< 2 segundos"
+  },
+  {
+    "id": "rep-009",
+    "reportCode": "REP-CST-09",
+    "title": "Estado de Costos de Producción y Ventas",
+    "category": "Producción y Costos",
+    "description": "Liquidación detallada: Materias Primas Consumidas (Cera/Parafina) + MOD (Planta) + CIF + Variación de Producto en Proceso (PUC 1410) = Costo de Productos Terminados.",
+    "frequency": "Mensual",
+    "exportFormats": ["PDF", "Excel", "NIIF XBRL"],
+    "authorizedRole": "Costos / Contabilidad",
+    "estimatedExecutionTime": "< 3 segundos"
+  },
+  {
+    "id": "rep-010",
+    "reportCode": "REP-FIN-10",
+    "title": "Estados Financieros bajo Norma NIIF para Pymes",
+    "category": "Contable y Fiscal",
+    "description": "Juego completo de Estados Financieros: Estado de Situación Financiera, Estado de Resultados Integral, Flujos de Efectivo por Método Directo/Indirecto y Cambios en el Patrimonio.",
+    "frequency": "Trimestral / Anual",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Gerencia / Revisor Fiscal",
+    "estimatedExecutionTime": "< 5 segundos"
+  },
+  {
+    "id": "rep-011",
+    "reportCode": "REP-TRI-11",
+    "title": "Reportes y Certificados Tributarios Nacionales y Distritales",
+    "category": "Contable y Fiscal",
+    "description": "Certificados de Retención en la fuente Formulario 220, Borrador IVA Bimestral Form. 300, ReteICA Bogotá y Prevalidador de Medios Magnéticos DIAN (Formatos 1001, 1003, 1007).",
+    "frequency": "Bimestral / Anual",
+    "exportFormats": ["PDF", "Excel", "XML DIAN"],
+    "authorizedRole": "Contador / Asesor Tributario",
+    "estimatedExecutionTime": "< 4 segundos"
   }
 ]

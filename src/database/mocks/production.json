@@ -10,7 +10,9 @@
     "targetBatch": "LOT-PT-2026-104",
     "startDate": "2026-02-27T07:00:00.000Z",
     "status": "Terminada",
-    "estimatedCostCOP": 9960000
+    "estimatedCostCOP": 9960000,
+    "realCostCOP": 10150000,
+    "accountingStatus": "Terminada en Bodega (PUC 1430)"
   },
   {
     "id": "prod-002",
@@ -23,7 +25,9 @@
     "targetBatch": "LOT-PT-2026-088",
     "startDate": "2026-02-26T08:00:00.000Z",
     "status": "Terminada",
-    "estimatedCostCOP": 11100000
+    "estimatedCostCOP": 11100000,
+    "realCostCOP": 11800000,
+    "accountingStatus": "Terminada en Bodega (PUC 1430)"
   },
   {
     "id": "prod-003",
@@ -36,7 +40,9 @@
     "targetBatch": "LOT-PT-2026-112",
     "startDate": "2026-03-03T06:30:00.000Z",
     "status": "En proceso",
-    "estimatedCostCOP": 3400000
+    "estimatedCostCOP": 3400000,
+    "realCostCOP": 3420000,
+    "accountingStatus": "En proceso (PUC 1410)"
   },
   {
     "id": "prod-004",
@@ -49,7 +55,9 @@
     "targetBatch": "LOT-PT-2026-096",
     "startDate": "2026-03-01T07:15:00.000Z",
     "status": "Terminada",
-    "estimatedCostCOP": 5200000
+    "estimatedCostCOP": 5200000,
+    "realCostCOP": 5200000,
+    "accountingStatus": "Terminada en Bodega (PUC 1430)"
   },
   {
     "id": "prod-005",
@@ -62,7 +70,8 @@
     "targetBatch": "LOT-PT-2026-118",
     "startDate": "2026-03-10T08:00:00.000Z",
     "status": "Programada",
-    "estimatedCostCOP": 6800000
+    "estimatedCostCOP": 6800000,
+    "accountingStatus": "Programada"
   },
   {
     "id": "prod-006",
@@ -75,7 +84,8 @@
     "targetBatch": "LOT-PT-2026-121",
     "startDate": "2026-03-12T07:30:00.000Z",
     "status": "Programada",
-    "estimatedCostCOP": 7500000
+    "estimatedCostCOP": 7500000,
+    "accountingStatus": "Programada"
   },
   {
     "id": "prod-007",
@@ -88,7 +98,9 @@
     "targetBatch": "LOT-PT-2026-115",
     "startDate": "2026-03-04T09:00:00.000Z",
     "status": "En proceso",
-    "estimatedCostCOP": 4950000
+    "estimatedCostCOP": 4950000,
+    "realCostCOP": 5100000,
+    "accountingStatus": "En proceso (PUC 1410)"
   },
   {
     "id": "prod-008",
@@ -101,6 +113,7 @@
     "targetBatch": "LOT-PT-2026-125",
     "startDate": "2026-03-15T08:00:00.000Z",
     "status": "Programada",
-    "estimatedCostCOP": 8400000
+    "estimatedCostCOP": 8400000,
+    "accountingStatus": "Programada"
   }
 ]

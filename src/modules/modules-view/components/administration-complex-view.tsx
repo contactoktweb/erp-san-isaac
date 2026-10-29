@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import {
   AlertTriangle,
@@ -30,7 +32,7 @@ export function AdministrationComplexView({ users }: Props) {
   const [activeTab, setActiveTab] = useState<'users' | 'thirdParties' | 'taxes' | 'consecutives' | 'backups'>('users')
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 bg-background">
       {/* Selector de sub-vistas del Módulo de Administración */}
       <div className="flex flex-wrap items-center gap-2 border-b pb-3">
         <Button

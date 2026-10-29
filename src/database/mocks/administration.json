@@ -1,8 +1,8 @@
-[
+﻿[
   {
     "id": "usr-001",
     "name": "Carlos Alberto Méndez",
-    "email": "carlos.mendez@ejemplo-sanisaac.com",
+    "email": "carlos.mendez@vvcsanisaac.com",
     "role": "Jefe de Planta y Producción",
     "assignedBranch": "Planta Principal Funza",
     "costCenter": "CC-100 Producción",
@@ -12,7 +12,7 @@
   {
     "id": "usr-002",
     "name": "Marta Lucía Rincón",
-    "email": "marta.rincon@ejemplo-sanisaac.com",
+    "email": "marta.rincon@vvcsanisaac.com",
     "role": "Auxiliar Contable y Tributaria",
     "assignedBranch": "Sede Administrativa Bogotá",
     "costCenter": "CC-200 Administración",
@@ -22,7 +22,7 @@
   {
     "id": "usr-003",
     "name": "Jorge Eliécer Duarte",
-    "email": "jorge.duarte@ejemplo-sanisaac.com",
+    "email": "jorge.duarte@vvcsanisaac.com",
     "role": "Coordinador de Almacén y Despachos",
     "assignedBranch": "Bodega Central Funza",
     "costCenter": "CC-300 Logística",
@@ -32,7 +32,7 @@
   {
     "id": "usr-004",
     "name": "Sonia Esperanza Pardo",
-    "email": "sonia.pardo@ejemplo-sanisaac.com",
+    "email": "sonia.pardo@vvcsanisaac.com",
     "role": "Ejecutiva Comercial Mayorista",
     "assignedBranch": "Sede Administrativa Bogotá",
     "costCenter": "CC-400 Ventas",
@@ -42,7 +42,7 @@
   {
     "id": "usr-005",
     "name": "Héctor Fabio Benítez",
-    "email": "hector.benitez@ejemplo-sanisaac.com",
+    "email": "hector.benitez@vvcsanisaac.com",
     "role": "Supervisor de Pailas y Fundición",
     "assignedBranch": "Planta Principal Funza",
     "costCenter": "CC-100 Producción",
@@ -52,7 +52,7 @@
   {
     "id": "usr-006",
     "name": "Diana Carolina Vargas",
-    "email": "diana.vargas@ejemplo-sanisaac.com",
+    "email": "diana.vargas@vvcsanisaac.com",
     "role": "Analista de Compras e Insumos",
     "assignedBranch": "Sede Administrativa Bogotá",
     "costCenter": "CC-200 Administración",
@@ -62,7 +62,7 @@
   {
     "id": "usr-007",
     "name": "Andrés Mauricio Cárdenas",
-    "email": "andres.cardenas@ejemplo-sanisaac.com",
+    "email": "andres.cardenas@vvcsanisaac.com",
     "role": "Operador de Moldeo y Troquelado",
     "assignedBranch": "Planta Principal Funza",
     "costCenter": "CC-100 Producción",
@@ -72,7 +72,7 @@
   {
     "id": "usr-008",
     "name": "Claudia Marcela Osorio",
-    "email": "claudia.osorio@ejemplo-sanisaac.com",
+    "email": "claudia.osorio@vvcsanisaac.com",
     "role": "Coordinadora de Seguridad y Salud en el Trabajo",
     "assignedBranch": "Planta Principal Funza",
     "costCenter": "CC-200 Administración",

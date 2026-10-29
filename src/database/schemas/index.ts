@@ -91,7 +91,7 @@ export type ConsecutiveParam = z.infer<typeof consecutiveParamSchema>
 
 
 // -----------------------------------------------------------------------------
-// 3. PRODUCCIÓN: Órdenes de fabricación y formulaciones
+// 3. PRODUCCIÓN: Órdenes de fabricación, costos estimados vs reales y fichas
 // -----------------------------------------------------------------------------
 export const productionOrderSchema = z.object({
   id: z.string(),
@@ -105,26 +105,36 @@ export const productionOrderSchema = z.object({
   startDate: z.string(),
   status: z.enum(['En proceso', 'Terminada', 'Programada', 'Suspendida']),
   estimatedCostCOP: z.number().int().positive(),
+  realCostCOP: z.number().int().nonnegative().optional(),
+  accountingStatus: z.enum(['Programada', 'En proceso (PUC 1410)', 'Terminada en Bodega (PUC 1430)']).default('Programada'),
 })
 export type ProductionOrder = z.infer<typeof productionOrderSchema>
 
 // -----------------------------------------------------------------------------
-// 4. COMPRAS: Órdenes de compra y proveedores
+// 4. COMPRAS: Órdenes de compra, cuentas por pagar y liquidación tributaria
 // -----------------------------------------------------------------------------
 export const purchaseOrderSchema = z.object({
   id: z.string(),
   orderNumber: z.string(),
+  supplierInvoiceNumber: z.string().optional(),
+  entryBatch: z.string().optional(),
   supplierName: z.string(),
   supplierNit: z.string(),
   itemCategory: z.string(),
   itemsDescription: z.string(),
+  subtotalCOP: z.number().int().positive().optional(),
+  ivaCOP: z.number().int().nonnegative().optional(),
+  withholdingsCOP: z.number().int().nonnegative().optional(),
   totalAmountCOP: z.number().int().positive(),
+  paidAmountCOP: z.number().int().nonnegative().default(0),
+  pendingBalanceCOP: z.number().int().nonnegative().default(0),
   issueDate: z.string(),
   expectedDeliveryDate: z.string(),
+  dueDate: z.string().optional(),
   paymentTerms: z.string(),
-  paymentStatus: z.enum(['Pagado', 'Pendiente', 'Abono parcial']),
-  orderStatus: z.enum(['Recibido conforme', 'En tránsito', 'Aprobada']),
-})
+  paymentStatus: z.string(),
+  orderStatus: z.string(),
+}).passthrough()
 export type PurchaseOrder = z.infer<typeof purchaseOrderSchema>
 
 // -----------------------------------------------------------------------------
@@ -226,13 +236,13 @@ export const accountEntrySchema = z.object({
   id: z.string(),
   code: z.string(),
   name: z.string(),
-  accountType: z.enum(['Activo', 'Pasivo', 'Patrimonio', 'Ingresos', 'Gastos', 'Costos de producción']),
+  accountType: z.string(),
   debitCOP: z.number().int().nonnegative(),
   creditCOP: z.number().int().nonnegative(),
   currentBalanceCOP: z.number().int(),
   costCenter: z.string(),
   lastUpdated: z.string(),
-})
+}).passthrough()
 export type AccountEntry = z.infer<typeof accountEntrySchema>
 
 // -----------------------------------------------------------------------------
@@ -242,15 +252,19 @@ export const dianDocumentSchema = z.object({
   id: z.string(),
   documentNumber: z.string(),
   prefix: z.string(),
-  documentType: z.enum(['Factura electrónica de venta', 'Nómina electrónica', 'Documento soporte']),
+  documentType: z.string(),
   recipientName: z.string(),
   recipientNit: z.string(),
   issueDate: z.string(),
   transmissionDate: z.string(),
   cufeOrCune: z.string(),
   totalAmountCOP: z.number().int().positive(),
-  dianStatus: z.enum(['Aceptada', 'Rechazada', 'Pendiente']),
-})
+  dianStatus: z.string(),
+  rejectionReason: z.string().optional(),
+  xmlSignedUrl: z.string().optional(),
+  pdfUrl: z.string().optional(),
+  dianResponseXmlUrl: z.string().optional(),
+}).passthrough()
 export type DianDocument = z.infer<typeof dianDocumentSchema>
 
 // -----------------------------------------------------------------------------
@@ -263,13 +277,18 @@ export const payrollWorkerSchema = z.object({
   nationalIdMasked: z.string(),
   jobTitle: z.string(),
   department: z.string(),
-  contractType: z.enum(['Término indefinido', 'Término fijo 1 año', 'Obra o labor']),
-  baseSalaryCOP: z.number().int().positive(),
+  costCenter: z.string().optional(), // 'CC-100 MOD (Planta)' o 'CC-200 Administración'
+  contractType: z.string(),
+  baseSalaryCOP: z.number().nonnegative(),
+  transportAllowanceCOP: z.number().nonnegative().optional(),
+  smmlvBase2026: z.number().optional(),
+  arlRiskLevel: z.string().optional(), // 'Riesgo III (2.436%)' o 'Riesgo I (0.522%)'
+  art114Exempt: z.boolean().optional(), // Exonerado parafiscales SENA/ICBF/Salud (< 10 SMMLV)
   hireDate: z.string(),
   eps: z.string(),
   pensionFund: z.string(),
-  status: z.enum(['Activo', 'Inactivo', 'En vacaciones']),
-})
+  status: z.string(),
+}).passthrough()
 export type PayrollWorker = z.infer<typeof payrollWorkerSchema>
 
 // -----------------------------------------------------------------------------
@@ -283,11 +302,18 @@ export const shareholderRecordSchema = z.object({
   sharePercentage: z.number().nonnegative(),
   nominalValuePerShareCOP: z.number().int().positive(),
   totalCapitalCOP: z.number().int().nonnegative(),
+  subscribedCapitalCOP: z.number().int().nonnegative().optional(),
+  paidCapitalCOP: z.number().int().nonnegative().optional(),
+  pendingCapitalCOP: z.number().int().nonnegative().optional(),
+  paymentDeadline: z.string().optional(),
+  paymentStatus: z.string().optional(),
+  shareCertificateNumber: z.string().optional(),
   shareType: z.string(),
   entryDate: z.string(),
   lastMinuteRecord: z.string(),
-  status: z.enum(['Activo', 'Cesión en trámite']),
-})
+  status: z.string(),
+  registryNotes: z.string().optional(),
+}).passthrough()
 export type ShareholderRecord = z.infer<typeof shareholderRecordSchema>
 
 // -----------------------------------------------------------------------------
@@ -297,9 +323,9 @@ export const reportDefinitionSchema = z.object({
   id: z.string(),
   reportCode: z.string(),
   title: z.string(),
-  category: z.enum(['Ventas y Cartera', 'Inventarios y Lotes', 'Producción y Costos', 'Contable y Fiscal', 'Compras']),
+  category: z.string(),
   description: z.string(),
-  frequency: z.enum(['Diario', 'Semanal', 'Mensual', 'Bajo demanda']),
+  frequency: z.string(),
   exportFormats: z.array(z.string()),
   authorizedRole: z.string(),
   estimatedExecutionTime: z.string(),

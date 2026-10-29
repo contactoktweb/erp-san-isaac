@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import {
   AlertCircle,
@@ -28,7 +30,7 @@ export function InventoryComplexView({ items }: Props) {
   const criticalStockCount = items.filter((it) => it.currentStock <= it.minimumStock).length
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6 p-4 sm:p-6 bg-background">
       {/* Barra de Controles Paramétricos del Numeral 4 y 5 */}
       <div className="grid grid-cols-1 gap-3 rounded-xl border bg-muted/20 p-3.5 sm:grid-cols-2 lg:grid-cols-4">
         {/* Selector 1: Método de Valoración Activo (Numeral 4) */}

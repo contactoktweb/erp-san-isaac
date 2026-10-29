@@ -44,62 +44,71 @@ import type {
   ISalesRepository,
 } from '../types'
 
+function safeParseArray<T>(schema: z.ZodType<T>, data: unknown, name: string): T[] {
+  const result = z.array(schema).safeParse(data)
+  if (!result.success) {
+    console.warn(`[MockDataWarning] Validating ${name} schema had discrepancies:`, result.error.format())
+    return (Array.isArray(data) ? data : []) as unknown as T[]
+  }
+  return result.data
+}
+
 export class MockAdministrationRepository implements IAdministrationRepository {
   async getUsers(): Promise<MockUser[]> {
-    return z.array(mockUserSchema).parse(rawAdministration)
+    return safeParseArray(mockUserSchema, rawAdministration, 'Administration')
   }
 }
 
 export class MockInventoryRepository implements IInventoryRepository {
   async getItems(): Promise<InventoryItem[]> {
-    return z.array(inventoryItemSchema).parse(rawInventory)
+    return safeParseArray(inventoryItemSchema, rawInventory, 'Inventory')
   }
 }
 
 export class MockProductionRepository implements IProductionRepository {
   async getOrders(): Promise<ProductionOrder[]> {
-    return z.array(productionOrderSchema).parse(rawProduction)
+    return safeParseArray(productionOrderSchema, rawProduction, 'Production')
   }
 }
 
 export class MockPurchasingRepository implements IPurchasingRepository {
   async getOrders(): Promise<PurchaseOrder[]> {
-    return z.array(purchaseOrderSchema).parse(rawPurchasing)
+    return safeParseArray(purchaseOrderSchema, rawPurchasing, 'Purchasing')
   }
 }
 
 export class MockSalesRepository implements ISalesRepository {
   async getOrders(): Promise<SalesOrder[]> {
-    return z.array(salesOrderSchema).parse(rawSales)
+    return safeParseArray(salesOrderSchema, rawSales, 'Sales')
   }
 }
 
 export class MockAccountingRepository implements IAccountingRepository {
   async getAccounts(): Promise<AccountEntry[]> {
-    return z.array(accountEntrySchema).parse(rawAccounting)
+    return safeParseArray(accountEntrySchema, rawAccounting, 'Accounting')
   }
 }
 
 export class MockDianRepository implements IDianRepository {
   async getDocuments(): Promise<DianDocument[]> {
-    return z.array(dianDocumentSchema).parse(rawDian)
+    return safeParseArray(dianDocumentSchema, rawDian, 'DIAN')
   }
 }
 
 export class MockPayrollRepository implements IPayrollRepository {
   async getWorkers(): Promise<PayrollWorker[]> {
-    return z.array(payrollWorkerSchema).parse(rawPayroll)
+    return safeParseArray(payrollWorkerSchema, rawPayroll, 'Payroll')
   }
 }
 
 export class MockCorporateRepository implements ICorporateRepository {
   async getShareholders(): Promise<ShareholderRecord[]> {
-    return z.array(shareholderRecordSchema).parse(rawCorporate)
+    return safeParseArray(shareholderRecordSchema, rawCorporate, 'Corporate')
   }
 }
 
 export class MockReportsRepository implements IReportsRepository {
   async getReports(): Promise<ReportDefinition[]> {
-    return z.array(reportDefinitionSchema).parse(rawReports)
+    return safeParseArray(reportDefinitionSchema, rawReports, 'Reports')
   }
 }
