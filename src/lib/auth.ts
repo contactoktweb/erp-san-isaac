@@ -48,6 +48,21 @@ export const authOptions: NextAuthOptions = {
             return null
           }
 
+          // Registrar evento de auditoría de inicio de sesión
+          try {
+            await prisma.auditLog.create({
+              data: {
+                action: 'LOGIN_SUCCESS',
+                entity: 'Auth',
+                entityId: user.id,
+                userName: user.name,
+                userId: user.id,
+                details: `Inicio de sesión exitoso con rol ${user.role.name}`,
+                ipAddress: '127.0.0.1 (Web Session)',
+              },
+            })
+          } catch {}
+
           return {
             id: user.id,
             name: user.name,

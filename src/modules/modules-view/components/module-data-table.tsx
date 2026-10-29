@@ -2,6 +2,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import {
   getAccountingAccounts,
   getAdministrationUsers,
+  getAdministrationAuditLogs,
+  getAdministrationRoles,
   getDianDocuments,
   getInventoryItems,
   getPayrollWorkers,
@@ -50,8 +52,12 @@ export async function ModuleDataTable({ slug, entityName }: { slug: string; enti
 async function EntityTableDispatcher({ slug }: { slug: string }) {
   switch (slug) {
     case 'administracion': {
-      const users = await getAdministrationUsers()
-      return <AdministrationComplexView users={users} />
+      const [users, auditLogs, roles] = await Promise.all([
+        getAdministrationUsers(),
+        getAdministrationAuditLogs(),
+        getAdministrationRoles(),
+      ])
+      return <AdministrationComplexView users={users} auditLogs={auditLogs} roles={roles} />
     }
 
     case 'inventarios': {

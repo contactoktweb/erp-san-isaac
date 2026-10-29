@@ -59,17 +59,17 @@ export const MODULES: ModuleItem[] = [
       {
         name: 'Usuarios',
         description: 'Registro, asignación de sedes y control de estado de colaboradores internos.',
-        status: 'Pendiente',
+        status: 'Disponible',
       },
       {
         name: 'Roles y permisos',
         description: 'Definición de perfiles de acceso granular a módulos y funciones del ERP.',
-        status: 'Pendiente',
+        status: 'Disponible',
       },
       {
         name: 'Recuperación de acceso',
         description: 'Flujo de restablecimiento seguro de claves mediante canal administrativo.',
-        status: 'Pendiente',
+        status: 'Disponible',
       },
       {
         name: 'Información de la empresa',
@@ -124,7 +124,7 @@ export const MODULES: ModuleItem[] = [
       {
         name: 'Auditoría básica',
         description: 'Registro de trazabilidad sobre creaciones, ediciones y accesos al sistema.',
-        status: 'Pendiente',
+        status: 'Disponible',
       },
       {
         name: 'Documentos adjuntos',

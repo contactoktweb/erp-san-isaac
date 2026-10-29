@@ -9,10 +9,14 @@ import type {
   ReportDefinition,
   SalesOrder,
   ShareholderRecord,
+  AuditLogEntry,
+  RoleEntry,
 } from '../schemas'
 
 export interface IAdministrationRepository {
   getUsers(): Promise<MockUser[]>
+  getAuditLogs(): Promise<AuditLogEntry[]>
+  getRoles(): Promise<RoleEntry[]>
 }
 
 export interface IInventoryRepository {

@@ -45,6 +45,8 @@ import type {
   ReportDefinition,
   SalesOrder,
   ShareholderRecord,
+  AuditLogEntry,
+  RoleEntry,
 } from './schemas'
 
 // Re-exportar tipos para consumo de componentes de UI
@@ -54,9 +56,6 @@ export * from './repositories/types'
 // Fuente de datos determinada por variable de entorno
 const dataSource = (process.env.DATA_SOURCE || 'mock').toLowerCase()
 
-if (dataSource === 'prisma') {
-  throw new Error('Fuente de datos no implementada todavía')
-}
 
 // Instanciación de repositorios según la fuente de datos seleccionada
 const administrationRepo: IAdministrationRepository =
@@ -110,10 +109,18 @@ const reportsRepo: IReportsRepository =
     : new PrismaReportsRepository()
 
 /**
- * 1. Administración del sistema: Usuarios y perfiles de acceso (Mock)
+ * 1. Administración del sistema: Usuarios y perfiles de acceso
  */
 export async function getAdministrationUsers(): Promise<MockUser[]> {
   return administrationRepo.getUsers()
+}
+
+export async function getAdministrationAuditLogs(): Promise<AuditLogEntry[]> {
+  return administrationRepo.getAuditLogs()
+}
+
+export async function getAdministrationRoles(): Promise<RoleEntry[]> {
+  return administrationRepo.getRoles()
 }
 
 /**

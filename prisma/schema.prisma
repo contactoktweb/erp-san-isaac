@@ -9,22 +9,62 @@ datasource db {
 }
 
 model Role {
-  id          String   @id @default(cuid())
-  name        String   @unique
+  id          String           @id @default(cuid())
+  name        String           @unique
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  code        String           @unique
+  name        String
+  module      String
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  id           String     @id @default(cuid())
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
+  @@unique([roleId, permissionId])
 }
 
 model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  passwordHash String
-  isActive     Boolean  @default(true)
-  roleId       String
-  role         Role     @relation(fields: [roleId], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id             String     @id @default(cuid())
+  name           String
+  email          String     @unique
+  passwordHash   String
+  isActive       Boolean    @default(true)
+  assignedBranch String?    @default("Planta Principal Funza")
+  costCenter     String?    @default("CC-100 Producción")
+  roleId         String
+  role           Role       @relation(fields: [roleId], references: [id])
+  auditLogs      AuditLog[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  ipAddress String?
+  userId    String?
+  userName  String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+}
+

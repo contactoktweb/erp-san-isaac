@@ -8,12 +8,43 @@ export const mockUserSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   role: z.string(),
-  assignedBranch: z.string(),
-  costCenter: z.string(),
+  assignedBranch: z.string().optional().default('Planta Principal Funza'),
+  costCenter: z.string().optional().default('CC-100 Producción'),
   isActive: z.boolean(),
   createdAt: z.string(),
 })
 export type MockUser = z.infer<typeof mockUserSchema>
+
+export const auditLogSchema = z.object({
+  id: z.string(),
+  action: z.string(),
+  entity: z.string(),
+  entityId: z.string().nullable().optional(),
+  details: z.string().nullable().optional(),
+  ipAddress: z.string().nullable().optional(),
+  userId: z.string().nullable().optional(),
+  userName: z.string().nullable().optional(),
+  createdAt: z.string(),
+})
+export type AuditLogEntry = z.infer<typeof auditLogSchema>
+
+export const permissionSchema = z.object({
+  id: z.string(),
+  code: z.string(),
+  name: z.string(),
+  module: z.string(),
+  description: z.string().nullable().optional(),
+})
+export type PermissionEntry = z.infer<typeof permissionSchema>
+
+export const roleSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string().nullable().optional(),
+  permissions: z.array(permissionSchema).optional(),
+})
+export type RoleEntry = z.infer<typeof roleSchema>
+
 
 // -----------------------------------------------------------------------------
 // 2. INVENTARIOS: Productos terminados, materias primas y lotes

@@ -23,6 +23,8 @@ import {
   type AccountEntry,
   type DianDocument,
   type InventoryItem,
+  type AuditLogEntry,
+  type RoleEntry,
   type MockUser,
   type PayrollWorker,
   type ProductionOrder,
@@ -44,6 +46,76 @@ import type {
   ISalesRepository,
 } from '../types'
 
+const MOCK_ROLES: RoleEntry[] = [
+  {
+    id: 'role-admin',
+    name: 'ADMIN',
+    description: 'Administrador / Gerencia. Control total sobre pedidos, reprogramaciones, cancelaciones, auditoría y facturación.',
+  },
+  {
+    id: 'role-ventas',
+    name: 'VENTAS',
+    description: 'Ventas / Comercial. Crear pedidos manuales, gestionar pedidos web, reprogramar con motivo obligatorio y facturar.',
+  },
+  {
+    id: 'role-planta',
+    name: 'JEFE_PLANTA',
+    description: 'Jefe de Producción / Planta. Tablero multipedido, alistamiento simultáneo, empaque e impresión de rótulos.',
+  },
+  {
+    id: 'role-alistamiento',
+    name: 'ALISTAMIENTO',
+    description: 'Encargado de Alistamiento. Crear Cajas de Empaque, registrar unidades por lote PEPS y corregir conteos en planta.',
+  },
+]
+
+const MOCK_AUDIT_LOGS: AuditLogEntry[] = [
+  {
+    id: 'log-001',
+    action: 'USER_CREATED',
+    entity: 'User',
+    entityId: 'usr-006',
+    details: 'Creación de colaborador: Diana Carolina Vargas (Analista de Compras)',
+    ipAddress: '190.25.102.14 (Bogotá D.C.)',
+    userId: 'usr-admin',
+    userName: 'Administrador San Isaac',
+    createdAt: '2026-10-28T14:32:10.000Z',
+  },
+  {
+    id: 'log-002',
+    action: 'STATUS_TOGGLED',
+    entity: 'User',
+    entityId: 'usr-005',
+    details: 'Activación de acceso operativo: Héctor Fabio Benítez (Supervisor de Fundición)',
+    ipAddress: '190.25.102.14 (Bogotá D.C.)',
+    userId: 'usr-admin',
+    userName: 'Administrador San Isaac',
+    createdAt: '2026-10-27T09:15:22.000Z',
+  },
+  {
+    id: 'log-003',
+    action: 'ROLE_ASSIGNED',
+    entity: 'RolePermission',
+    entityId: 'role-ventas',
+    details: 'Asignación de permiso orders.reprogram con justificación obligatoria a rol VENTAS',
+    ipAddress: '190.14.88.50 (Funza)',
+    userId: 'usr-admin',
+    userName: 'Administrador San Isaac',
+    createdAt: '2026-10-26T16:45:00.000Z',
+  },
+  {
+    id: 'log-004',
+    action: 'BACKUP_SYNC',
+    entity: 'SystemBackup',
+    entityId: 'backup-20261028',
+    details: 'Copia de seguridad nocturna automatizada completada hacia Google Drive (42.8 MB)',
+    ipAddress: '127.0.0.1 (Worker)',
+    userId: null,
+    userName: 'Sistema Automático',
+    createdAt: '2026-10-28T07:00:15.000Z',
+  },
+]
+
 function safeParseArray<T>(schema: z.ZodType<T>, data: unknown, name: string): T[] {
   const result = z.array(schema).safeParse(data)
   if (!result.success) {
@@ -56,6 +128,14 @@ function safeParseArray<T>(schema: z.ZodType<T>, data: unknown, name: string): T
 export class MockAdministrationRepository implements IAdministrationRepository {
   async getUsers(): Promise<MockUser[]> {
     return safeParseArray(mockUserSchema, rawAdministration, 'Administration')
+  }
+
+  async getAuditLogs(): Promise<AuditLogEntry[]> {
+    return MOCK_AUDIT_LOGS
+  }
+
+  async getRoles(): Promise<RoleEntry[]> {
+    return MOCK_ROLES
   }
 }
 
