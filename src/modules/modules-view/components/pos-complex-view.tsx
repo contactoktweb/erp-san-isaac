@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import {
   AlertCircle,
+  AlertTriangle,
   Barcode,
   CheckCircle2,
   Clock,
