@@ -1,22 +1,64 @@
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { Badge } from '@/components/ui/badge'
 import {
   getModulesByArea,
   MODULE_AREAS,
-  type ModuleArea,
   type ModuleItem,
 } from '@/lib/modules'
 import { cn } from '@/lib/utils'
 
-export function ModuleIndex() {
+/**
+ * Visibilidad de módulos por rol, basada en el ROLE_PERMISSION_MATRIX oficial.
+ * Si el slug no aparece aquí → visible para cualquier usuario autenticado.
+ * ADMIN tiene cortocircuito explícito: siempre ve todo.
+ *
+ * VENTAS      : orders.*, inventory.read, packing.read, admin.users.read
+ * JEFE_PLANTA : orders.read, packing.*, inventory.*, admin.users.read
+ * ALISTAMIENTO: orders.read, packing.*
+ */
+const MODULE_ALLOWED_ROLES: Record<string, string[]> = {
+  // Solo ADMIN
+  administracion:            ['ADMIN'],
+  compras:                   ['ADMIN'],
+  contabilidad:              ['ADMIN'],
+  nomina:                    ['ADMIN'],
+  'libros-societarios':      ['ADMIN'],
+  reportes:                  ['ADMIN'],
+  pos:                       ['ADMIN'],
+  // ADMIN + VENTAS
+  'documentos-electronicos': ['ADMIN', 'VENTAS'],
+  // ADMIN + VENTAS + JEFE_PLANTA
+  inventarios:               ['ADMIN', 'VENTAS', 'JEFE_PLANTA'],
+  // ADMIN + JEFE_PLANTA + ALISTAMIENTO (Producción = empaque/packing)
+  produccion:                ['ADMIN', 'JEFE_PLANTA', 'ALISTAMIENTO'],
+  // Todos los roles autenticados
+  ventas:                    ['ADMIN', 'VENTAS', 'JEFE_PLANTA', 'ALISTAMIENTO'],
+}
+
+export async function ModuleIndex() {
+  const session = await getServerSession(authOptions)
+  const userRole = (session?.user?.role as string | undefined)?.trim().toUpperCase() ?? ''
+
   const groupedModules = getModulesByArea()
 
   return (
     <div className="flex flex-col gap-10">
       {MODULE_AREAS.map((area) => {
-        const modules = groupedModules[area]
-        if (!modules || modules.length === 0) return null
+        const allModules = groupedModules[area] ?? []
+
+        // ADMIN siempre ve todos los módulos sin excepción
+        const visibleModules = userRole === 'ADMIN'
+          ? allModules
+          : allModules.filter((item) => {
+              const allowedRoles = MODULE_ALLOWED_ROLES[item.slug]
+              if (!allowedRoles) return true // sin restricción → visible para todos
+              return allowedRoles.some((r) => r === userRole)
+            })
+
+        if (visibleModules.length === 0) return null
 
         return (
           <section key={area} className="flex flex-col gap-3">
@@ -25,13 +67,13 @@ export function ModuleIndex() {
                 {area}
               </h2>
               <span className="text-xs font-medium text-muted-foreground">
-                {modules.length} {modules.length === 1 ? 'módulo' : 'módulos'}
+                {visibleModules.length} {visibleModules.length === 1 ? 'módulo' : 'módulos'}
               </span>
             </div>
 
             <div className="overflow-hidden rounded-lg border bg-card">
               <div className="divide-y divide-border/60">
-                {modules.map((item) => (
+                {visibleModules.map((item) => (
                   <ModuleRow key={item.slug} item={item} />
                 ))}
               </div>

@@ -2,6 +2,30 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 
+/**
+ * Matriz de visibilidad de rutas por rol.
+ * Solo ADMIN tiene acceso total. Los demás roles solo ven lo que les corresponde.
+ * Si una ruta no está en este mapa, es accesible para cualquier usuario autenticado.
+ */
+const ROLE_PROTECTED_ROUTES: Record<string, string[]> = {
+  // Solo ADMIN
+  '/dashboard/administracion':          ['ADMIN'],
+  '/dashboard/compras':                 ['ADMIN'],
+  '/dashboard/contabilidad':            ['ADMIN'],
+  '/dashboard/nomina':                  ['ADMIN'],
+  '/dashboard/libros-societarios':      ['ADMIN'],
+  '/dashboard/reportes':                ['ADMIN'],
+  '/dashboard/pos':                     ['ADMIN'],
+  // ADMIN + VENTAS
+  '/dashboard/documentos-electronicos': ['ADMIN', 'VENTAS'],
+  // ADMIN + VENTAS + JEFE_PLANTA
+  '/dashboard/inventarios':             ['ADMIN', 'VENTAS', 'JEFE_PLANTA'],
+  // ADMIN + JEFE_PLANTA + ALISTAMIENTO
+  '/dashboard/produccion':              ['ADMIN', 'JEFE_PLANTA', 'ALISTAMIENTO'],
+  // Todos los roles autenticados
+  '/dashboard/ventas':                  ['ADMIN', 'VENTAS', 'JEFE_PLANTA', 'ALISTAMIENTO'],
+}
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
@@ -25,6 +49,23 @@ export async function middleware(req: NextRequest) {
   if (!token) {
     const loginUrl = new URL('/login', req.url)
     return NextResponse.redirect(loginUrl)
+  }
+
+  // Verificar restricciones por rol para rutas protegidas
+  const userRole = (token.role as string | undefined)?.trim().toUpperCase() ?? ''
+
+  // ADMIN tiene acceso total — salta cualquier verificación de ruta
+  if (userRole === 'ADMIN') {
+    return NextResponse.next()
+  }
+
+  for (const [routePrefix, allowedRoles] of Object.entries(ROLE_PROTECTED_ROUTES)) {
+    if (pathname.startsWith(routePrefix)) {
+      const hasAccess = allowedRoles.some((r) => r.toUpperCase() === userRole)
+      if (!hasAccess) {
+        return NextResponse.redirect(new URL('/dashboard', req.url))
+      }
+    }
   }
 
   return NextResponse.next()

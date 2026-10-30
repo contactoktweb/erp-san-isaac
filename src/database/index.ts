@@ -57,56 +57,27 @@ export * from './repositories/types'
 const dataSource = (process.env.DATA_SOURCE || 'mock').toLowerCase()
 
 
-// Instanciación de repositorios según la fuente de datos seleccionada
+/**
+ * Instanciación de repositorios.
+ * Solo el módulo de Administración tiene implementación Prisma completa.
+ * Los demás módulos usan datos de demostración (mock) hasta que su
+ * implementación en Prisma esté lista y validada.
+ */
 const administrationRepo: IAdministrationRepository =
   dataSource === 'mock'
     ? new MockAdministrationRepository()
     : new PrismaAdministrationRepository()
 
-const inventoryRepo: IInventoryRepository =
-  dataSource === 'mock'
-    ? new MockInventoryRepository()
-    : new PrismaInventoryRepository()
-
-const productionRepo: IProductionRepository =
-  dataSource === 'mock'
-    ? new MockProductionRepository()
-    : new PrismaProductionRepository()
-
-const purchasingRepo: IPurchasingRepository =
-  dataSource === 'mock'
-    ? new MockPurchasingRepository()
-    : new PrismaPurchasingRepository()
-
-const salesRepo: ISalesRepository =
-  dataSource === 'mock'
-    ? new MockSalesRepository()
-    : new PrismaSalesRepository()
-
-const accountingRepo: IAccountingRepository =
-  dataSource === 'mock'
-    ? new MockAccountingRepository()
-    : new PrismaAccountingRepository()
-
-const dianRepo: IDianRepository =
-  dataSource === 'mock'
-    ? new MockDianRepository()
-    : new PrismaDianRepository()
-
-const payrollRepo: IPayrollRepository =
-  dataSource === 'mock'
-    ? new MockPayrollRepository()
-    : new PrismaPayrollRepository()
-
-const corporateRepo: ICorporateRepository =
-  dataSource === 'mock'
-    ? new MockCorporateRepository()
-    : new PrismaCorporateRepository()
-
-const reportsRepo: IReportsRepository =
-  dataSource === 'mock'
-    ? new MockReportsRepository()
-    : new PrismaReportsRepository()
+// Repositorios con datos de demostración — implementación Prisma pendiente
+const inventoryRepo: IInventoryRepository   = new MockInventoryRepository()
+const productionRepo: IProductionRepository = new MockProductionRepository()
+const purchasingRepo: IPurchasingRepository = new MockPurchasingRepository()
+const salesRepo: ISalesRepository           = new MockSalesRepository()
+const accountingRepo: IAccountingRepository = new MockAccountingRepository()
+const dianRepo: IDianRepository             = new MockDianRepository()
+const payrollRepo: IPayrollRepository       = new MockPayrollRepository()
+const corporateRepo: ICorporateRepository   = new MockCorporateRepository()
+const reportsRepo: IReportsRepository       = new MockReportsRepository()
 
 /**
  * 1. Administración del sistema: Usuarios y perfiles de acceso

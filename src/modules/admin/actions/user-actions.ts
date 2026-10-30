@@ -13,7 +13,7 @@ const createUserSchema = z.object({
   role: z.enum(['ADMIN', 'VENTAS', 'JEFE_PLANTA', 'ALISTAMIENTO']),
   assignedBranch: z.string().min(2, 'La sede es obligatoria'),
   costCenter: z.string().min(2, 'El centro de costo es obligatorio'),
-  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
+  password: z.string().min(8, 'La contraseña debe tener al menos 8 caracteres'),
 })
 
 export type CreateUserInput = z.infer<typeof createUserSchema>
@@ -161,10 +161,10 @@ export async function toggleUserStatusAction(userId: string, currentStatus: bool
  */
 export async function resetPasswordAction(userId: string, newPassword: string): Promise<ActionResult> {
   try {
-    if (!newPassword || newPassword.length < 6) {
+    if (!newPassword || newPassword.length < 8) {
       return {
         success: false,
-        message: 'La nueva contraseña debe tener al menos 6 caracteres',
+        message: 'La nueva contraseña debe tener al menos 8 caracteres',
       }
     }
 

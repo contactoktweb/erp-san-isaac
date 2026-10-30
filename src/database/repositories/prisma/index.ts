@@ -26,13 +26,6 @@ import type {
   ISalesRepository,
 } from '../types'
 
-/**
- * Punto de extensión para la implementación real con Prisma ORM en Fase 2.
- * Al activarse DATA_SOURCE="prisma", se conecta a las tablas definitivas de Supabase.
- */
-function throwNotImplemented(): never {
-  throw new Error('Fuente de datos no implementada todavía')
-}
 
 export class PrismaAdministrationRepository implements IAdministrationRepository {
   async getUsers(): Promise<MockUser[]> {
@@ -107,6 +100,15 @@ export class PrismaAdministrationRepository implements IAdministrationRepository
       return []
     }
   }
+}
+/**
+ * Los repositorios marcados como no implementados lanzan un error explícito.
+ * Los módulos correspondientes están ocultos en la UI y protegidos en el middleware
+ * para usuarios sin el rol requerido, por lo que esta función nunca debería alcanzarse
+ * en un flujo normal de uso.
+ */
+function throwNotImplemented(): never {
+  throw new Error('Fuente de datos no implementada todavía')
 }
 
 export class PrismaInventoryRepository implements IInventoryRepository {

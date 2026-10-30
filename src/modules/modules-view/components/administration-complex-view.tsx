@@ -1068,8 +1068,8 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
                     name="password"
                     type="password"
                     required
-                    minLength={6}
-                    placeholder="Mínimo 6 caracteres"
+                    minLength={8}
+                    placeholder="Mínimo 8 caracteres"
                     className="text-xs"
                   />
                 </div>
@@ -1144,8 +1144,8 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
                   id="new-pass"
                   type="password"
                   required
-                  minLength={6}
-                  placeholder="Ingrese nueva contraseña (mínimo 6 caracteres)"
+                  minLength={8}
+                  placeholder="Ingrese nueva contraseña (mínimo 8 caracteres)"
                   value={resetNewPassword}
                   onChange={(e) => setResetNewPassword(e.target.value)}
                   className="text-xs"
@@ -1168,7 +1168,7 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
                 <Button
                   type="submit"
                   size="sm"
-                  disabled={isSubmitting || resetNewPassword.length < 6}
+                  disabled={isSubmitting || resetNewPassword.length < 8}
                   className="font-semibold"
                 >
                   {isSubmitting ? 'Actualizando...' : 'Restablecer Clave'}
