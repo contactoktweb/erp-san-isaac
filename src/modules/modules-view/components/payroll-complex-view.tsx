@@ -1,5 +1,5 @@
 'use client'
-
+//
 import { useState } from 'react'
 import {
   AlertCircle,
@@ -339,8 +339,8 @@ export function PayrollComplexView({ workers }: PayrollComplexViewProps) {
                       <span className="text-indigo-600 font-bold">
                         {formatCurrency(
                           selectedWorkerDetail.baseSalaryCOP +
-                            (selectedWorkerDetail.transportAllowanceCOP || 0) -
-                            Math.round(selectedWorkerDetail.baseSalaryCOP * 0.08)
+                          (selectedWorkerDetail.transportAllowanceCOP || 0) -
+                          Math.round(selectedWorkerDetail.baseSalaryCOP * 0.08)
                         )}
                       </span>
                     </div>
