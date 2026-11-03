@@ -63,7 +63,10 @@ export async function middleware(req: NextRequest) {
     if (pathname.startsWith(routePrefix)) {
       const hasAccess = allowedRoles.some((r) => r.toUpperCase() === userRole)
       if (!hasAccess) {
-        return NextResponse.redirect(new URL('/dashboard', req.url))
+        const slug = routePrefix.replace('/dashboard/', '')
+        const redirectUrl = new URL('/dashboard', req.url)
+        redirectUrl.searchParams.set('forbidden', slug)
+        return NextResponse.redirect(redirectUrl)
       }
     }
   }
