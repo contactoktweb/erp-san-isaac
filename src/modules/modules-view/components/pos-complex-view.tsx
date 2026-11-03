@@ -293,7 +293,7 @@ export function PosComplexView() {
           <div className="rounded-xl border bg-background p-4 shadow-xs">
             <h3 className="text-sm font-bold text-foreground border-b pb-2 flex items-center justify-between">
               <span>Arqueo Físico y Cierre de Turno de Mostrador</span>
-              <Badge variant="outline">Caja Principal 01 - Funza</Badge>
+              <Badge variant="outline">POS-01 Mostrador Guaduas</Badge>
             </h3>
 
             <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">

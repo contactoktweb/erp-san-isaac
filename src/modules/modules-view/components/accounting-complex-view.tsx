@@ -426,7 +426,7 @@ export function AccountingComplexView({ accounts }: Props) {
                     <td className="px-4 py-2.5 font-mono font-bold text-foreground">5008 (Arrendamientos)</td>
                     <td className="px-4 py-2.5">31 (NIT)</td>
                     <td className="px-4 py-2.5 font-mono">900.542.119-3</td>
-                    <td className="px-4 py-2.5 font-medium text-foreground">Inmobiliaria y Bodegas Funza SAS</td>
+                    <td className="px-4 py-2.5 font-medium text-foreground">Inmobiliaria y Bodegas Guaduas SAS</td>
                     <td className="px-4 py-2.5 font-mono text-right font-medium">$18.500.000</td>
                     <td className="px-4 py-2.5 font-mono text-right font-bold text-rose-600">$647.500</td>
                     <td className="px-4 py-2.5 text-center">

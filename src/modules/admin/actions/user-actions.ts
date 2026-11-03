@@ -107,7 +107,7 @@ export async function createUserAction(formData: FormData): Promise<ActionResult
         name: newUser.name,
         email: newUser.email,
         role: newUser.role.name,
-        assignedBranch: newUser.assignedBranch || 'Planta Principal Funza',
+        assignedBranch: newUser.assignedBranch || 'Planta Principal Guaduas',
         costCenter: newUser.costCenter || 'CC-100 Producción',
         isActive: newUser.isActive,
         createdAt: newUser.createdAt.toISOString(),

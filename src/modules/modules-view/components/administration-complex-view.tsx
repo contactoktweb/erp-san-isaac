@@ -1030,12 +1030,13 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
                     id="user-branch"
                     name="assignedBranch"
                     required
-                    defaultValue="Planta Principal Funza"
+                    defaultValue="Planta Principal Guaduas"
                     className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-xs shadow-xs text-foreground focus-visible:ring-1 focus-visible:ring-ring"
                   >
-                    <option value="Planta Principal Funza">Planta Principal Funza</option>
+                    <option value="Planta Principal Guaduas">Planta Principal Guaduas</option>
                     <option value="Sede Administrativa Bogotá">Sede Administrativa Bogotá</option>
-                    <option value="Bodega Central Funza">Bodega Central Funza</option>
+                    <option value="Bodega Central Guaduas">Bodega Central Guaduas</option>
+                    <option value="Punto de Venta POS-01 Guaduas">Punto de Venta POS-01 Guaduas</option>
                   </select>
                 </div>
               </div>
@@ -1254,7 +1255,7 @@ const THIRD_PARTIES_DEMO = [
     verificationDigit: '1',
     nameOrBusinessName: 'Ecopetrol Refinería Barrancabermeja',
     tradeName: 'Ecopetrol SAS',
-    municipality: 'Funza',
+    municipality: 'Guaduas',
     taxClassification: 'Gran Contribuyente (13)',
     isIvaResponsible: true,
     isWithholdingAgent: true,
@@ -1308,19 +1309,19 @@ const TAX_PARAMS_DEMO = [
   },
   {
     id: 'tax-003',
-    code: 'ICA-FUNZA-7',
-    concept: 'Impuesto de Industria y Comercio Actividad Fabril Velas',
+    code: 'ICA-GUADUAS-4',
+    concept: 'ICA / ReteICA Guaduas — Producción Velas (Acuerdos 36/2020 y 02/2021 Cód. 101)',
     taxType: 'ReteICA',
-    municipality: 'Funza',
-    baseMinCOP: 1050000,
-    ratePercent: 0.7,
-    debitPucAccount: '236801 (ReteICA por pagar)',
+    municipality: 'Guaduas',
+    baseMinCOP: 0,
+    ratePercent: 0.4,
+    debitPucAccount: '241205 / 236801 (ReteICA Guaduas)',
     creditPucAccount: '135518 (ReteICA a favor)',
   },
   {
     id: 'tax-004',
-    code: 'AUT-RENTA-0.8',
-    concept: 'Autorretención Especial en Renta (Decreto 1625)',
+    code: 'AUT-RENTA-0.4',
+    concept: 'Autorretención Especial en Renta (Decreto 1625 - CIIU 3290)',
     taxType: 'Autorretención Renta',
     municipality: 'Nacional',
     baseMinCOP: 0,

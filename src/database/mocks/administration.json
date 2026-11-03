@@ -4,7 +4,7 @@
     "name": "Carlos Alberto Méndez",
     "email": "carlos.mendez@vvcsanisaac.com",
     "role": "JEFE_PLANTA",
-    "assignedBranch": "Planta Principal Funza",
+    "assignedBranch": "Planta Principal Guaduas",
     "costCenter": "CC-100 Producción",
     "isActive": true,
     "createdAt": "2026-01-10T08:00:00.000Z"
@@ -24,7 +24,7 @@
     "name": "Jorge Eliécer Duarte",
     "email": "jorge.duarte@vvcsanisaac.com",
     "role": "JEFE_PLANTA",
-    "assignedBranch": "Bodega Central Funza",
+    "assignedBranch": "Bodega Central Guaduas",
     "costCenter": "CC-300 Logística",
     "isActive": true,
     "createdAt": "2026-01-15T07:45:00.000Z"
@@ -44,7 +44,7 @@
     "name": "Héctor Fabio Benítez",
     "email": "hector.benitez@vvcsanisaac.com",
     "role": "ALISTAMIENTO",
-    "assignedBranch": "Planta Principal Funza",
+    "assignedBranch": "Planta Principal Guaduas",
     "costCenter": "CC-100 Producción",
     "isActive": true,
     "createdAt": "2026-02-01T06:00:00.000Z"
@@ -64,7 +64,7 @@
     "name": "Andrés Mauricio Cárdenas",
     "email": "andres.cardenas@vvcsanisaac.com",
     "role": "ALISTAMIENTO",
-    "assignedBranch": "Planta Principal Funza",
+    "assignedBranch": "Planta Principal Guaduas",
     "costCenter": "CC-100 Producción",
     "isActive": false,
     "createdAt": "2026-02-15T11:00:00.000Z"
@@ -74,7 +74,7 @@
     "name": "Claudia Marcela Osorio",
     "email": "claudia.osorio@vvcsanisaac.com",
     "role": "ADMIN",
-    "assignedBranch": "Planta Principal Funza",
+    "assignedBranch": "Planta Principal Guaduas",
     "costCenter": "CC-200 Administración",
     "isActive": true,
     "createdAt": "2026-03-01T09:00:00.000Z"

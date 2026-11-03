@@ -39,7 +39,7 @@ export class PrismaAdministrationRepository implements IAdministrationRepository
         name: u.name,
         email: u.email,
         role: u.role.name,
-        assignedBranch: u.assignedBranch || 'Planta Principal Funza',
+        assignedBranch: u.assignedBranch || 'Planta Principal Guaduas',
         costCenter: u.costCenter || 'CC-100 Producción',
         isActive: u.isActive,
         createdAt: u.createdAt.toISOString(),

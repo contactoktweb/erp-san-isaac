@@ -173,7 +173,7 @@ async function main() {
       name: 'Carlos Alberto Méndez',
       email: 'carlos.mendez@vvcsanisaac.com',
       role: 'JEFE_PLANTA',
-      assignedBranch: 'Planta Principal Funza',
+      assignedBranch: 'Planta Principal Guaduas',
       costCenter: 'CC-100 Producción',
     },
     {
@@ -187,7 +187,7 @@ async function main() {
       name: 'Jorge Eliécer Duarte',
       email: 'jorge.duarte@vvcsanisaac.com',
       role: 'ALISTAMIENTO',
-      assignedBranch: 'Bodega Central Funza',
+      assignedBranch: 'Bodega Central Guaduas',
       costCenter: 'CC-300 Logística',
     },
   ]

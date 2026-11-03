@@ -93,7 +93,7 @@ export function PayrollComplexView({ workers }: PayrollComplexViewProps) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-foreground">{workers.length} trabajadores</div>
-            <p className="text-xs text-muted-foreground mt-1">Planta Bogotá y Funza</p>
+            <p className="text-xs text-muted-foreground mt-1">Planta Guaduas y Sede Bogotá</p>
           </CardContent>
         </Card>
 

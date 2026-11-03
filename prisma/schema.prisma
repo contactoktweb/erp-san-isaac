@@ -46,7 +46,7 @@ model User {
   email          String     @unique
   passwordHash   String
   isActive       Boolean    @default(true)
-  assignedBranch String?    @default("Planta Principal Funza")
+  assignedBranch String?    @default("Planta Principal Guaduas")
   costCenter     String?    @default("CC-100 Producción")
   roleId         String
   role           Role       @relation(fields: [roleId], references: [id])

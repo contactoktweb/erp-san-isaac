@@ -8,7 +8,7 @@ export const mockUserSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   role: z.string(),
-  assignedBranch: z.string().optional().default('Planta Principal Funza'),
+  assignedBranch: z.string().optional().default('Planta Principal Guaduas'),
   costCenter: z.string().optional().default('CC-100 Producción'),
   isActive: z.boolean(),
   createdAt: z.string(),

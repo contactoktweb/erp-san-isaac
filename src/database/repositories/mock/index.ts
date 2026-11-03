@@ -98,7 +98,7 @@ const MOCK_AUDIT_LOGS: AuditLogEntry[] = [
     entity: 'RolePermission',
     entityId: 'role-ventas',
     details: 'Asignación de permiso orders.reprogram con justificación obligatoria a rol VENTAS',
-    ipAddress: '190.14.88.50 (Funza)',
+    ipAddress: '190.14.88.50 (Guaduas)',
     userId: 'usr-admin',
     userName: 'Administrador San Isaac',
     createdAt: '2026-10-26T16:45:00.000Z',
