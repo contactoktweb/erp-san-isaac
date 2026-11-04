@@ -45,7 +45,7 @@
   },
   {
     "id": "acc-005",
-    "code": "143001",
+    "code": "143005",
     "name": "Inventario de Producto Terminado - Velas y Cirios",
     "accountType": "Activo",
     "debitCOP": 54200000,
@@ -89,12 +89,12 @@
   },
   {
     "id": "acc-009",
-    "code": "412035",
+    "code": "412095",
     "name": "Ingresos Operacionales - Venta Fabricación Velas",
     "accountType": "Ingresos",
     "debitCOP": 0,
-    "creditCOP": 114450000,
-    "currentBalanceCOP": -114450000,
+    "creditCOP": 300877750,
+    "currentBalanceCOP": -300877750,
     "costCenter": "CC-400 Ventas",
     "lastUpdated": "2026-03-05T18:00:00.000Z"
   },
@@ -188,7 +188,7 @@
   },
   {
     "id": "acc-018",
-    "code": "612035",
+    "code": "612095",
     "name": "Costo de Ventas - Fabricación y Venta de Velas",
     "accountType": "Costos de producción",
     "debitCOP": 56800000,

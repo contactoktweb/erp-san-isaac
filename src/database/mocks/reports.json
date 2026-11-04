@@ -114,7 +114,7 @@
     "reportCode": "REP-TRI-11",
     "title": "Reportes y Certificados Tributarios Nacionales y Distritales",
     "category": "Contable y Fiscal",
-    "description": "Certificados de Retención en la fuente Formulario 220, Borrador IVA Bimestral Form. 300, ReteICA Bogotá y Prevalidador de Medios Magnéticos DIAN (Formatos 1001, 1003, 1007).",
+    "description": "Certificados de Retención en la fuente Formulario 220, Borrador IVA Bimestral Form. 300, ICA / ReteICA Guaduas (Cundinamarca) y Prevalidador de Medios Magnéticos DIAN (Formatos 1001, 1003, 1007).",
     "frequency": "Bimestral / Anual",
     "exportFormats": ["PDF", "Excel", "XML DIAN"],
     "authorizedRole": "Contador / Asesor Tributario",
