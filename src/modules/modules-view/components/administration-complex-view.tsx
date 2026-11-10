@@ -891,7 +891,7 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
               </div>
               <div>
                 <div className="text-xs font-medium text-muted-foreground">Última Ejecución</div>
-                <div className="text-sm font-bold text-foreground">Hoy 02:00:15 AM (UTC-5)</div>
+                <div className="text-sm font-bold text-foreground">Hoy 23:59:05 (UTC-5)</div>
               </div>
             </div>
 
@@ -901,7 +901,7 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
               </div>
               <div>
                 <div className="text-xs font-medium text-muted-foreground">Destino Externo Configurado</div>
-                <div className="text-sm font-bold text-foreground truncate">Google Drive: gerencia@velassanisaac.com</div>
+                <div className="text-sm font-bold text-foreground truncate">centro_operacional@vvcsanisaac.com</div>
               </div>
             </div>
           </div>
@@ -910,7 +910,7 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
             <div className="flex items-center justify-between border-b pb-3">
               <div>
                 <h4 className="text-sm font-semibold text-foreground">Registro de Trazabilidad de Respaldos (Numeral 24)</h4>
-                <p className="text-xs text-muted-foreground">Ejecución nocturna diaria: Supabase Postgres dump comprimido + upload a Google Drive</p>
+                <p className="text-xs text-muted-foreground">Cron job diario 23:59 · Nomenclatura: AÑO-MES-DIA_BACKUP-ERP_DETALLE.sql.gz · Destino: centro_operacional@vvcsanisaac.com</p>
               </div>
               <Button size="sm" variant="outline" className="text-xs gap-1.5">
                 <RefreshCw className="size-3.5" /> Forzar Backup Ahora
@@ -921,7 +921,7 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
               <div className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-emerald-500" />
-                  <span className="font-mono font-semibold">backup_san_isaac_20261027_0200.sql.gz</span>
+                  <span className="font-mono font-semibold">2026-10-27_BACKUP-ERP_COMPLETO.sql.gz</span>
                   <Badge variant="muted" className="text-[0.625rem]">42.8 MB</Badge>
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
@@ -934,7 +934,7 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
               <div className="flex items-center justify-between py-2">
                 <div className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-emerald-500" />
-                  <span className="font-mono font-semibold">backup_san_isaac_20261026_0200.sql.gz</span>
+                  <span className="font-mono font-semibold">2026-10-26_BACKUP-ERP_COMPLETO.sql.gz</span>
                   <Badge variant="muted" className="text-[0.625rem]">41.5 MB</Badge>
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
@@ -1293,7 +1293,7 @@ const TAX_PARAMS_DEMO = [
     municipality: 'Nacional',
     baseMinCOP: 0,
     ratePercent: 19,
-    debitPucAccount: '135515 (Anticipo)',
+    debitPucAccount: '240802 (IVA Descontable)',
     creditPucAccount: '240801 (IVA Generado)',
   },
   {
@@ -1325,7 +1325,7 @@ const TAX_PARAMS_DEMO = [
     taxType: 'Autorretención Renta',
     municipality: 'Nacional',
     baseMinCOP: 0,
-    ratePercent: 0.8,
+    ratePercent: 0.40,
     debitPucAccount: '135595 (Autorretención a favor)',
     creditPucAccount: '236575 (Autorretención por pagar)',
   },
@@ -1335,14 +1335,14 @@ const CONSECUTIVES_DEMO = [
   {
     id: 'con-001',
     documentType: 'Factura Electrónica de Venta',
-    prefix: 'FEV',
-    rangeFrom: 1,
-    rangeTo: 5000,
-    currentNumber: 4820,
-    dianResolution: 'Res. 187640002158 del 2025-11-15',
-    expirationDate: '2026-11-15T00:00:00.000Z',
-    remainingDays: 19,
-    usedPercentage: 96, // > 90% folios -> Alerta
+    prefix: 'FEDV',
+    rangeFrom: 135,
+    rangeTo: 2000,
+    currentNumber: 135,
+    dianResolution: 'Autorización 18764084314318',
+    expirationDate: '2026-11-28T00:00:00.000Z',
+    remainingDays: 18,
+    usedPercentage: 0,
   },
   {
     id: 'con-002',
@@ -1353,7 +1353,7 @@ const CONSECUTIVES_DEMO = [
     currentNumber: 310,
     dianResolution: 'Res. 187640009941 del 2026-01-20',
     expirationDate: '2027-01-20T00:00:00.000Z',
-    remainingDays: 85,
+    remainingDays: 71,
     usedPercentage: 15,
   },
   {
@@ -1364,8 +1364,8 @@ const CONSECUTIVES_DEMO = [
     rangeTo: 10000,
     currentNumber: 1450,
     dianResolution: 'Res. 187640003310 del 2026-02-10',
-    expirationDate: '2026-11-05T00:00:00.000Z',
-    remainingDays: 9, // <= 15 días -> Alerta
+    expirationDate: '2027-02-10T00:00:00.000Z',
+    remainingDays: 92,
     usedPercentage: 14,
   },
 ]

@@ -244,13 +244,9 @@ export function PurchasingComplexView({ orders }: Props) {
                   <span>- ReteICA Guaduas (0.4% - Acuerdos 36/20 y 02/21):</span>
                   <span className="font-mono font-bold">-$340.000</span>
                 </div>
-                <div className="py-2 flex justify-between text-rose-600 dark:text-rose-400">
-                  <span>- Autorretención Especial Renta (0.4% - Dec. 1625):</span>
-                  <span className="font-mono font-bold">-$340.000</span>
-                </div>
                 <div className="py-2.5 flex justify-between font-bold text-foreground bg-muted/30 px-2 rounded">
                   <span>Total Neto por Pagar (Cuenta 2205 Proveedores):</span>
-                  <span className="font-mono text-sm text-primary">$98.000.000</span>
+                  <span className="font-mono text-sm text-primary">$98.685.000</span>
                 </div>
               </div>
             </div>
