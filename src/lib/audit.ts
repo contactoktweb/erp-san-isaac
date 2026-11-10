@@ -1,5 +1,3 @@
-import { prisma } from '@/lib/prisma'
-
 export interface RecordAuditParams {
   action: string
   entity: string
@@ -11,10 +9,16 @@ export interface RecordAuditParams {
 }
 
 /**
- * Registra una acción en la bitácora inmutable de auditoría del sistema
+ * Registra una acción en la bitácora inmutable de auditoría del sistema.
+ * En producción (NODE_ENV === 'production') el log se omite silenciosamente
+ * ya que no hay conexión a base de datos disponible.
  */
 export async function recordAuditLog(params: RecordAuditParams): Promise<void> {
+  // En producción no hay BD disponible; se omite sin lanzar error
+  if (process.env.NODE_ENV === 'production') return
+
   try {
+    const { prisma } = await import('@/lib/prisma')
     await prisma.auditLog.create({
       data: {
         action: params.action,

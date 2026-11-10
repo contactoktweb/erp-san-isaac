@@ -3,9 +3,17 @@
 import { revalidatePath } from 'next/cache'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
-import { prisma } from '@/lib/prisma'
 import { recordAuditLog } from '@/lib/audit'
 import type { MockUser } from '@/database/schemas'
+
+// Prisma solo se importa en desarrollo; en producción estas acciones no deben ejecutarse
+async function getPrisma() {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('[user-actions] Las acciones de administración no están disponibles en producción.')
+  }
+  const { prisma } = await import('@/lib/prisma')
+  return prisma
+}
 
 const createUserSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -49,6 +57,7 @@ export async function createUserAction(formData: FormData): Promise<ActionResult
     }
 
     const { name, email, role: roleName, assignedBranch, costCenter, password } = parsed.data
+    const prisma = await getPrisma()
 
     // Verificar si el correo ya existe
     const existing = await prisma.user.findUnique({ where: { email } })
@@ -127,6 +136,7 @@ export async function createUserAction(formData: FormData): Promise<ActionResult
  */
 export async function toggleUserStatusAction(userId: string, currentStatus: boolean): Promise<ActionResult> {
   try {
+    const prisma = await getPrisma()
     const updated = await prisma.user.update({
       where: { id: userId },
       data: { isActive: !currentStatus },
@@ -170,6 +180,7 @@ export async function resetPasswordAction(userId: string, newPassword: string): 
 
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(newPassword, saltRounds)
+    const prisma = await getPrisma()
 
     const updated = await prisma.user.update({
       where: { id: userId },

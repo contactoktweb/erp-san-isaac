@@ -53,8 +53,12 @@ import type {
 export * from './schemas'
 export * from './repositories/types'
 
-// Fuente de datos determinada por variable de entorno
-const dataSource = (process.env.DATA_SOURCE || 'mock').toLowerCase()
+// Fuente de datos: en producción siempre mock, en desarrollo usa DATA_SOURCE
+// (Supabase/Prisma queda exclusivo para el entorno local del desarrollador)
+const dataSource =
+  process.env.NODE_ENV === 'production'
+    ? 'mock'
+    : (process.env.DATA_SOURCE || 'mock').toLowerCase()
 
 
 /**

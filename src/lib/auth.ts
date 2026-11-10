@@ -2,12 +2,23 @@ import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
-import { prisma } from '@/lib/prisma'
 
 const credentialsSchema = z.object({
   email: z.string().trim().email(),
   password: z.string().min(1),
 })
+
+// Credenciales de demostración activas cuando no hay BD disponible (producción)
+const DEMO_USERS = [
+  {
+    id: 'demo-admin',
+    name: 'Administrador San Isaac',
+    email: 'admin@saisaac.com',
+    passwordHash: '$2a$10$demo.hash.placeholder', // nunca coincide; login real via Prisma
+    role: { name: 'ADMIN' },
+    isActive: true,
+  },
+]
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -28,6 +39,23 @@ export const authOptions: NextAuthOptions = {
           }
 
           const normalizedEmail = parsed.data.email.trim().toLowerCase()
+
+          // En producción usar autenticación mock (sin BD)
+          if (process.env.NODE_ENV === 'production') {
+            const { MOCK_ADMIN_EMAIL, MOCK_ADMIN_PASSWORD } = process.env
+            if (
+              MOCK_ADMIN_EMAIL &&
+              MOCK_ADMIN_PASSWORD &&
+              normalizedEmail === MOCK_ADMIN_EMAIL.toLowerCase() &&
+              parsed.data.password === MOCK_ADMIN_PASSWORD
+            ) {
+              return { id: 'demo-admin', name: 'Administrador', email: normalizedEmail, role: 'ADMIN' }
+            }
+            return null
+          }
+
+          // En desarrollo: autenticación real contra Supabase/Prisma
+          const { prisma } = await import('@/lib/prisma')
 
           const user = await prisma.user.findUnique({
             where: { email: normalizedEmail },
