@@ -28,24 +28,30 @@ export const authOptions: NextAuthOptions = {
 
           const normalizedEmail = parsed.data.email.trim().toLowerCase()
 
-          // En producción: validar contra las credenciales de entorno (sin BD)
-          // La BD real se habilitará cuando DATA_SOURCE="prisma" esté activo en producción
-          if (process.env.DATA_SOURCE !== 'prisma') {
-            const adminEmail = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase()
-            const adminPassword = process.env.SEED_ADMIN_PASSWORD
+          // Misma lógica que database/index.ts:
+          // en producción SIEMPRE usa mock, en desarrollo respeta DATA_SOURCE
+          const dataSource =
+            process.env.NODE_ENV === 'production'
+              ? 'mock'
+              : (process.env.DATA_SOURCE || 'mock').toLowerCase()
 
-            if (
-              adminEmail &&
-              adminPassword &&
-              normalizedEmail === adminEmail &&
-              parsed.data.password === adminPassword
-            ) {
-              return { id: 'prod-admin', name: 'Administrador', email: normalizedEmail, role: 'ADMIN' }
+          if (dataSource !== 'prisma') {
+            // Autenticación mock: comparar contra variables de entorno
+            const adminEmail = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase()
+            const adminPassword = process.env.SEED_ADMIN_PASSWORD?.trim()
+
+            if (!adminEmail || !adminPassword) {
+              console.error('[NextAuth] SEED_ADMIN_EMAIL o SEED_ADMIN_PASSWORD no están configuradas.')
+              return null
+            }
+
+            if (normalizedEmail === adminEmail && parsed.data.password.trim() === adminPassword) {
+              return { id: 'prod-admin', name: 'Administrador San Isaac', email: normalizedEmail, role: 'ADMIN' }
             }
             return null
           }
 
-          // En desarrollo (DATA_SOURCE="prisma"): autenticación real contra Supabase/Prisma
+          // dataSource === 'prisma' (solo en desarrollo local)
           const { prisma } = await import('@/lib/prisma')
 
           const user = await prisma.user.findUnique({
