@@ -8,18 +8,6 @@ const credentialsSchema = z.object({
   password: z.string().min(1),
 })
 
-// Credenciales de demostración activas cuando no hay BD disponible (producción)
-const DEMO_USERS = [
-  {
-    id: 'demo-admin',
-    name: 'Administrador San Isaac',
-    email: 'admin@saisaac.com',
-    passwordHash: '$2a$10$demo.hash.placeholder', // nunca coincide; login real via Prisma
-    role: { name: 'ADMIN' },
-    isActive: true,
-  },
-]
-
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
@@ -40,21 +28,24 @@ export const authOptions: NextAuthOptions = {
 
           const normalizedEmail = parsed.data.email.trim().toLowerCase()
 
-          // En producción usar autenticación mock (sin BD)
-          if (process.env.NODE_ENV === 'production') {
-            const { MOCK_ADMIN_EMAIL, MOCK_ADMIN_PASSWORD } = process.env
+          // En producción: validar contra las credenciales de entorno (sin BD)
+          // La BD real se habilitará cuando DATA_SOURCE="prisma" esté activo en producción
+          if (process.env.DATA_SOURCE !== 'prisma') {
+            const adminEmail = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase()
+            const adminPassword = process.env.SEED_ADMIN_PASSWORD
+
             if (
-              MOCK_ADMIN_EMAIL &&
-              MOCK_ADMIN_PASSWORD &&
-              normalizedEmail === MOCK_ADMIN_EMAIL.toLowerCase() &&
-              parsed.data.password === MOCK_ADMIN_PASSWORD
+              adminEmail &&
+              adminPassword &&
+              normalizedEmail === adminEmail &&
+              parsed.data.password === adminPassword
             ) {
-              return { id: 'demo-admin', name: 'Administrador', email: normalizedEmail, role: 'ADMIN' }
+              return { id: 'prod-admin', name: 'Administrador', email: normalizedEmail, role: 'ADMIN' }
             }
             return null
           }
 
-          // En desarrollo: autenticación real contra Supabase/Prisma
+          // En desarrollo (DATA_SOURCE="prisma"): autenticación real contra Supabase/Prisma
           const { prisma } = await import('@/lib/prisma')
 
           const user = await prisma.user.findUnique({
