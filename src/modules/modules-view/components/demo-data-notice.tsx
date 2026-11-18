@@ -14,7 +14,7 @@ export function DemoDataNotice({ entityName }: { entityName: string }) {
         </span>
       </div>
       <span className="hidden shrink-0 rounded border border-border/80 bg-background px-2 py-0.5 font-mono text-[0.6875rem] font-medium text-foreground sm:inline-block">
-        Fase 1 · Solo lectura
+        Fase 2 · Solo lectura
       </span>
     </div>
   )

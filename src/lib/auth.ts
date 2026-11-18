@@ -86,7 +86,7 @@ export const authOptions: NextAuthOptions = {
                 ipAddress: '127.0.0.1 (Web Session)',
               },
             })
-          } catch {}
+          } catch { }
 
           return {
             id: user.id,

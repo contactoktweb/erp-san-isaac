@@ -42,12 +42,12 @@ export function ModuleFunctions({ functions }: { functions: ModuleFunction[] }) 
                 {isAvailable ? (
                   <>
                     <CheckCircle2 className="size-3.5 text-emerald-600" aria-hidden="true" />
-                    <span className="font-medium text-emerald-700">Operativo en Fase 1</span>
+                    <span className="font-medium text-emerald-700">Operativo en Fase 2</span>
                   </>
                 ) : (
                   <>
                     <Clock className="size-3.5 text-muted-foreground" aria-hidden="true" />
-                    <span>Construcción en Fase 2</span>
+                    <span>En construcción · Fase 3</span>
                   </>
                 )}
               </div>
