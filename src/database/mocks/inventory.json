@@ -12,7 +12,8 @@
     "currentStock": 4500,
     "minimumStock": 1000,
     "warehouseLocation": "Bodega 1 - Materias Primas",
-    "unitCostCOP": 9800
+    "unitCostCOP": 9800,
+    "pucAccount": "140501 - Materia Prima"
   },
   {
     "id": "inv-002",
@@ -27,7 +28,8 @@
     "currentStock": 2800,
     "minimumStock": 800,
     "warehouseLocation": "Bodega 1 - Materias Primas",
-    "unitCostCOP": 12400
+    "unitCostCOP": 12400,
+    "pucAccount": "140501 - Materia Prima"
   },
   {
     "id": "inv-003",
@@ -42,7 +44,8 @@
     "currentStock": 600,
     "minimumStock": 250,
     "warehouseLocation": "Bodega 1 - Materias Primas",
-    "unitCostCOP": 16500
+    "unitCostCOP": 16500,
+    "pucAccount": "140501 - Materia Prima"
   },
   {
     "id": "inv-004",
@@ -57,7 +60,8 @@
     "currentStock": 1250,
     "minimumStock": 300,
     "warehouseLocation": "Bodega 1 - Materias Primas",
-    "unitCostCOP": 10200
+    "unitCostCOP": 10200,
+    "pucAccount": "140501 - Materia Prima"
   },
   {
     "id": "inv-005",
@@ -72,7 +76,8 @@
     "currentStock": 14000,
     "minimumStock": 3000,
     "warehouseLocation": "Bodega 2 - Insumos Menores",
-    "unitCostCOP": 220
+    "unitCostCOP": 220,
+    "pucAccount": "145525 - Insumos"
   },
   {
     "id": "inv-006",
@@ -87,7 +92,8 @@
     "currentStock": 84,
     "minimumStock": 20,
     "warehouseLocation": "Bodega 2 - Insumos Químicos",
-    "unitCostCOP": 68000
+    "unitCostCOP": 68000,
+    "pucAccount": "145525 - Insumos"
   },
   {
     "id": "inv-007",
@@ -102,7 +108,8 @@
     "currentStock": 1820,
     "minimumStock": 500,
     "warehouseLocation": "Bodega 3 - Despachos",
-    "unitCostCOP": 4150
+    "unitCostCOP": 4150,
+    "pucAccount": "143005 - Producto Terminado"
   },
   {
     "id": "inv-008",
@@ -117,7 +124,8 @@
     "currentStock": 145,
     "minimumStock": 40,
     "warehouseLocation": "Bodega 3 - Despachos Especiales",
-    "unitCostCOP": 74000
+    "unitCostCOP": 74000,
+    "pucAccount": "143005 - Producto Terminado"
   },
   {
     "id": "inv-009",
@@ -132,7 +140,8 @@
     "currentStock": 3200,
     "minimumStock": 800,
     "warehouseLocation": "Bodega 3 - Despachos",
-    "unitCostCOP": 850
+    "unitCostCOP": 850,
+    "pucAccount": "143005 - Producto Terminado"
   },
   {
     "id": "inv-010",
@@ -147,7 +156,8 @@
     "currentStock": 960,
     "minimumStock": 300,
     "warehouseLocation": "Bodega 3 - Despachos",
-    "unitCostCOP": 5200
+    "unitCostCOP": 5200,
+    "pucAccount": "143005 - Producto Terminado"
   },
   {
     "id": "inv-011",
@@ -163,7 +173,7 @@
     "minimumStock": 100,
     "warehouseLocation": "Área de Pailas y Fundición (Planta)",
     "unitCostCOP": 10500,
-    "pucAccount": "141001 - Productos en proceso"
+    "pucAccount": "141001 - Producto en Proceso"
   },
   {
     "id": "inv-012",
@@ -179,21 +189,86 @@
     "minimumStock": 50,
     "warehouseLocation": "Área de Moldeo y Troquelado",
     "unitCostCOP": 48000,
-    "pucAccount": "141001 - Productos en proceso"
+    "pucAccount": "141001 - Producto en Proceso"
   },
   {
     "id": "inv-013",
-    "sku": "MP-PAB-001",
+    "sku": "INS-PAB-024",
     "name": "Pabilo de Algodón Trenzado Calibre 24",
-    "category": "Materia prima",
+    "category": "Insumo",
     "baseUnit": "metro",
     "commercialPresentation": "Carrete x 500 metros",
     "baseUnitEquivalent": 500,
-    "batchNumber": "LOT-MP-2026-008",
+    "batchNumber": "LOT-INS-2026-008",
     "productionDate": "2026-01-15T00:00:00.000Z",
     "currentStock": 220,
     "minimumStock": 200,
-    "warehouseLocation": "Bodega 1 - Materias Primas",
-    "unitCostCOP": 180
+    "warehouseLocation": "Bodega 2 - Insumos Menores",
+    "unitCostCOP": 180,
+    "pucAccount": "145525 - Insumos"
+  },
+  {
+    "id": "inv-014",
+    "sku": "INS-COL-001",
+    "name": "Colorante Liposoluble Amarillo y Rojo Litúrgico",
+    "category": "Insumo",
+    "baseUnit": "kg",
+    "commercialPresentation": "Tarro x 5 kg",
+    "baseUnitEquivalent": 5,
+    "batchNumber": "LOT-INS-2026-031",
+    "productionDate": "2026-02-14T00:00:00.000Z",
+    "currentStock": 35,
+    "minimumStock": 10,
+    "warehouseLocation": "Bodega 2 - Insumos Químicos",
+    "unitCostCOP": 54000,
+    "pucAccount": "145525 - Insumos"
+  },
+  {
+    "id": "inv-015",
+    "sku": "EMP-VAS-001",
+    "name": "Vaso Vidrio / Termoformado para Velón 3 Días",
+    "category": "Insumo",
+    "baseUnit": "unidad",
+    "commercialPresentation": "Caja x 100 unidades",
+    "baseUnitEquivalent": 100,
+    "batchNumber": "LOT-EMP-2026-011",
+    "productionDate": "2026-02-12T00:00:00.000Z",
+    "currentStock": 3200,
+    "minimumStock": 800,
+    "warehouseLocation": "Bodega 4 - Envases y Empaques",
+    "unitCostCOP": 420,
+    "pucAccount": "146001 - Envases y Empaques"
+  },
+  {
+    "id": "inv-016",
+    "sku": "EMP-CAJ-024",
+    "name": "Caja Corrugada Impresa San Isaac x 24 Velones",
+    "category": "Insumo",
+    "baseUnit": "unidad",
+    "commercialPresentation": "Atado x 50 cajas",
+    "baseUnitEquivalent": 50,
+    "batchNumber": "LOT-EMP-2026-019",
+    "productionDate": "2026-02-20T00:00:00.000Z",
+    "currentStock": 950,
+    "minimumStock": 250,
+    "warehouseLocation": "Bodega 4 - Envases y Empaques",
+    "unitCostCOP": 1350,
+    "pucAccount": "146001 - Envases y Empaques"
+  },
+  {
+    "id": "inv-017",
+    "sku": "EMP-ETQ-001",
+    "name": "Celofán Protector y Etiquetas Litúrgicas Adhesivas",
+    "category": "Insumo",
+    "baseUnit": "unidad",
+    "commercialPresentation": "Rollo x 1.000 unidades",
+    "baseUnitEquivalent": 1000,
+    "batchNumber": "LOT-EMP-2026-025",
+    "productionDate": "2026-02-24T00:00:00.000Z",
+    "currentStock": 6500,
+    "minimumStock": 1500,
+    "warehouseLocation": "Bodega 4 - Envases y Empaques",
+    "unitCostCOP": 65,
+    "pucAccount": "146001 - Envases y Empaques"
   }
 ]

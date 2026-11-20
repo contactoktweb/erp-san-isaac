@@ -1,44 +1,201 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   AlertCircle,
   AlertTriangle,
   BookOpen,
   CheckCircle2,
-  FileCheck2,
   FileSpreadsheet,
-  FileText,
   Landmark,
   Layers,
   Lock,
   Plus,
   Scale,
   Search,
-  Sparkles,
 } from 'lucide-react'
+import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  DateRangeFilter,
+  getCurrentMonthRange,
+  isWithinRange,
+  type DateRange,
+} from '@/components/ui/date-range-filter'
+import { Input } from '@/components/ui/input'
 import type { AccountEntry } from '@/database/schemas'
-import { formatCurrency, formatDate, formatNumber } from '@/lib/config'
+import { formatCurrency, formatDate } from '@/lib/config'
+import { FISCAL_PARAMETERS } from '@/lib/fiscal-parameters'
+import { INITIAL_VOUCHERS } from './accounting/accounting-data'
+import {
+  getAccountTypeBadgeVariant,
+  inferPucAccountType,
+} from './accounting/accounting-helpers'
+import { BankReconciliationPanel } from './accounting/bank-reconciliation-panel'
+import { CostStatementPanel } from './accounting/cost-statement-panel'
+import { ExogenaPanel } from './accounting/exogena-panel'
+import { FinancialStatementsNiif } from './accounting/financial-statements-niif'
+import { PucJournalModal } from './accounting/puc-journal-modal'
+import type { ExtendedAccountEntry, JournalVoucher } from './accounting/types'
 
 interface Props {
   accounts: AccountEntry[]
 }
 
-export function AccountingComplexView({ accounts }: Props) {
-  const [activeTab, setActiveTab] = useState<'puc' | 'costStatement' | 'bankReconciliation' | 'exogena'>('puc')
+type AccountingTab = 'puc' | 'costStatement' | 'bankReconciliation' | 'exogena'
 
-  // Totalizadores de partida doble para el PUC
-  const totalDebits = accounts.reduce((acc, a) => acc + a.debitCOP, 0)
-  const totalCredits = accounts.reduce((acc, a) => acc + a.creditCOP, 0)
-  const isDoubleEntryBalanced = totalDebits === totalCredits
+export function AccountingComplexView({ accounts }: Props) {
+  const [activeTab, setActiveTab] = useState<AccountingTab>('puc')
+  const [localAccounts, setLocalAccounts] = useState<ExtendedAccountEntry[]>(
+    () => accounts as ExtendedAccountEntry[]
+  )
+  const [vouchers, setVouchers] = useState<JournalVoucher[]>(INITIAL_VOUCHERS)
   const [isFiscalPeriodClosed, setIsFiscalPeriodClosed] = useState<boolean>(false)
+  const [showNiifStatements, setShowNiifStatements] = useState<boolean>(false)
+  const [isJournalModalOpen, setIsJournalModalOpen] = useState<boolean>(false)
+
+  const [pucSearchQuery, setPucSearchQuery] = useState<string>('')
+  const [pucDateRange, setPucDateRange] = useState<DateRange>(() => {
+    const current = getCurrentMonthRange()
+    const fiscalStart = `${FISCAL_PARAMETERS.fiscalYear}-01-01`
+    return {
+      from: fiscalStart,
+      to: current.to >= fiscalStart ? current.to : `${FISCAL_PARAMETERS.fiscalYear}-12-31`,
+    }
+  })
+
+  // Totalizadores globales de partida doble
+  const allDebits = useMemo(
+    () => localAccounts.reduce((acc, item) => acc + item.debitCOP, 0),
+    [localAccounts]
+  )
+  const allCredits = useMemo(
+    () => localAccounts.reduce((acc, item) => acc + item.creditCOP, 0),
+    [localAccounts]
+  )
+  const isGlobalBalanced = allDebits === allCredits && allDebits > 0
+
+  // Cuentas filtradas por rango de fechas y buscador de cuenta/tercero
+  const filteredAccounts = useMemo(() => {
+    const q = pucSearchQuery.trim().toLowerCase()
+    return localAccounts.filter((acc) => {
+      if (!isWithinRange(acc.lastUpdated, pucDateRange)) return false
+      if (!q) return true
+      return (
+        acc.code.toLowerCase().includes(q) ||
+        acc.name.toLowerCase().includes(q) ||
+        acc.accountType.toLowerCase().includes(q) ||
+        acc.costCenter.toLowerCase().includes(q) ||
+        (acc.thirdParty ?? '').toLowerCase().includes(q)
+      )
+    })
+  }, [localAccounts, pucDateRange, pucSearchQuery])
+
+  const filteredVouchers = useMemo(() => {
+    const q = pucSearchQuery.trim().toLowerCase()
+    return vouchers.filter((voucher) => {
+      if (!isWithinRange(voucher.date, pucDateRange)) return false
+      if (!q) return true
+      return (
+        voucher.voucherNumber.toLowerCase().includes(q) ||
+        voucher.description.toLowerCase().includes(q) ||
+        voucher.type.toLowerCase().includes(q) ||
+        voucher.lines.some(
+          (line) =>
+            line.accountCode.toLowerCase().includes(q) ||
+            line.accountName.toLowerCase().includes(q) ||
+            line.thirdParty.toLowerCase().includes(q)
+        )
+      )
+    })
+  }, [vouchers, pucDateRange, pucSearchQuery])
+
+  const filteredDebits = useMemo(
+    () => filteredAccounts.reduce((acc, item) => acc + item.debitCOP, 0),
+    [filteredAccounts]
+  )
+  const filteredCredits = useMemo(
+    () => filteredAccounts.reduce((acc, item) => acc + item.creditCOP, 0),
+    [filteredAccounts]
+  )
+  const isFilteredBalanced = filteredDebits === filteredCredits
+
+  const nextVoucherNumber = `CD-${FISCAL_PARAMETERS.fiscalYear}-${String(40 + vouchers.length).padStart(3, '0')}`
+
+  const handleTogglePeriodLock = () => {
+    const nextState = !isFiscalPeriodClosed
+    setIsFiscalPeriodClosed(nextState)
+    toast.info(
+      nextState
+        ? 'Periodo contable bloqueado para proteger la integridad fiscal.'
+        : 'Periodo contable abierto para registro de comprobantes.'
+    )
+  }
+
+  const handleSaveVoucher = (voucher: JournalVoucher) => {
+    if (voucher.totalDebitCOP <= 0 || voucher.totalDebitCOP !== voucher.totalCreditCOP) {
+      toast.error('El comprobante debe tener sumas iguales (Débitos = Créditos) y mayores a $0.')
+      return
+    }
+
+    setVouchers((prev) => [voucher, ...prev])
+
+    setLocalAccounts((prevAccounts) => {
+      const updated = [...prevAccounts]
+      const isoDate = `${voucher.date}T12:00:00.000Z`
+
+      for (const line of voucher.lines) {
+        const idx = updated.findIndex((acc) => acc.code === line.accountCode)
+        if (idx >= 0) {
+          const existing = updated[idx]
+          const nextDebit = existing.debitCOP + line.debitCOP
+          const nextCredit = existing.creditCOP + line.creditCOP
+          const existingThirdParty = existing.thirdParty ?? ''
+          const nextThirdParty =
+            line.thirdParty && !existingThirdParty.includes(line.thirdParty)
+              ? existingThirdParty
+                ? `${existingThirdParty} · ${line.thirdParty}`
+                : line.thirdParty
+              : existingThirdParty
+
+          updated[idx] = {
+            ...existing,
+            debitCOP: nextDebit,
+            creditCOP: nextCredit,
+            currentBalanceCOP: nextDebit - nextCredit,
+            thirdParty: nextThirdParty,
+            lastUpdated: isoDate,
+          }
+        } else {
+          updated.push({
+            id: `acc-${Date.now()}-${line.accountCode}`,
+            code: line.accountCode,
+            name: line.accountName,
+            accountType: inferPucAccountType(line.accountCode),
+            thirdParty: line.thirdParty,
+            debitCOP: line.debitCOP,
+            creditCOP: line.creditCOP,
+            currentBalanceCOP: line.debitCOP - line.creditCOP,
+            costCenter: line.costCenter,
+            lastUpdated: isoDate,
+          })
+        }
+      }
+
+      return updated.sort((a, b) => a.code.localeCompare(b.code))
+    })
+
+    setIsJournalModalOpen(false)
+    toast.success(
+      `Comprobante ${voucher.voucherNumber} contabilizado por ${formatCurrency(voucher.totalDebitCOP)}.`
+    )
+  }
 
   return (
     <div className="flex flex-col gap-6 p-4 sm:p-6 bg-background">
       {/* Selector de sub-vistas contables */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border/80 pb-3">
+      <nav aria-label="Submódulos de contabilidad" className="flex flex-wrap items-center gap-2 border-b border-border/80 pb-3">
         <Button
           type="button"
           size="sm"
@@ -46,8 +203,8 @@ export function AccountingComplexView({ accounts }: Props) {
           onClick={() => setActiveTab('puc')}
           className="text-xs gap-1.5 h-8 font-medium shadow-none"
         >
-          <BookOpen className="size-3.5" />
-          Plan Único de Cuentas (PUC) &amp; Partida Doble ({accounts.length})
+          <BookOpen className="size-3.5" aria-hidden="true" />
+          Plan Único de Cuentas (PUC) &amp; Partida Doble ({localAccounts.length})
         </Button>
         <Button
           type="button"
@@ -56,7 +213,7 @@ export function AccountingComplexView({ accounts }: Props) {
           onClick={() => setActiveTab('costStatement')}
           className="text-xs gap-1.5 h-8 font-medium shadow-none"
         >
-          <Layers className="size-3.5" />
+          <Layers className="size-3.5" aria-hidden="true" />
           Estado de Costos de Producción y Ventas (Tarjeta #14)
         </Button>
         <Button
@@ -66,7 +223,7 @@ export function AccountingComplexView({ accounts }: Props) {
           onClick={() => setActiveTab('bankReconciliation')}
           className="text-xs gap-1.5 h-8 font-medium shadow-none"
         >
-          <Landmark className="size-3.5" />
+          <Landmark className="size-3.5" aria-hidden="true" />
           Conciliación Bancaria por Extractos (Tarjeta #15)
         </Button>
         <Button
@@ -76,423 +233,278 @@ export function AccountingComplexView({ accounts }: Props) {
           onClick={() => setActiveTab('exogena')}
           className="text-xs gap-1.5 h-8 font-medium shadow-none bg-purple-600/10 text-purple-700 dark:text-purple-300 hover:bg-purple-600/20 border-purple-300 dark:border-purple-800"
         >
-          <FileSpreadsheet className="size-3.5 text-purple-600" />
-          📄 Prevalidador Medios Magnéticos Exógena (Tarjeta #16)
+          <FileSpreadsheet className="size-3.5 text-purple-600" aria-hidden="true" />
+          Prevalidador Medios Magnéticos Exógena (Tarjeta #16)
         </Button>
-      </div>
+      </nav>
 
-      {/* PESTAÑA 1: PUC Y REGLAS DE PARTIDA DOBLE (NUMERALES 5, 7 Y 13) */}
+      {/* PESTAÑA 1: PUC, COMPROBANTES Y ESTADOS FINANCIEROS NIIF */}
       {activeTab === 'puc' && (
         <div className="flex flex-col gap-4">
+          {/* Barra superior de filtros y acciones */}
+          <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <DateRangeFilter
+                value={pucDateRange}
+                onChange={setPucDateRange}
+                label="Rango de fechas contable PUC"
+              />
+
+              <div className="relative min-w-[240px] flex-1 sm:flex-initial">
+                <Search
+                  className="pointer-events-none absolute left-2.5 top-2.5 size-3.5 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <Input
+                  type="search"
+                  aria-label="Buscar cuenta PUC o tercero"
+                  placeholder="Buscar cuenta, código PUC o tercero..."
+                  value={pucSearchQuery}
+                  onChange={(e) => setPucSearchQuery(e.target.value)}
+                  className="h-9 pl-8 text-xs"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                type="button"
+                size="sm"
+                variant={showNiifStatements ? 'secondary' : 'outline'}
+                onClick={() => setShowNiifStatements((prev) => !prev)}
+                className="h-8 gap-1.5 text-xs font-medium"
+              >
+                <Scale className="size-3.5" aria-hidden="true" />
+                {showNiifStatements ? 'Ver Catálogo PUC' : 'Estados Financieros NIIF'}
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => setIsJournalModalOpen(true)}
+                className="h-8 gap-1.5 text-xs font-semibold"
+              >
+                <Plus className="size-3.5" aria-hidden="true" />
+                + Nuevo Comprobante / Asiento Diario
+              </Button>
+            </div>
+          </div>
+
           {/* Banner de Partida Doble y Control de Periodo Cerrado */}
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-3.5">
               <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Scale className="size-5" />
+                <Scale className="size-5" aria-hidden="true" />
               </div>
               <div>
-                <div className="text-xs font-medium text-muted-foreground">Suma Total Débitos PUC</div>
-                <div className="text-sm font-bold font-mono text-foreground">{formatCurrency(totalDebits)}</div>
+                <div className="text-xs font-medium text-muted-foreground">
+                  Suma Débitos ({filteredAccounts.length} cuentas)
+                </div>
+                <div className="text-sm font-bold font-mono text-foreground">
+                  {formatCurrency(filteredDebits)}
+                </div>
               </div>
             </div>
 
             <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-3.5">
               <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Scale className="size-5" />
+                <Scale className="size-5" aria-hidden="true" />
               </div>
               <div>
-                <div className="text-xs font-medium text-muted-foreground">Suma Total Créditos PUC</div>
-                <div className="text-sm font-bold font-mono text-foreground">{formatCurrency(totalCredits)}</div>
+                <div className="text-xs font-medium text-muted-foreground">
+                  Suma Créditos ({filteredAccounts.length} cuentas)
+                </div>
+                <div className="text-sm font-bold font-mono text-foreground">
+                  {formatCurrency(filteredCredits)}
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between rounded-xl border border-border bg-card p-3.5">
+            <div className="flex items-center justify-between gap-2 rounded-xl border border-border bg-card p-3.5">
               <div>
                 <div className="text-xs font-medium text-muted-foreground">Estado Partida Doble</div>
-                <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-                  <CheckCircle2 className="size-4" /> 🟢 Sumas Iguales / Balanceada
-                </div>
+                {isGlobalBalanced && isFilteredBalanced ? (
+                  <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                    <CheckCircle2 className="size-4" aria-hidden="true" /> 🟢 Sumas Iguales / Balanceada
+                  </div>
+                ) : isGlobalBalanced ? (
+                  <div className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                    <AlertTriangle className="size-4" aria-hidden="true" /> Filtro parcial (Global balanceado)
+                  </div>
+                ) : (
+                  <div className="text-sm font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                    <AlertCircle className="size-4" aria-hidden="true" /> 🔴 Descuadre Contable
+                  </div>
+                )}
               </div>
               <Button
+                type="button"
                 size="sm"
                 variant={isFiscalPeriodClosed ? 'default' : 'outline'}
-                onClick={() => setIsFiscalPeriodClosed(!isFiscalPeriodClosed)}
-                className="text-xs gap-1"
+                onClick={handleTogglePeriodLock}
+                className="text-xs gap-1 shrink-0"
               >
-                <Lock className="size-3" />
+                <Lock className="size-3" aria-hidden="true" />
                 {isFiscalPeriodClosed ? '🔒 Periodo Bloqueado' : 'Periodo Abierto'}
               </Button>
             </div>
           </div>
 
-          <div className="rounded-lg border border-sky-500/20 bg-sky-50/50 p-3 text-xs text-sky-950 dark:bg-sky-950/20 dark:text-sky-200">
-            <strong>Cuentas Esenciales de Manufactura Integradas (Numerales 5, 7 y 13):</strong> Cuentas de anticipo (135515/135595), Producto en Proceso (141001), Retenciones e impuestos (2365/2368/240802), Costo de Ventas (6120) y Costos Directos e Indirectos (7205 MOD / 7305 CIF).
-          </div>
-
-          {/* Tabla PUC */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-b bg-muted/50 text-[0.6875rem] uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  <th scope="col" className="px-3 py-2.5">Código PUC</th>
-                  <th scope="col" className="px-3 py-2.5">Nombre de la Cuenta</th>
-                  <th scope="col" className="px-3 py-2.5">Clasificación</th>
-                  <th scope="col" className="px-3 py-2.5">Centro de Costos</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Débito ($)</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Crédito ($)</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Saldo Neto ($)</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/60">
-                {accounts.map((acc) => (
-                  <tr key={acc.id} className="hover:bg-muted/30">
-                    <td className="px-3 py-2.5 font-mono font-bold text-foreground">{acc.code}</td>
-                    <td className="px-3 py-2.5 font-medium text-foreground">{acc.name}</td>
-                    <td className="px-3 py-2.5">
-                      <Badge
-                        variant={
-                          acc.accountType === 'Activo'
-                            ? 'outline'
-                            : acc.accountType === 'Costos de producción'
-                            ? 'warning'
-                            : acc.accountType === 'Pasivo'
-                            ? 'danger'
-                            : 'info'
-                        }
-                        className="text-[0.6875rem]"
-                      >
-                        {acc.accountType}
-                      </Badge>
-                    </td>
-                    <td className="px-3 py-2.5 font-mono text-[0.6875rem] text-muted-foreground">{acc.costCenter}</td>
-                    <td className="px-3 py-2.5 text-right font-mono text-muted-foreground">
-                      {formatCurrency(acc.debitCOP)}
-                    </td>
-                    <td className="px-3 py-2.5 text-right font-mono text-muted-foreground">
-                      {formatCurrency(acc.creditCOP)}
-                    </td>
-                    <td className="px-3 py-2.5 text-right font-mono font-bold text-foreground">
-                      {formatCurrency(acc.currentBalanceCOP)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* PESTAÑA 2: ESTADO DE COSTOS DE PRODUCCIÓN Y VENTAS INTEGRADO (TARJETA #14) */}
-      {activeTab === 'costStatement' && (
-        <div className="flex flex-col gap-3">
-          <div className="rounded-lg border border-amber-500/20 bg-amber-50/50 p-3 text-xs text-amber-950 dark:bg-amber-950/20 dark:text-amber-200">
-            <strong>Estado de Costos de Producción y Ventas (Numerales 8 y 14):</strong> Consolida matemáticamente el inventario inicial/final de materias primas, compras, mano de obra directa (7205), costos indirectos (7305), inventarios en proceso (1410) y producto terminado (1430) para fijar el Costo de Ventas en el Estado de Resultados.
-          </div>
-
-          <div className="rounded-xl border bg-background p-4 shadow-xs">
-            <h3 className="text-sm font-bold text-foreground border-b pb-2 flex items-center justify-between">
-              <span>Informe de Costos de Producción y Ventas — Acumulado Trimestral</span>
-              <Badge variant="outline">Periodo 2026-Q1</Badge>
-            </h3>
-
-            <div className="mt-3 divide-y divide-border/50 text-xs">
-              <div className="py-2 flex justify-between font-semibold text-foreground">
-                <span>1. Inventario Inicial de Materias Primas (1405):</span>
-                <span className="font-mono">$24.500.000</span>
-              </div>
-              <div className="py-2 flex justify-between text-muted-foreground pl-4">
-                <span>+ Compras Netas de Parafinas, Ceras y Pabilos:</span>
-                <span className="font-mono">+$73.500.000</span>
-              </div>
-              <div className="py-2 flex justify-between text-muted-foreground pl-4">
-                <span>- Inventario Final de Materias Primas:</span>
-                <span className="font-mono">-$29.800.000</span>
-              </div>
-              <div className="py-2.5 flex justify-between font-bold text-primary bg-muted/20 px-2 rounded">
-                <span>(=) Materia Prima Directa Utilizada en Fábrica:</span>
-                <span className="font-mono">$68.200.000</span>
+          {showNiifStatements ? (
+            <FinancialStatementsNiif accounts={localAccounts} />
+          ) : (
+            <>
+              <div className="rounded-lg border border-sky-500/20 bg-sky-50/50 p-3 text-xs text-sky-950 dark:bg-sky-950/20 dark:text-sky-200">
+                <strong>Cuentas Esenciales de Manufactura Integradas (Numerales 5, 7 y 13):</strong>{' '}
+                Cuentas de anticipo (135515/135595), Producto en Proceso (141001), Retenciones e impuestos (2365/2368/240802), Costo de Ventas (612095) y Costos Directos e Indirectos (7205 MOD / 7305 CIF).
               </div>
 
-              <div className="py-2 flex justify-between text-muted-foreground pl-4">
-                <span>+ Mano de Obra Directa (MOD - Cuenta 7205):</span>
-                <span className="font-mono">+$14.200.000</span>
-              </div>
-              <div className="py-2 flex justify-between text-muted-foreground pl-4">
-                <span>+ Costos Indirectos de Fabricación y Gas (CIF - Cuenta 7305):</span>
-                <span className="font-mono">+$8.600.000</span>
-              </div>
-              <div className="py-2.5 flex justify-between font-bold text-foreground bg-muted/20 px-2 rounded">
-                <span>(=) Costo Total de Producción del Periodo:</span>
-                <span className="font-mono">$91.000.000</span>
+              {/* Tabla PUC */}
+              <div className="overflow-x-auto rounded-lg border border-border bg-card">
+                <table className="w-full text-left text-xs">
+                  <thead className="border-b bg-muted/50 text-[0.6875rem] uppercase tracking-wider text-muted-foreground">
+                    <tr>
+                      <th scope="col" className="px-3 py-2.5">Código PUC</th>
+                      <th scope="col" className="px-3 py-2.5">Nombre de la Cuenta y Tercero</th>
+                      <th scope="col" className="px-3 py-2.5">Clasificación</th>
+                      <th scope="col" className="px-3 py-2.5">Centro de Costos</th>
+                      <th scope="col" className="px-3 py-2.5 text-right">Débito ($)</th>
+                      <th scope="col" className="px-3 py-2.5 text-right">Crédito ($)</th>
+                      <th scope="col" className="px-3 py-2.5 text-right">Saldo Neto ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/60">
+                    {filteredAccounts.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="px-3 py-8 text-center text-xs text-muted-foreground">
+                          No hay cuentas PUC que coincidan con el rango de fechas y búsqueda seleccionados.
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredAccounts.map((acc) => (
+                        <tr key={acc.id} className="hover:bg-muted/30">
+                          <td className="px-3 py-2.5 font-mono font-bold text-foreground">
+                            {acc.code}
+                          </td>
+                          <td className="px-3 py-2.5">
+                            <div className="font-medium text-foreground">{acc.name}</div>
+                            {acc.thirdParty && (
+                              <div className="text-[0.6875rem] text-muted-foreground">
+                                Tercero: {acc.thirdParty}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-3 py-2.5">
+                            <Badge
+                              variant={getAccountTypeBadgeVariant(acc.accountType)}
+                              className="text-[0.6875rem]"
+                            >
+                              {acc.accountType}
+                            </Badge>
+                          </td>
+                          <td className="px-3 py-2.5 font-mono text-[0.6875rem] text-muted-foreground">
+                            {acc.costCenter}
+                          </td>
+                          <td className="px-3 py-2.5 text-right font-mono text-muted-foreground">
+                            {formatCurrency(acc.debitCOP)}
+                          </td>
+                          <td className="px-3 py-2.5 text-right font-mono text-muted-foreground">
+                            {formatCurrency(acc.creditCOP)}
+                          </td>
+                          <td className="px-3 py-2.5 text-right font-mono font-bold text-foreground">
+                            {formatCurrency(acc.currentBalanceCOP)}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
 
-              <div className="py-2 flex justify-between text-muted-foreground pl-4">
-                <span>+ Inventario Inicial de Productos en Proceso (1410):</span>
-                <span className="font-mono">+$8.900.000</span>
-              </div>
-              <div className="py-2 flex justify-between text-muted-foreground pl-4">
-                <span>- Inventario Final de Productos en Proceso (Pailas):</span>
-                <span className="font-mono">-$5.600.000</span>
-              </div>
-              <div className="py-2.5 flex justify-between font-bold text-foreground bg-muted/20 px-2 rounded">
-                <span>(=) Costo de Productos Terminados en el Periodo:</span>
-                <span className="font-mono">$94.300.000</span>
-              </div>
-
-              <div className="py-2 flex justify-between text-muted-foreground pl-4">
-                <span>+ Inventario Inicial de Producto Terminado (1430):</span>
-                <span className="font-mono">+$21.800.000</span>
-              </div>
-              <div className="py-2 flex justify-between text-muted-foreground pl-4">
-                <span>- Inventario Final de Producto Terminado (Bodega Despachos):</span>
-                <span className="font-mono">-$32.400.000</span>
-              </div>
-              <div className="py-3 flex justify-between font-bold text-sm text-foreground bg-primary/10 px-3 rounded">
-                <span className="text-primary">(=) COSTO DE VENTAS TOTAL (CUENTA 6120):</span>
-                <span className="font-mono text-primary font-bold text-base">$83.700.000</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* PESTAÑA 3: CONCILIACIÓN BANCARIA POR EXTRACTOS (TARJETA #15) */}
-      {activeTab === 'bankReconciliation' && (
-        <div className="flex flex-col gap-3">
-          <div className="rounded-lg border border-sky-500/20 bg-sky-50/50 p-3 text-xs text-sky-950 dark:bg-sky-950/20 dark:text-sky-200">
-            <strong>Conciliación Bancaria Automatizada (Numeral 15):</strong> Cruce entre extracto bancario (Excel/CSV) y auxiliares contables de Bancolombia. Semáforo condicional: 🟢 Partida Conciliada, 🟡 Pendiente por Causar (GMF / comisiones), 🔴 Diferencia por Revisar.
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-b bg-muted/50 text-[0.6875rem] uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  <th scope="col" className="px-3 py-2.5">Fecha</th>
-                  <th scope="col" className="px-3 py-2.5">Descripción en Extracto</th>
-                  <th scope="col" className="px-3 py-2.5">Referencia / Comprobante</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Valor Extracto ($)</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Valor en Libros ($)</th>
-                  <th scope="col" className="px-3 py-2.5 text-center">Semáforo de Conciliación</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Acción</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/60">
-                {BANK_RECON_DEMO.map((item) => (
-                  <tr key={item.id} className="hover:bg-muted/30">
-                    <td className="px-3 py-2.5 font-mono text-muted-foreground">{item.date}</td>
-                    <td className="px-3 py-2.5 font-semibold text-foreground">{item.description}</td>
-                    <td className="px-3 py-2.5 font-mono text-muted-foreground">{item.voucher}</td>
-                    <td className="px-3 py-2.5 text-right font-mono font-bold text-foreground">
-                      {formatCurrency(item.bankAmountCOP)}
-                    </td>
-                    <td className="px-3 py-2.5 text-right font-mono text-muted-foreground">
-                      {formatCurrency(item.bookAmountCOP)}
-                    </td>
-                    <td className="px-3 py-2.5 text-center">
-                      {item.status === 'Conciliada' ? (
-                        <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-2 py-0.5 text-[0.6875rem] font-bold text-emerald-600 dark:text-emerald-400">
-                          <CheckCircle2 className="size-3" /> 🟢 Partida Conciliada
-                        </span>
-                      ) : item.status === 'Pendiente causar' ? (
-                        <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 px-2 py-0.5 text-[0.6875rem] font-bold text-amber-600 dark:text-amber-400">
-                          <AlertTriangle className="size-3" /> 🟡 Pendiente Causar en Libros
-                        </span>
+              {/* Comprobantes de Diario recientes */}
+              <section aria-label="Comprobantes y asientos de diario" className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    Comprobantes y Asientos de Diario ({filteredVouchers.length})
+                  </h3>
+                </div>
+                <div className="overflow-x-auto rounded-lg border border-border bg-card">
+                  <table className="w-full text-left text-xs">
+                    <thead className="border-b bg-muted/50 text-[0.6875rem] uppercase tracking-wider text-muted-foreground">
+                      <tr>
+                        <th scope="col" className="px-3 py-2">Comprobante</th>
+                        <th scope="col" className="px-3 py-2">Fecha</th>
+                        <th scope="col" className="px-3 py-2">Tipo</th>
+                        <th scope="col" className="px-3 py-2">Concepto y Líneas</th>
+                        <th scope="col" className="px-3 py-2 text-right">Débitos ($)</th>
+                        <th scope="col" className="px-3 py-2 text-right">Créditos ($)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/60">
+                      {filteredVouchers.length === 0 ? (
+                        <tr>
+                          <td colSpan={6} className="px-3 py-6 text-center text-xs text-muted-foreground">
+                            Sin comprobantes en el rango o búsqueda seleccionada.
+                          </td>
+                        </tr>
                       ) : (
-                        <span className="inline-flex items-center gap-1 rounded bg-rose-500/10 px-2 py-0.5 text-[0.6875rem] font-bold text-rose-600 dark:text-rose-400">
-                          <AlertCircle className="size-3" /> 🔴 Diferencia por Revisar
-                        </span>
+                        filteredVouchers.map((voucher) => (
+                          <tr key={voucher.id} className="hover:bg-muted/30">
+                            <td className="px-3 py-2.5 font-mono font-bold text-primary whitespace-nowrap">
+                              {voucher.voucherNumber}
+                            </td>
+                            <td className="px-3 py-2.5 font-mono text-muted-foreground whitespace-nowrap">
+                              {formatDate(`${voucher.date}T12:00:00.000Z`)}
+                            </td>
+                            <td className="px-3 py-2.5">
+                              <Badge variant="outline" className="text-[0.6875rem]">
+                                {voucher.type}
+                              </Badge>
+                            </td>
+                            <td className="px-3 py-2.5">
+                              <div className="font-medium text-foreground">{voucher.description}</div>
+                              <div className="text-[0.6875rem] text-muted-foreground">
+                                {voucher.lines.length} líneas ·{' '}
+                                {voucher.lines.map((l) => l.accountCode).join(' / ')}
+                              </div>
+                            </td>
+                            <td className="px-3 py-2.5 text-right font-mono font-medium">
+                              {formatCurrency(voucher.totalDebitCOP)}
+                            </td>
+                            <td className="px-3 py-2.5 text-right font-mono font-medium">
+                              {formatCurrency(voucher.totalCreditCOP)}
+                            </td>
+                          </tr>
+                        ))
                       )}
-                    </td>
-                    <td className="px-3 py-2.5 text-right">
-                      {item.status === 'Pendiente causar' && (
-                        <Button size="sm" variant="outline" className="text-xs">
-                          Causar Gasto GMF
-                        </Button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            </>
+          )}
         </div>
       )}
 
-      {/* PESTAÑA 4: ASISTENTE DE INFORMACIÓN EXÓGENA DIAN (TARJETA #16) */}
-      {activeTab === 'exogena' && (
-        <div className="flex flex-col gap-4">
-          <div className="rounded-lg border border-purple-500/20 bg-purple-50/50 dark:bg-purple-950/20 p-4 text-xs text-purple-950 dark:text-purple-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div>
-              <div className="font-bold text-sm">Asistente de Información Exógena (Numeral 16)</div>
-              <p className="mt-1">
-                Cruce automático de cuentas contables por tercero, discriminación de cuantías menores y exportación en formato oficial DIAN (Prevalidador).
-              </p>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => alert('Generando archivo Excel normalizado para Prevalidador Tributario DIAN (Resolución Vigente)...')}
-                className="text-xs h-8 gap-1.5"
-              >
-                <FileSpreadsheet className="size-3.5 text-emerald-600" />
-                Descargar Excel Prevalidador
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => alert('Generando XML oficial con firma digital para carga en portal MUISCA de la DIAN...')}
-                className="text-xs h-8 gap-1.5 bg-purple-700 hover:bg-purple-800 text-white"
-              >
-                <FileCheck2 className="size-3.5" />
-                Generar XML MUISCA
-              </Button>
-            </div>
-          </div>
+      {/* PESTAÑA 2: ESTADO DE COSTOS DE PRODUCCIÓN Y VENTAS INTEGRADO */}
+      {activeTab === 'costStatement' && <CostStatementPanel />}
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="rounded-xl border bg-card p-4 shadow-sm hover:border-purple-300 transition-colors">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground">Formato 1001 v10</span>
-                <Badge variant="outline" className="text-[10px] bg-purple-500/10 text-purple-700">Prevalidado</Badge>
-              </div>
-              <div className="text-[0.6875rem] text-muted-foreground mt-1">Pagos y abonos en cuenta y retenciones practicadas</div>
-              <div className="mt-3 flex items-center justify-between border-t pt-2">
-                <span className="text-xs text-muted-foreground">38 Terceros procesados</span>
-                <span className="font-mono text-sm font-bold text-foreground">$184.200.000</span>
-              </div>
-            </div>
+      {/* PESTAÑA 3: CONCILIACIÓN BANCARIA POR EXTRACTOS */}
+      {activeTab === 'bankReconciliation' && <BankReconciliationPanel />}
 
-            <div className="rounded-xl border bg-card p-4 shadow-sm hover:border-purple-300 transition-colors">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground">Formato 1007 v9</span>
-                <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-700">Prevalidado</Badge>
-              </div>
-              <div className="text-[0.6875rem] text-muted-foreground mt-1">Ingresos propios recibidos en el año gravable</div>
-              <div className="mt-3 flex items-center justify-between border-t pt-2">
-                <span className="text-xs text-muted-foreground">24 Clientes reportados</span>
-                <span className="font-mono text-sm font-bold text-foreground">$218.450.000</span>
-              </div>
-            </div>
+      {/* PESTAÑA 4: ASISTENTE DE INFORMACIÓN EXÓGENA DIAN */}
+      {activeTab === 'exogena' && <ExogenaPanel />}
 
-            <div className="rounded-xl border bg-card p-4 shadow-sm hover:border-purple-300 transition-colors">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground">Formato 1003 v7</span>
-                <Badge variant="outline" className="text-[10px] bg-blue-500/10 text-blue-700">Prevalidado</Badge>
-              </div>
-              <div className="text-[0.6875rem] text-muted-foreground mt-1">Retenciones en la fuente que le practicaron a la SAS</div>
-              <div className="mt-3 flex items-center justify-between border-t pt-2">
-                <span className="text-xs text-muted-foreground">19 Agentes retenedores</span>
-                <span className="font-mono text-sm font-bold text-foreground">$5.461.250</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Tabla de Muestra Formato 1001 */}
-          <div className="rounded-xl border border-border/80 overflow-hidden bg-card">
-            <div className="bg-muted/40 px-4 py-3 border-b flex items-center justify-between">
-              <div className="text-xs font-semibold text-foreground">
-                Vista Previa Formato 1001 (Pagos en Cuenta a Proveedores Clave)
-              </div>
-              <span className="text-[11px] text-muted-foreground font-mono">Resolución Exógena Nacional DIAN</span>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="border-b bg-muted/60 text-[11px] uppercase tracking-wider text-muted-foreground">
-                  <tr>
-                    <th scope="col" className="px-4 py-2.5">Concepto</th>
-                    <th scope="col" className="px-4 py-2.5">Tipo Doc</th>
-                    <th scope="col" className="px-4 py-2.5">Número Identificación</th>
-                    <th scope="col" className="px-4 py-2.5">Razón Social / Beneficiario</th>
-                    <th scope="col" className="px-4 py-2.5 text-right">Pago Deducible ($)</th>
-                    <th scope="col" className="px-4 py-2.5 text-right">ReteFuente Practicada ($)</th>
-                    <th scope="col" className="px-4 py-2.5 text-center">Estado Validación</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/60">
-                  <tr className="hover:bg-muted/30">
-                    <td className="px-4 py-2.5 font-mono font-bold text-foreground">5007 (Compra Materia Prima)</td>
-                    <td className="px-4 py-2.5">31 (NIT)</td>
-                    <td className="px-4 py-2.5 font-mono">899.999.068-1</td>
-                    <td className="px-4 py-2.5 font-medium text-foreground">Ecopetrol S.A.</td>
-                    <td className="px-4 py-2.5 font-mono text-right font-medium">$98.000.000</td>
-                    <td className="px-4 py-2.5 font-mono text-right font-bold text-rose-600">$2.450.000</td>
-                    <td className="px-4 py-2.5 text-center">
-                      <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600">
-                        <CheckCircle2 className="size-3" /> Conforme
-                      </span>
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-muted/30">
-                    <td className="px-4 py-2.5 font-mono font-bold text-foreground">5008 (Arrendamientos)</td>
-                    <td className="px-4 py-2.5">31 (NIT)</td>
-                    <td className="px-4 py-2.5 font-mono">900.542.119-3</td>
-                    <td className="px-4 py-2.5 font-medium text-foreground">Inmobiliaria y Bodegas Guaduas SAS</td>
-                    <td className="px-4 py-2.5 font-mono text-right font-medium">$18.500.000</td>
-                    <td className="px-4 py-2.5 font-mono text-right font-bold text-rose-600">$647.500</td>
-                    <td className="px-4 py-2.5 text-center">
-                      <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600">
-                        <CheckCircle2 className="size-3" /> Conforme
-                      </span>
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-muted/30">
-                    <td className="px-4 py-2.5 font-mono font-bold text-foreground">5002 (Honorarios Técnicos)</td>
-                    <td className="px-4 py-2.5">13 (CC)</td>
-                    <td className="px-4 py-2.5 font-mono">79.882.104</td>
-                    <td className="px-4 py-2.5 font-medium text-foreground">Ing. Andrés Felipe Gómez Castro</td>
-                    <td className="px-4 py-2.5 font-mono text-right font-medium">$7.200.000</td>
-                    <td className="px-4 py-2.5 font-mono text-right font-bold text-rose-600">$720.000</td>
-                    <td className="px-4 py-2.5 text-center">
-                      <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-600">
-                        <CheckCircle2 className="size-3" /> Conforme
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+      {/* MODAL: NUEVO COMPROBANTE / ASIENTO DIARIO */}
+      {isJournalModalOpen && (
+        <PucJournalModal
+          isOpen={isJournalModalOpen}
+          accounts={localAccounts}
+          nextVoucherNumber={nextVoucherNumber}
+          isFiscalPeriodClosed={isFiscalPeriodClosed}
+          onClose={() => setIsJournalModalOpen(false)}
+          onSave={handleSaveVoucher}
+        />
       )}
     </div>
   )
 }
-
-const BANK_RECON_DEMO = [
-  {
-    id: 'bnk-1',
-    date: '2026-03-02',
-    description: 'Pago Transferencia Proveedor Ecopetrol SAS',
-    voucher: 'CE-2026-041',
-    bankAmountCOP: -98000000,
-    bookAmountCOP: -98000000,
-    status: 'Conciliada',
-  },
-  {
-    id: 'bnk-2',
-    date: '2026-03-03',
-    description: 'Gravamen Movimientos Financieros (GMF 4x1000)',
-    voucher: 'Pendiente',
-    bankAmountCOP: -392000,
-    bookAmountCOP: 0,
-    status: 'Pendiente causar',
-  },
-  {
-    id: 'bnk-3',
-    date: '2026-03-04',
-    description: 'Consignación Recaudo El Cirio Sagrado FEV-1082',
-    voucher: 'RC-2026-089',
-    bankAmountCOP: 5000000,
-    bookAmountCOP: 5000000,
-    status: 'Conciliada',
-  },
-  {
-    id: 'bnk-4',
-    date: '2026-03-05',
-    description: 'Transferencia por identificar corresponsal Bancolombia',
-    voucher: 'Sin soporte',
-    bankAmountCOP: 850000,
-    bookAmountCOP: 0,
-    status: 'Diferencia por revisar',
-  },
-]

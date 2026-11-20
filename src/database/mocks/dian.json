@@ -102,7 +102,7 @@
     "documentType": "Nómina electrónica",
     "resolucionDian": "Habilitación nómina electrónica DIAN — Emisor NIT 901.473.704-4",
     "issuerNit": "901.473.704-4",
-    "recipientName": "Planilla Consolidada Personal de Planta (Febrero 2026)",
+    "recipientName": "Lote Consolidado Personal de Planta (Febrero 2026 — 8 XML/CUNE)",
     "recipientNit": "901.473.704-4",
     "issueDate": "2026-03-02T17:00:00.000Z",
     "transmissionDate": "2026-03-02T17:05:44.000Z",
@@ -111,7 +111,73 @@
     "dianStatus": "Aceptada",
     "xmlSignedUrl": "/mock/dian/NOM-2026-02-signed.xml",
     "pdfUrl": "/mock/dian/NOM-2026-02-grafica.pdf",
-    "dianResponseXmlUrl": "/mock/dian/NOM-2026-02-appresponse.xml"
+    "dianResponseXmlUrl": "/mock/dian/NOM-2026-02-appresponse.xml",
+    "batchItems": [
+      {
+        "documentNumber": "NIE-2026-02-01",
+        "workerName": "José Ignacio Barreto Gómez",
+        "workerId": "CC 79.432.***",
+        "cune": "cune-202602-01-79432000-a1b2c3d4e5f60192837465",
+        "netAmountCOP": 4250000,
+        "dianStatus": "Aceptada"
+      },
+      {
+        "documentNumber": "NIE-2026-02-02",
+        "workerName": "Sandra Milena Quintero Cruz",
+        "workerId": "CC 52.891.***",
+        "cune": "cune-202602-02-52891000-b2c3d4e5f6a19283746501",
+        "netAmountCOP": 2950000,
+        "dianStatus": "Aceptada"
+      },
+      {
+        "documentNumber": "NIE-2026-02-03",
+        "workerName": "Luis Fernando Morales Silva",
+        "workerId": "CC 80.124.***",
+        "cune": "cune-202602-03-80124000-c3d4e5f6a1b28374650192",
+        "netAmountCOP": 2480000,
+        "dianStatus": "Aceptada"
+      },
+      {
+        "documentNumber": "NIE-2026-02-04",
+        "workerName": "Patricia Elena Forero Ramos",
+        "workerId": "CC 53.014.***",
+        "cune": "cune-202602-04-53014000-d4e5f6a1b2c37465019283",
+        "netAmountCOP": 2680000,
+        "dianStatus": "Aceptada"
+      },
+      {
+        "documentNumber": "NIE-2026-02-05",
+        "workerName": "Germán Alfonso Téllez Nieto",
+        "workerId": "CC 11.431.***",
+        "cune": "cune-202602-05-11431000-e5f6a1b2c3d46501928374",
+        "netAmountCOP": 2540000,
+        "dianStatus": "Aceptada"
+      },
+      {
+        "documentNumber": "NIE-2026-02-06",
+        "workerName": "Esperanza Caicedo Mayorga",
+        "workerId": "CC 41.982.***",
+        "cune": "cune-202602-06-41982000-f6a1b2c3d4e55019283746",
+        "netAmountCOP": 2350000,
+        "dianStatus": "Aceptada"
+      },
+      {
+        "documentNumber": "NIE-2026-02-07",
+        "workerName": "Mauricio Andrés Roa Vargas",
+        "workerId": "CC 1.014.223.***",
+        "cune": "cune-202602-07-10142230-0a1b2c3d4e5f1928374650",
+        "netAmountCOP": 2750000,
+        "dianStatus": "Aceptada"
+      },
+      {
+        "documentNumber": "NIE-2026-02-08",
+        "workerName": "Raúl Ernesto Guarnizo Páez",
+        "workerId": "CC 79.881.***",
+        "cune": "cune-202602-08-79881000-1b2c3d4e5f6a2837465019",
+        "netAmountCOP": 4850000,
+        "dianStatus": "Aceptada"
+      }
+    ]
   },
   {
     "id": "dian-008",
@@ -130,5 +196,60 @@
     "xmlSignedUrl": "/mock/dian/DS-041-signed.xml",
     "pdfUrl": "/mock/dian/DS-041-grafica.pdf",
     "dianResponseXmlUrl": "/mock/dian/DS-041-appresponse.xml"
+  },
+  {
+    "id": "dian-009",
+    "documentNumber": "POS-1449",
+    "prefix": "POS",
+    "documentType": "Documento equivalente electrónico POS",
+    "resolucionDian": "N° 187640003310 — Vence 10/02/2027 — Rango 1 a 10000",
+    "issuerNit": "901.473.704-4",
+    "recipientName": "Consumidor Final",
+    "recipientNit": "222222222222",
+    "issueDate": "2026-03-05T10:15:00.000Z",
+    "transmissionDate": "2026-03-05T10:15:32.000Z",
+    "cufeOrCune": "cude-pos1449-9014737044-20260305-8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d",
+    "totalAmountCOP": 148000,
+    "dianStatus": "Aceptada",
+    "xmlSignedUrl": "/mock/dian/POS-1449-signed.xml",
+    "pdfUrl": "/mock/dian/POS-1449-tirilla.pdf",
+    "dianResponseXmlUrl": "/mock/dian/POS-1449-appresponse.xml"
+  },
+  {
+    "id": "dian-010",
+    "documentNumber": "POS-1450",
+    "prefix": "POS",
+    "documentType": "Documento equivalente electrónico POS",
+    "resolucionDian": "N° 187640003310 — Vence 10/02/2027 — Rango 1 a 10000",
+    "issuerNit": "901.473.704-4",
+    "recipientName": "Consumidor Final (Mostrador Guaduas)",
+    "recipientNit": "222222222222",
+    "issueDate": "2026-03-06T16:20:00.000Z",
+    "transmissionDate": "2026-03-06T16:20:45.000Z",
+    "cufeOrCune": "cude-pos1450-9014737044-20260306-4f5e6d7c8b9a0f1e2d3c4b5a6f7e8d9c",
+    "totalAmountCOP": 385000,
+    "dianStatus": "Aceptada",
+    "xmlSignedUrl": "/mock/dian/POS-1450-signed.xml",
+    "pdfUrl": "/mock/dian/POS-1450-tirilla.pdf",
+    "dianResponseXmlUrl": "/mock/dian/POS-1450-appresponse.xml"
+  },
+  {
+    "id": "dian-011",
+    "documentNumber": "NC-018",
+    "prefix": "NC",
+    "documentType": "Nota crédito electrónica",
+    "resolucionDian": "Nota Crédito Electrónica UBL 2.1 — Ref. FEDV-136",
+    "issuerNit": "901.473.704-4",
+    "recipientName": "Diócesis de Facatativá",
+    "recipientNit": "860.104.550-1",
+    "issueDate": "2026-03-07T09:30:00.000Z",
+    "transmissionDate": "2026-03-07T09:31:10.000Z",
+    "cufeOrCune": "cude-nc018-9014737044-20260307-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+    "totalAmountCOP": 950000,
+    "dianStatus": "Aceptada",
+    "referencedDocument": "FEDV-136",
+    "xmlSignedUrl": "/mock/dian/NC-018-signed.xml",
+    "pdfUrl": "/mock/dian/NC-018-grafica.pdf",
+    "dianResponseXmlUrl": "/mock/dian/NC-018-appresponse.xml"
   }
 ]

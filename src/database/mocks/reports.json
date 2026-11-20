@@ -119,5 +119,38 @@
     "exportFormats": ["PDF", "Excel", "XML DIAN"],
     "authorizedRole": "Contador / Asesor Tributario",
     "estimatedExecutionTime": "< 4 segundos"
+  },
+  {
+    "id": "rep-012",
+    "reportCode": "REP-POS-12",
+    "title": "Consolidado de Ventas y Arqueos de Punto de Venta (POS-01 Guaduas)",
+    "category": "Ventas y Cartera",
+    "description": "Consolidado de tirillas POS, medios de pago mixtos (Efectivo, Nequi, Daviplata, Datáfono y Transferencia Bancolombia), arqueos de caja por turno y reporte de faltantes o sobrantes en POS-01 Guaduas.",
+    "frequency": "Diario / Por turno",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Cajero POS / Gerencia",
+    "estimatedExecutionTime": "< 2 segundos"
+  },
+  {
+    "id": "rep-013",
+    "reportCode": "REP-TES-13",
+    "title": "Flujo de Tesorería y Conciliación Bancaria",
+    "category": "Contable y Fiscal",
+    "description": "Proyección de recaudos y pagos operativos con conciliación de saldos entre extractos y libros auxiliares de Bancolombia (111005), Nequi y Daviplata.",
+    "frequency": "Semanal / Mensual",
+    "exportFormats": ["PDF", "Excel"],
+    "authorizedRole": "Tesorería / Contabilidad",
+    "estimatedExecutionTime": "< 3 segundos"
+  },
+  {
+    "id": "rep-014",
+    "reportCode": "REP-EXO-14",
+    "title": "Cruces de Información Exógena / Medios Magnéticos DIAN",
+    "category": "Contable y Fiscal",
+    "description": "Cruces fiscales de medios magnéticos DIAN (Formatos 1001, 1003, 1005, 1006, 1007, 1008 y 1009), discriminación de NIT/DV, cuantías menores (222222222) y archivos Dmuisca_.",
+    "frequency": "Anual / Bajo demanda",
+    "exportFormats": ["PDF", "Excel", "XML DIAN"],
+    "authorizedRole": "Contador / Revisor Fiscal",
+    "estimatedExecutionTime": "< 5 segundos"
   }
 ]

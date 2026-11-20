@@ -4,23 +4,17 @@ import { useState } from 'react'
 import {
   AlertTriangle,
   Building2,
-  Calendar,
   CheckCircle2,
   Clock,
-  Database,
-  FileCheck2,
   HardDrive,
   Hash,
   History,
   KeyRound,
-  Lock,
   Percent,
-  Plus,
   Power,
   RefreshCw,
   Search,
   Shield,
-  ShieldCheck,
   UserCheck,
   UserPlus,
   Users,
@@ -28,21 +22,28 @@ import {
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import type { AuditLogEntry, MockUser, RoleEntry } from '@/database/schemas'
 import { formatDate, formatNumber } from '@/lib/config'
+import { FISCAL_PARAMETERS } from '@/lib/fiscal-parameters'
 import {
   GRANULAR_PERMISSIONS,
   hasPermission,
   ROLE_DISPLAY_NAMES,
-  SYSTEM_ROLES,
 } from '@/lib/permissions'
 import {
   createUserAction,
   resetPasswordAction,
   toggleUserStatusAction,
 } from '@/modules/admin/actions/user-actions'
+import { ConsecutivesTab } from './administration/consecutives-tab'
+import {
+  INITIAL_TAX_RULES,
+  TaxMatrixTab,
+  type TaxAuditPayload,
+  type TaxRule,
+} from './administration/tax-matrix-tab'
 
 interface Props {
   users: MockUser[]
@@ -58,6 +59,25 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
   // Estado local para actualización reactiva inmediata
   const [localUsers, setLocalUsers] = useState<MockUser[]>(users)
   const [localAuditLogs, setLocalAuditLogs] = useState<AuditLogEntry[]>(auditLogs)
+  const [taxUvtValue, setTaxUvtValue] = useState<number>(FISCAL_PARAMETERS.uvtCOP)
+  const [taxRules, setTaxRules] = useState<TaxRule[]>(INITIAL_TAX_RULES)
+
+  function handleTaxAuditEvent(event: TaxAuditPayload) {
+    setLocalAuditLogs((prev) => [
+      {
+        id: `log-${Date.now()}`,
+        action: event.action,
+        entity: 'TaxParameter',
+        entityId: event.entityId,
+        details: event.details,
+        ipAddress: '127.0.0.1 (Local)',
+        userId: 'usr-admin',
+        userName: 'Administrador San Isaac',
+        createdAt: new Date().toISOString(),
+      },
+      ...prev,
+    ])
+  }
 
   // Filtros de búsqueda
   const [userSearchQuery, setUserSearchQuery] = useState('')
@@ -584,6 +604,10 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
                 <option value="STATUS_TOGGLED">Cambio de estado</option>
                 <option value="PASSWORD_RESET">Restablecimiento clave</option>
                 <option value="ROLE_ASSIGNED">Asignación de roles</option>
+                <option value="TAX_RULE_CREATED">Creación concepto tributario</option>
+                <option value="TAX_RULE_UPDATED">Edición concepto tributario</option>
+                <option value="TAX_RULE_TOGGLED">Estado concepto tributario</option>
+                <option value="UVT_UPDATED">Actualización UVT</option>
                 <option value="BACKUP_SYNC">Respaldos en la nube</option>
                 <option value="SYSTEM_INITIALIZATION">Inicialización del sistema</option>
               </select>
@@ -745,127 +769,17 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
 
       {/* PESTAÑA 5: MATRIZ DE IMPUESTOS Y RETENCIONES */}
       {activeTab === 'taxes' && (
-        <div className="flex flex-col gap-3">
-          <div className="rounded-lg border border-amber-500/20 bg-amber-50/50 p-3 text-xs text-amber-950 dark:bg-amber-950/20 dark:text-amber-200">
-            <strong>Regla Condicional de Base Mínima (Numerales 3 y 9):</strong> SI Subtotal &ge; Base Mínima &rarr; Aplicar % parametrizado; SI NO &rarr; Liquidación $0. Imputa automáticamente a la cuenta contable Débito o Crédito correspondiente.
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-b bg-muted/60 uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  <th scope="col" className="px-3 py-2.5">Código / Concepto</th>
-                  <th scope="col" className="px-3 py-2.5">Tipo de Tributo</th>
-                  <th scope="col" className="px-3 py-2.5">Municipio</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Base Mínima ($)</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Tarifa (%)</th>
-                  <th scope="col" className="px-3 py-2.5">Cuenta PUC Débito</th>
-                  <th scope="col" className="px-3 py-2.5">Cuenta PUC Crédito</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/50">
-                {TAX_PARAMS_DEMO.map((tax) => (
-                  <tr key={tax.id} className="hover:bg-muted/30">
-                    <td className="px-3 py-2.5 font-medium text-foreground">
-                      <div>{tax.concept}</div>
-                      <div className="font-mono text-[0.6875rem] text-muted-foreground">{tax.code}</div>
-                    </td>
-                    <td className="px-3 py-2.5">
-                      <Badge variant="outline" className="text-[0.6875rem]">
-                        {tax.taxType}
-                      </Badge>
-                    </td>
-                    <td className="px-3 py-2.5 text-muted-foreground">{tax.municipality}</td>
-                    <td className="px-3 py-2.5 text-right font-mono font-semibold text-foreground">
-                      ${formatNumber(tax.baseMinCOP)}
-                    </td>
-                    <td className="px-3 py-2.5 text-right font-mono font-bold text-foreground">
-                      {tax.ratePercent}%
-                    </td>
-                    <td className="px-3 py-2.5 font-mono text-[0.6875rem] text-muted-foreground">
-                      {tax.debitPucAccount}
-                    </td>
-                    <td className="px-3 py-2.5 font-mono text-[0.6875rem] text-muted-foreground">
-                      {tax.creditPucAccount}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <TaxMatrixTab
+          uvtValue={taxUvtValue}
+          onUvtChange={setTaxUvtValue}
+          taxRules={taxRules}
+          onTaxRulesChange={setTaxRules}
+          onAuditEvent={handleTaxAuditEvent}
+        />
       )}
 
       {/* PESTAÑA 6: CONSECUTIVOS Y VIGENCIA DIAN */}
-      {activeTab === 'consecutives' && (
-        <div className="flex flex-col gap-3">
-          <div className="rounded-lg border border-rose-500/20 bg-rose-50/50 p-3 text-xs text-rose-950 dark:bg-rose-950/20 dark:text-rose-200">
-            <strong>Semáforo de Vigencia y Folios (Numerales 3, 12, 17 y 20):</strong> Alerta visual 🔴 si restan 15 días o menos para el vencimiento de la resolución DIAN, o resta menos del 10% de los folios autorizados.
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-b bg-muted/60 uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  <th scope="col" className="px-3 py-2.5">Tipo de Documento</th>
-                  <th scope="col" className="px-3 py-2.5">Prefijo</th>
-                  <th scope="col" className="px-3 py-2.5">Rango Autorizado</th>
-                  <th scope="col" className="px-3 py-2.5">Actual / Último</th>
-                  <th scope="col" className="px-3 py-2.5">% Uso Folios</th>
-                  <th scope="col" className="px-3 py-2.5">Resolución DIAN</th>
-                  <th scope="col" className="px-3 py-2.5">Vencimiento</th>
-                  <th scope="col" className="px-3 py-2.5 text-right">Alerta Vigencia</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/50">
-                {CONSECUTIVES_DEMO.map((c) => {
-                  const isExpiring = c.remainingDays <= 15 || c.usedPercentage >= 90
-                  return (
-                    <tr key={c.id} className="hover:bg-muted/30">
-                      <td className="px-3 py-2.5 font-semibold text-foreground">{c.documentType}</td>
-                      <td className="px-3 py-2.5 font-mono font-bold text-foreground">{c.prefix}</td>
-                      <td className="px-3 py-2.5 font-mono text-muted-foreground">
-                        {c.rangeFrom} al {c.rangeTo}
-                      </td>
-                      <td className="px-3 py-2.5 font-mono font-bold text-foreground">
-                        {c.prefix}-{c.currentNumber}
-                      </td>
-                      <td className="px-3 py-2.5">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono font-semibold tabular-nums text-foreground">{c.usedPercentage}%</span>
-                          <div className="h-1.5 w-16 rounded-full bg-muted overflow-hidden">
-                            <div
-                              className={`h-full rounded-full ${c.usedPercentage >= 90 ? 'bg-rose-500' : 'bg-emerald-500'}`}
-                              style={{ width: `${c.usedPercentage}%` }}
-                            />
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-3 py-2.5 font-mono text-[0.6875rem] text-muted-foreground">
-                        {c.dianResolution}
-                      </td>
-                      <td className="px-3 py-2.5 text-muted-foreground">
-                        {formatDate(c.expirationDate)} ({c.remainingDays} días)
-                      </td>
-                      <td className="px-3 py-2.5 text-right">
-                        {isExpiring ? (
-                          <span className="inline-flex items-center gap-1 rounded bg-rose-500/10 px-2 py-0.5 text-[0.6875rem] font-semibold text-rose-600 dark:text-rose-400">
-                            <AlertTriangle className="size-3.5" /> Resolución próxima a vencer / agotar folios
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-[0.6875rem] font-semibold text-emerald-600 dark:text-emerald-400">
-                            <CheckCircle2 className="size-3.5" /> Vigente y suficiente
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      {activeTab === 'consecutives' && <ConsecutivesTab />}
 
       {/* PESTAÑA 7: COPIAS DE SEGURIDAD Y GOOGLE DRIVE */}
       {activeTab === 'backups' && (
@@ -909,10 +823,10 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
           <div className="rounded-lg border bg-background p-4">
             <div className="flex items-center justify-between border-b pb-3">
               <div>
-                <h4 className="text-sm font-semibold text-foreground">Registro de Trazabilidad de Respaldos (Numeral 24)</h4>
-                <p className="text-xs text-muted-foreground">Cron job diario 23:59 · Nomenclatura: AÑO-MES-DIA_BACKUP-ERP_DETALLE.sql.gz · Destino: centro_operacional@vvcsanisaac.com</p>
+                <h3 className="text-sm font-semibold text-foreground">Registro de Trazabilidad de Respaldos (Numeral 24)</h3>
+                <p className="text-xs text-muted-foreground">Cron job diario 23:59:05 (UTC-5) · Nomenclatura: AÑO-MES-DIA_BACKUP-ERP_DETALLE.sql.gz · Destino: centro_operacional@vvcsanisaac.com</p>
               </div>
-              <Button size="sm" variant="outline" className="text-xs gap-1.5">
+              <Button type="button" size="sm" variant="outline" className="text-xs gap-1.5">
                 <RefreshCw className="size-3.5" /> Forzar Backup Ahora
               </Button>
             </div>
@@ -926,7 +840,7 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <span>Supabase &rarr; Google Drive</span>
-                  <span className="font-mono">2026-10-27 02:00:15</span>
+                  <span className="font-mono">2026-10-27 23:59:05</span>
                   <Badge variant="success" className="text-[0.625rem]">Exitoso</Badge>
                 </div>
               </div>
@@ -939,7 +853,7 @@ export function AdministrationComplexView({ users, auditLogs = [], roles = [] }:
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <span>Supabase &rarr; Google Drive</span>
-                  <span className="font-mono">2026-10-26 02:00:12</span>
+                  <span className="font-mono">2026-10-26 23:59:05</span>
                   <Badge variant="success" className="text-[0.625rem]">Exitoso</Badge>
                 </div>
               </div>
@@ -1209,6 +1123,30 @@ function AuditActionBadge({ action }: { action: string }) {
           Permiso Asignado
         </Badge>
       )
+    case 'TAX_RULE_CREATED':
+      return (
+        <Badge variant="outline" className="border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-[0.625rem]">
+          Concepto Tributario
+        </Badge>
+      )
+    case 'TAX_RULE_UPDATED':
+      return (
+        <Badge variant="outline" className="border-indigo-500/30 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 text-[0.625rem]">
+          Tributo Editado
+        </Badge>
+      )
+    case 'TAX_RULE_TOGGLED':
+      return (
+        <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-[0.625rem]">
+          Estado Tributo
+        </Badge>
+      )
+    case 'UVT_UPDATED':
+      return (
+        <Badge variant="outline" className="border-sky-500/30 bg-sky-500/10 text-sky-700 dark:text-sky-300 text-[0.625rem]">
+          UVT Simulada
+        </Badge>
+      )
     case 'BACKUP_SYNC':
       return (
         <Badge variant="outline" className="border-sky-500/30 bg-sky-500/10 text-sky-700 dark:text-sky-300 text-[0.625rem]">
@@ -1281,91 +1219,5 @@ const THIRD_PARTIES_DEMO = [
     creditDays: 0,
     creditLimitCOP: 0,
     isExogenaComplete: false, // Ficha Incompleta para Exógena
-  },
-]
-
-const TAX_PARAMS_DEMO = [
-  {
-    id: 'tax-001',
-    code: 'IVA-19-VNT',
-    concept: 'IVA General en Ventas de Velas y Velones',
-    taxType: 'IVA',
-    municipality: 'Nacional',
-    baseMinCOP: 0,
-    ratePercent: 19,
-    debitPucAccount: '240802 (IVA Descontable)',
-    creditPucAccount: '240801 (IVA Generado)',
-  },
-  {
-    id: 'tax-002',
-    code: 'RET-COM-2.5',
-    concept: 'Retención en la Fuente por Compras Generales (Declarante)',
-    taxType: 'Retefuente',
-    municipality: 'Nacional',
-    baseMinCOP: 1245000,
-    ratePercent: 2.5,
-    debitPucAccount: '236540 (Retención Compras)',
-    creditPucAccount: '135515 (Retención a favor)',
-  },
-  {
-    id: 'tax-003',
-    code: 'ICA-GUADUAS-4',
-    concept: 'ICA / ReteICA Guaduas — Producción Velas (Acuerdos 36/2020 y 02/2021 Cód. 101)',
-    taxType: 'ReteICA',
-    municipality: 'Guaduas',
-    baseMinCOP: 0,
-    ratePercent: 0.4,
-    debitPucAccount: '241205 / 236801 (ReteICA Guaduas)',
-    creditPucAccount: '135518 (ReteICA a favor)',
-  },
-  {
-    id: 'tax-004',
-    code: 'AUT-RENTA-0.4',
-    concept: 'Autorretención Especial en Renta (Decreto 1625 - CIIU 3290)',
-    taxType: 'Autorretención Renta',
-    municipality: 'Nacional',
-    baseMinCOP: 0,
-    ratePercent: 0.40,
-    debitPucAccount: '135595 (Autorretención a favor)',
-    creditPucAccount: '236575 (Autorretención por pagar)',
-  },
-]
-
-const CONSECUTIVES_DEMO = [
-  {
-    id: 'con-001',
-    documentType: 'Factura Electrónica de Venta',
-    prefix: 'FEDV',
-    rangeFrom: 135,
-    rangeTo: 2000,
-    currentNumber: 135,
-    dianResolution: 'Autorización 18764084314318',
-    expirationDate: '2026-11-28T00:00:00.000Z',
-    remainingDays: 18,
-    usedPercentage: 0,
-  },
-  {
-    id: 'con-002',
-    documentType: 'Documento Soporte a No Obligados',
-    prefix: 'DS',
-    rangeFrom: 1,
-    rangeTo: 2000,
-    currentNumber: 310,
-    dianResolution: 'Res. 187640009941 del 2026-01-20',
-    expirationDate: '2027-01-20T00:00:00.000Z',
-    remainingDays: 71,
-    usedPercentage: 15,
-  },
-  {
-    id: 'con-003',
-    documentType: 'Documento Equivalente POS (Tiendas)',
-    prefix: 'POS',
-    rangeFrom: 1,
-    rangeTo: 10000,
-    currentNumber: 1450,
-    dianResolution: 'Res. 187640003310 del 2026-02-10',
-    expirationDate: '2027-02-10T00:00:00.000Z',
-    remainingDays: 92,
-    usedPercentage: 14,
   },
 ]

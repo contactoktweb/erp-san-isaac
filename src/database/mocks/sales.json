@@ -300,7 +300,7 @@
       {
         "id": "box-301",
         "boxNumber": 1,
-        "boxLabel": "Caja 1 de N",
+        "boxLabel": "Caja 1 de 2",
         "packingDate": "2026-10-25T14:00:00.000Z",
         "packerUser": "Jorge Eliécer Duarte",
         "weightKg": 28.0,
@@ -318,7 +318,7 @@
       {
         "id": "box-302",
         "boxNumber": 2,
-        "boxLabel": "Caja 2 de N",
+        "boxLabel": "Caja 2 de 2",
         "packingDate": "2026-10-26T09:30:00.000Z",
         "packerUser": "Jorge Eliécer Duarte",
         "weightKg": 19.4,
@@ -350,7 +350,7 @@
     "trafficLightStatus": "Entrega próxima",
     "orderStatus": "Empacado parcialmente",
     "overallProgressPercentage": 65,
-    "totalBoxesCount": 4,
+    "totalBoxesCount": 3,
     "itemsSummary": "80 Cajas Velón 3 Días Blanco en vaso (1.920 unidades base)",
     "totalAmountCOP": 9600000,
     "pendingBalanceCOP": 9600000,
@@ -376,7 +376,7 @@
       {
         "id": "box-401",
         "boxNumber": 1,
-        "boxLabel": "Caja 1 de 6",
+        "boxLabel": "Caja 1 de 3",
         "packingDate": "2026-10-23T11:00:00.000Z",
         "packerUser": "Jorge Eliécer Duarte",
         "weightKg": 25.0,
@@ -393,7 +393,7 @@
       {
         "id": "box-402",
         "boxNumber": 2,
-        "boxLabel": "Caja 2 de 6",
+        "boxLabel": "Caja 2 de 3",
         "packingDate": "2026-10-24T10:00:00.000Z",
         "packerUser": "Jorge Eliécer Duarte",
         "weightKg": 25.0,
@@ -410,7 +410,7 @@
       {
         "id": "box-403",
         "boxNumber": 3,
-        "boxLabel": "Caja 3 de 6",
+        "boxLabel": "Caja 3 de 3",
         "packingDate": "2026-10-25T15:00:00.000Z",
         "packerUser": "Jorge Eliécer Duarte",
         "weightKg": 22.2,
